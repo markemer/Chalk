@@ -1,0 +1,12 @@
+
+/* Class = "NSWindow"; title = "Window"; ObjectID = "QvC-M9-y7g"; */
+"QvC-M9-y7g.title" = "Window";
+
+/* Class = "NSTextFieldCell"; title = "x="; ObjectID = "d2c-CD-7Mm"; */
+"d2c-CD-7Mm.title" = "x=";
+
+/* Class = "NSTextFieldCell"; placeholderString = "y="; ObjectID = "q0C-NZ-Q3g"; */
+"q0C-NZ-Q3g.placeholderString" = "y=";
+
+/* Class = "NSTextFieldCell"; title = "y="; ObjectID = "tpK-uL-lSS"; */
+"tpK-uL-lSS.title" = "y=";

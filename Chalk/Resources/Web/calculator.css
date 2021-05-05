@@ -1,0 +1,300 @@
+#body {
+  width:100%;
+  margin:0px;
+  padding:0px;
+  background-color:white;
+}
+
+#entries {
+  width:100%;
+}
+
+#entries div {
+}
+
+.entry {
+  background-color:white;
+  overflow:scroll;
+  box-sizing:border-box;
+  border-style:solid;
+  border-width:1px;
+  border-color:darkgray;
+  border-radius:8px;
+  padding:0px;
+  box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.3);
+  margin-left:8px;
+  margin-right:8px;
+  margin-top:6px;
+  margin-bottom:6px;
+}
+
+.entry_selected {
+  border-width:3px;
+  border-color:rgb(110,165,255);
+}
+
+.entry_input {
+  position:relative;
+  left:0px;
+  right:0px;
+  text-align:left;
+  word-break:break-all;
+  padding:5px;
+}
+
+.entry_output {
+  position:relative;
+  left:0px;
+  right:0px;
+  text-align:right;
+  padding-right:0px;
+  word-break:break-all;
+  padding:5px;
+}
+
+.entry_output2 {
+  position:relative;
+  left:0px;
+  right:0px;
+  text-align:right;
+  padding-right:0px;
+  word-break:break-all;
+  font-style:italic;
+  padding:5px;
+}
+
+.entry_input_switch {
+  background: -webkit-image-set( url('images/switch.png') 1x, url('images/switch@2x.png') 2x );
+  background-size:16px 12px;
+  width:16px;
+  height:12px;
+  float:left;
+  position:relative;
+  top:5px;
+  cursor:pointer;
+}
+
+.entry_output_switch {
+  background: -webkit-image-set( url('images/switch.png') 1x, url('images/switch@2x.png') 2x );
+  background-size:16px 12px;
+  width:16px;
+  height:12px;
+  float:left;
+  position:relative;
+  top:5px;
+  cursor:pointer;
+}
+
+.entry_output2_switch {
+  background: -webkit-image-set( url('images/switch.png') 1x, url('images/switch@2x.png') 2x );
+  background-size:16px 12px;
+  width:16px;
+  height:12px;
+  float:left;
+  position:relative;
+  top:5px;
+  cursor:pointer;
+}
+
+.entry_header {
+  position:relative;
+  top:0px;
+  left:0px;
+  right:0px;
+  height:20px;
+  padding-left:5px;
+  padding-right:5px;
+  background:linear-gradient(180deg, #E9E9E9, #E9E9E9 50%, #DDDDDD 50%, #DDDDDD);
+  border-bottom:1px solid gray;
+  box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.1);
+}
+
+.entry_selected .entry_header {
+  background:none;
+  background-color:rgb(110,165,255);
+}
+
+.entry_number {
+  position:absolute;
+  left:24px;
+  bottom:1px;
+  background-color:white;
+  border-style:solid;
+  border-width:1px;
+  border-radius:8px;
+  border-color:darkgray;
+  padding-left:2px;
+  padding-right:2px;
+  text-align:center;
+  min-width:16px;
+  font-size:smaller;
+  cursor:default;
+}
+
+.entry_flags {
+  float:center;
+  text-align:center;
+  margin:auto;
+  margin-top:0px;
+  margin-left:20px;
+  margin-right:20px;
+  padding-top:4px;
+}
+
+.entry_close {
+  position:absolute;
+  top:2px;
+  right:4px;
+  width:16px;
+  height:16px;
+  background: -webkit-image-set( url('images/close.png') 1x, url('images/close@2x.png') 2x );
+  background-color:transparent;
+  border-width:0px;
+  cursor:pointer;
+}
+
+.entry_annotation_reveal {
+  position:absolute;
+  top:4px;
+  left:6px;
+  width:12px;
+  height:12px;
+  background: -webkit-image-set( url('images/triangle-right.png') 1x, url('images/triangle-right@2x.png') 2x );
+  background-color:transparent;
+  border-width:0px;
+  cursor:pointer;
+}
+
+.entry_annotation {
+  position:relative;
+  top:0px;
+  left:0px;
+  right:0px;
+  min-height:20px;
+  padding:4px;
+  background:linear-gradient(0deg, #FFFF66, #FFFFAA);
+  box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.1);
+  border-bottom:1px solid gray;
+  text-align:justify;
+  font-style:italic;
+}
+
+.entry_annotation textarea {
+  position:absolute;
+  top:4px;
+  bottom:4px;
+  left:0px;
+  right:0px;
+  border-width:0px;
+  background-color:transparent;
+  box-sizing: border-box;
+  resize: none;
+}
+
+div.hruler {
+    overflow:hidden;
+    text-align:center;
+    font-size:small;
+    color:gray;
+    cursor:default;
+}
+div.hruler:before, div.hruler:after {
+    background-color:lightgray;
+    content:"";
+    display:inline-block;
+    height:1px;
+    position:relative;
+    vertical-align:middle;
+    width:50%;
+}
+div.hruler:before {
+    right:0.5em;
+    margin-left:-50%;
+}
+div.hruler:after {
+    left:0.5em;
+    margin-right:-50%;
+}
+
+.warningFlag {
+  display:inline;
+  background-color:white;
+  border-style:solid;
+  border-width:1px;
+  border-radius:8px;
+  border-color:darkgray;
+  height:10px;
+  font-size:10px;
+  padding-left:4px;
+  padding-right:4px;
+}
+
+.hasTooltip {
+  margin:1px;
+  padding:1px;
+  border:1px dotted #090000;
+}
+
+.errorFlag {
+  background-color:rgba(253, 177, 179, 64);
+  border-style:none;
+  border-radius:2px;
+}
+
+img.file-read {
+  background:-webkit-image-set( url('images/file-read.png') 1x, url('images/file-read@2x.png') 2x );
+  background-size:24px 24px;
+  border-style:solid;
+  border-width:0px;
+  display:inline;
+  width:24px;
+  height:24px;
+  cursor:pointer;
+  vertical-align:middle;
+}
+
+img.file-write {
+  background:-webkit-image-set( url('images/file-write.png') 1x, url('images/file-write@2x.png') 2x );
+  background-size:24px 24px;
+  border-style:solid;
+  border-width:0px;
+  display:inline;
+  width:24px;
+  height:24px;
+  cursor:pointer;
+  vertical-align:middle;
+}
+
+
+::-webkit-scrollbar {
+  width:0px;
+  height:8px;
+}
+::-webkit-scrollbar-button {
+  visibility:hidden;
+}
+::-webkit-scrollbar-thumb {
+  background:darkgray;
+  border:0px none #ff0000;
+  border-radius:4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background:lightgray;
+}
+::-webkit-scrollbar-thumb:active {
+  background:darkgray;
+}
+::-webkit-scrollbar-track {
+  background:transparent;
+  border: 0px none #ffffff;
+  border-radius: 0px;
+}
+::-webkit-scrollbar-track:hover {
+  background: transparent;
+}
+::-webkit-scrollbar-track:active {
+  background: transparent;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}

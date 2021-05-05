@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="CHBitInterpretationControl">
+            <connections>
+                <outlet property="bitsCountFormatter" destination="2Uc-TE-XL3" id="agF-OF-6no"/>
+                <outlet property="bitsCountStepper" destination="utD-h3-14s" id="d09-gc-7Eo"/>
+                <outlet property="bitsCountTextField" destination="zkK-8v-8wR" id="DaT-aq-Tjx"/>
+                <outlet property="bitsEncodingPopUpButton" destination="9zY-le-Hnq" id="gB8-6F-RjC"/>
+                <outlet property="bitsMinorPartPopUpButton" destination="gHE-iE-u9B" id="Jad-ye-xBp"/>
+                <outlet property="minorPartColorWell" destination="Tk7-We-dDI" id="QW5-qh-W6Z"/>
+                <outlet property="minorPartColorWellButton" destination="EYp-eE-npO" id="1p8-iW-v4F"/>
+                <outlet property="view" destination="c22-O7-iKe" id="eJd-iB-S3I"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe" customClass="CHViewCentering">
+            <rect key="frame" x="0.0" y="0.0" width="490" height="20"/>
+            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" heightSizable="YES"/>
+            <subviews>
+                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9zY-le-Hnq" userLabel="bitsEncodingPopUpButton">
+                    <rect key="frame" x="0.0" y="1" width="121" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <popUpButtonCell key="cell" type="roundRect" title="IEEE754 (octuple)" bezelStyle="roundedRect" alignment="left" controlSize="mini" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="CpV-IN-Gqe" id="B4W-9u-6qB">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="label" size="9"/>
+                        <menu key="menu" id="o9Y-b2-pMj">
+                            <items>
+                                <menuItem title="native" id="sIK-hK-4bB">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                                <menuItem title="IEEE754 (half)" id="Q6b-rL-bxd">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                                <menuItem title="IEEE754 (single)" id="Grs-ux-yZK">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                                <menuItem title="IEEE754 (double)" id="K0A-2p-hwF">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                                <menuItem title="IEEE754 (quadruple)" id="MD4-qP-jf5">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                                <menuItem title="IEEE754 (octuple)" state="on" id="CpV-IN-Gqe">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                    <connections>
+                        <action selector="changeParameter:" target="-2" id="5OF-ME-lIk"/>
+                    </connections>
+                </popUpButton>
+                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gHE-iE-u9B" userLabel="bitsCountPopUpButton">
+                    <rect key="frame" x="120" y="1" width="60" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <popUpButtonCell key="cell" type="roundRect" title="sign bits" bezelStyle="roundedRect" imagePosition="left" alignment="left" controlSize="mini" lineBreakMode="truncatingTail" state="on" borderStyle="border" inset="2" selectedItem="TI5-IQ-xJd" id="UdX-St-TRb">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="label" size="9"/>
+                        <menu key="menu" id="bYW-YX-8CF">
+                            <items>
+                                <menuItem title="sign bits" state="on" id="TI5-IQ-xJd">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                                <menuItem title="exponent bits" id="dMJ-Mc-RvO"/>
+                                <menuItem title="significand bits" id="XGx-mn-QIc"/>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                    <connections>
+                        <action selector="changeParameter:" target="-2" id="sKe-rG-iGg"/>
+                    </connections>
+                </popUpButton>
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zkK-8v-8wR" userLabel="bitsCountTextField">
+                    <rect key="frame" x="180" y="2" width="48" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" drawsBackground="YES" id="k8K-S2-0JQ">
+                        <font key="font" metaFont="label" size="9"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <action selector="changeParameter:" target="-2" id="zhl-qS-01N"/>
+                        <outlet property="formatter" destination="2Uc-TE-XL3" id="9lG-cd-Ljk"/>
+                    </connections>
+                </textField>
+                <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="utD-h3-14s" userLabel="bitsCountStepper">
+                    <rect key="frame" x="226" y="2" width="13" height="15"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <stepperCell key="cell" controlSize="mini" continuous="YES" alignment="left" maxValue="100" id="DEF-FR-2sR"/>
+                    <connections>
+                        <action selector="changeParameter:" target="-2" id="0Xn-ud-z2a"/>
+                    </connections>
+                </stepper>
+                <colorWell fixedFrame="YES" bordered="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tk7-We-dDI" userLabel="minorPartColorWell">
+                    <rect key="frame" x="246" y="3" width="16" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <action selector="changeParameter:" target="-2" id="kj7-u6-hz7"/>
+                    </connections>
+                </colorWell>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EYp-eE-npO" customClass="CHColorWellButton">
+                    <rect key="frame" x="246" y="0.0" width="16" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" controlSize="mini" state="on" transparent="YES" imageScaling="proportionallyDown" inset="2" id="axN-YF-ARy">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="label" size="9"/>
+                    </buttonCell>
+                    <connections>
+                        <outlet property="associatedColorWell" destination="Tk7-We-dDI" id="p9J-bS-bqq"/>
+                    </connections>
+                </button>
+            </subviews>
+            <point key="canvasLocation" x="275" y="35"/>
+        </customView>
+        <numberFormatter formatterBehavior="custom10_4" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" positiveSuffix="bits" id="2Uc-TE-XL3" userLabel="bitsCountFormatter" customClass="CHNumberFormatter"/>
+    </objects>
+</document>

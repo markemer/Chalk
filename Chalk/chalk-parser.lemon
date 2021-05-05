@@ -1,0 +1,573 @@
+%token_type {CHChalkToken*}
+%include {#include <assert.h>}
+%include {#include "chalk-parser.h"}
+%include {#include "CHChalkToken.h"}
+%include {#include "CHParserContext.h"}
+%include {#include "CHParserNode.h"}
+%include {#include "CHParserAssignationNode.h"}
+%include {#include "CHParserAssignationDynamicNode.h"}
+%include {#include "CHParserEnumerationNode.h"}
+%include {#include "CHParserFunctionNode.h"}
+%include {#include "CHParserIdentifierNode.h"}
+%include {#include "CHParserIfThenElseNode.h"}
+%include {#include "CHParserListNode.h"}
+%include {#include "CHParserMatrixNode.h"}
+%include {#include "CHParserMatrixRowNode.h"}
+%include {#include "CHParserOperatorNode.h"}
+%include {#include "CHParserSubscriptNode.h"}
+%include {#include "CHParserValueIndexRangeNode.h"}
+%include {#include "CHParserValueNode.h"}
+%include {#include "CHParserValueNumberNode.h"}
+%include {#include "CHParserValueNumberIntegerNode.h"}
+%include {#include "CHParserValueNumberRealNode.h"}
+%include {#include "CHParserValueNumberIntervalNode.h"}
+%include {#include "CHParserValueNumberPerFractionNode.h"}
+%include {#include "CHParserValueStringNode.h"}
+%include {#include "CHUtils.h"}
+
+%extra_argument {CHParserContext* context}
+%token_prefix CHALK_LEMON_
+//%name Parse_
+
+%parse_failure {
+  DebugLogStatic(0, @"lemon parse failure");
+  context.stop = YES;
+}
+%syntax_error {
+  DebugLogStatic(0, @"lemon syntax error");
+  context.stop = YES;
+}
+
+%destructor context {
+  context = 0;//prevent compile warning
+}
+
+%left OPERATOR_ASSIGN OPERATOR_ASSIGN_DYNAMIC.
+%left OPERATOR_SHL OPERATOR_SHL2 OPERATOR_SHR OPERATOR_SHR2.
+%left OPERATOR_OR OPERATOR_OR2.
+%left OPERATOR_XOR OPERATOR_XOR2.
+%left OPERATOR_AND OPERATOR_AND2.
+%nonassoc OPERATOR_LEQ OPERATOR_LEQ2 OPERATOR_GEQ OPERATOR_GEQ2 OPERATOR_LOW OPERATOR_LOW2 OPERATOR_GRE OPERATOR_GRE2 OPERATOR_EQU OPERATOR_EQU2 OPERATOR_NEQ OPERATOR_NEQ2.
+%left OPERATOR_ABS.
+%left OPERATOR_PLUS OPERATOR_PLUS2 OPERATOR_MINUS OPERATOR_MINUS2.
+%left OPERATOR_DIVIDE OPERATOR_DIVIDE2 OPERATOR_TIMES OPERATOR_TIMES2 INDEX_RANGE_JOKER.
+%right OPERATOR_POW OPERATOR_POW2 OPERATOR_NOT OPERATOR_NOT2.
+%left OPERATOR_MINUS_UNARY OPERATOR_SQRT OPERATOR_SQRT2 OPERATOR_CBRT OPERATOR_CBRT2 OPERATOR_MUL_SQRT OPERATOR_MUL_SQRT2 OPERATOR_MUL_CBRT OPERATOR_MUL_CBRT2 OPERATOR_FACTORIAL OPERATOR_FACTORIAL2.
+%left OPERATOR_UNCERTAINTY.
+%left OPERATOR_DEGREE OPERATOR_DEGREE2.
+%left ENUMERATION_SEPARATOR.
+%left OPERATOR_SUBSCRIPT.
+%left IF THEN ELSE QUESTION ALTERNATE.
+
+%default_type {CHParserNode*}
+%type integer {CHParserValueNumberIntegerNode*}
+%type integer10_radical {CHParserValueNumberIntegerNode*}
+%type index_range {CHParserValueIndexRangeNode*}
+%type real {CHParserValueNumberRealNode*}
+%type real10_radical {CHParserValueNumberRealNode*}
+%type number {CHParserValueNumberNode*}
+%type number10_radical {CHParserValueNumberNode*}
+%type string_quoted {CHParserValueStringNode*}
+%type interval {CHParserValueNumberIntervalNode*}
+%type identifier {CHParserIdentifierNode*}
+%type value {CHParserValueNode*}
+%type enumeration {CHParserEnumerationNode*}
+%type list {CHParserListNode*}
+%type matrix_rows {CHParserMatrixNode*}
+%type matrix_row_enumeration {CHParserMatrixRowNode*}
+%type assignation {CHParserAssignationNode*}
+
+command(A) ::= expr(B). {
+  A=B;
+  DebugLogStatic(1, @"command(%@) = expr(%@)\n", A, B);
+  [context.parserListener parserContext:context didEncounterRootNode:A];
+}
+command(A) ::= assignation(B). {
+  A=B;
+  DebugLogStatic(1, @"command(%@) = assignation(%@)\n", A, B);
+  [context.parserListener parserContext:context didEncounterRootNode:A];
+}
+
+integer(A) ::= INTEGER_POSITIVE(B). {
+  A=[CHParserValueNumberIntegerNode parserNodeWithToken:B];
+  DebugLogStatic(1, @"%@ ::= INTEGER_POSITIVE(%@)", A, B);
+}
+index_range(A) ::= integer(B) INDEX_RANGE_OPERATOR(C) integer(D). {
+  A=[CHParserValueIndexRangeNode parserNodeWithToken:[CHChalkToken chalkTokenUnion:@[B.token,C,D.token]]];
+  [A addChild:B];
+  [A addChild:D];
+  DebugLogStatic(1, @"index_range(%@) ::= {index_range(%@, %@, %@)}", A, B, C, D);
+}
+index_range(A) ::= INDEX_RANGE_JOKER(B). {
+  A=[CHParserValueIndexRangeNode parserNodeWithToken:B joker:YES];
+  DebugLogStatic(1, @"index_range(%@) ::= {index_range(%@)}", A, B);
+}
+real(A) ::= REAL_POSITIVE(B). {
+  A=[CHParserValueNumberRealNode parserNodeWithToken:B];
+  DebugLogStatic(1, @"%@ ::= REAL_POSITIVE(%@)", A, B);
+}
+number(A) ::= integer(B). {A=B;}
+number(A) ::= real(B). {A=B;}
+
+integer_per_fraction(A) ::= INTEGER_PER_FRACTION(B). {
+  A=[CHParserValueNumberPerFractionNode parserNodeWithToken:B];
+  DebugLogStatic(1, @"%@ ::= INTEGER_PER_FRACTION(%@)", A, B);
+}
+real_per_fraction(A) ::= REAL_PER_FRACTION(B). {
+  A=[CHParserValueNumberPerFractionNode parserNodeWithToken:B];
+  DebugLogStatic(1, @"%@ ::= REAL_PER_FRACTION(%@)", A, B);
+}
+number_per_fraction(A) ::= integer_per_fraction(B). {A=B;}
+number_per_fraction(A) ::= real_per_fraction(B). {A=B;}
+
+string_quoted(A) ::= STRING_QUOTED(B). {
+  A=[CHParserValueStringNode parserNodeWithToken:B];
+  DebugLogStatic(1, @"%@ ::= \"%@\"", A, B);
+}
+
+interval(A) ::= INTERVAL_LEFT_DELIMITER(B) expr(C) INTERVAL_ITEM_SEPARATOR(D) expr(E) INTERVAL_RIGHT_DELIMITER(F). {
+  A=[CHParserValueNumberIntervalNode parserNodeWithToken:[CHChalkToken chalkTokenUnion:@[B,C.token,D,E.token,F]]];
+  [A addChild:C];
+  [A addChild:E];
+  DebugLogStatic(1, @"interval(%@) ::= {interval([%@;%@])}", A, C, E);
+}
+
+identifier(A) ::= IDENTIFIER(B). {
+  A=[CHParserIdentifierNode parserNodeWithToken:B];
+  DebugLogStatic(1, @"%@ ::= IDENTIFIER(%@)", A, B);
+}
+value(A) ::= number(B). {A=B;}
+value(A) ::= string_quoted(B). {A=B;}
+value(A) ::= identifier(B). {A=B;}
+value(A) ::= interval(B). {A=B;}
+
+subscript(A) ::= INTERVAL_LEFT_DELIMITER(B) enumeration(C) INTERVAL_RIGHT_DELIMITER(D). {
+  A = [CHParserSubscriptNode parserNodeWithToken:[CHChalkToken chalkTokenUnion:@[B,C.token,D]]];
+  [A addChild:C];
+  DebugLogStatic(1, @"subscript(%@) ::= [enumeration(%@)]", A, C);
+}
+
+expr(A) ::= value(B). {
+  A = B;
+  DebugLogStatic(1, @"expr(%@) ::= value(%@)", A, B);
+}
+expr(A) ::= IF expr(B) THEN expr(C) ELSE expr(D). {
+  A = [CHParserIfThenElseNode parserNodeWithIf:B Then:C Else:D];
+  DebugLogStatic(1, @"expr(%@) ::= if (%@) then (%@) else (%@)", A, B, C, D);
+}
+expr(A) ::= expr(B) QUESTION expr(C) ALTERNATE expr(D). {
+  A = [CHParserIfThenElseNode parserNodeWithIf:B Then:C Else:D];
+  DebugLogStatic(1, @"expr(%@) ::= (%@) ? (%@) : (%@)", A, B, C, D);
+}
+expr(A) ::= PARENTHESIS_LEFT expr(C) PARENTHESIS_RIGHT. {
+  A = C;
+  DebugLogStatic(1, @"expr(%@) ::= ( value(%@) )", A, C);
+}
+expr(A) ::= OPERATOR_MINUS_UNARY(OP) expr(B). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_MINUS];
+  [A addChild:B];
+  DebugLogStatic(1, @"expr(%@) ::= negate expr(%@)", A, B);
+}
+expr(A) ::= OPERATOR_MINUS(OP) expr(B). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_MINUS];
+  [A addChild:B];
+  DebugLogStatic(1, @"expr(%@) ::= negate expr(%@)", A, B);
+}
+expr(A) ::= OPERATOR_SQRT(OP) expr(B). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_SQRT];
+  [A addChild:B];
+  DebugLogStatic(1, @"expr(%@) ::= sqrt(expr(%@))", A, B);
+}
+expr(A) ::= OPERATOR_SQRT2(OP) expr(B). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_SQRT2];
+  [A addChild:B];
+  DebugLogStatic(1, @"expr(%@) ::= .sqrt(expr(%@))", A, B);
+}
+expr(A) ::= OPERATOR_CBRT(OP) expr(B). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_CBRT];
+  [A addChild:B];
+  DebugLogStatic(1, @"expr(%@) ::= cbrt(expr(%@))", A, B);
+}
+expr(A) ::= OPERATOR_CBRT2(OP) expr(B). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_CBRT2];
+  [A addChild:B];
+  DebugLogStatic(1, @"expr(%@) ::= .cbrt(expr(%@))", A, B);
+}
+expr(A) ::= expr(B) OPERATOR_SQRT(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_MUL_SQRT];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@)*sqrt(expr(%@))", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_SQRT2(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_MUL_SQRT2];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@)*.sqrt(expr(%@))", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_CBRT(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_MUL_CBRT];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@)*cbrt(expr(%@))", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_CBRT2(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_MUL_CBRT2];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@)*.cbrt(expr(%@))", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_UNCERTAINTY(OP) number_per_fraction(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_UNCERTAINTY];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) +/- expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_UNCERTAINTY(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_UNCERTAINTY];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) +/- expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_PLUS(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_PLUS];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@)+expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_PLUS2(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_PLUS2];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@).+expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_MINUS(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_MINUS];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@)-expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_MINUS2(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_MINUS2];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@).-expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_TIMES(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_TIMES];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@)*expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) INDEX_RANGE_JOKER(J) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:J operator:CHALK_LEMON_OPERATOR_TIMES];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@)*expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_TIMES2(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_TIMES2];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@).*expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_DIVIDE(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_DIVIDE];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@)/expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_DIVIDE2(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_DIVIDE2];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@)./expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_POW(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_POW];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@)^expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_POW2(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_POW2];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@).^expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_DEGREE(OP). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_DEGREE];
+  [A addChild:B];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@)°", A, B);
+}
+expr(A) ::= expr(B) OPERATOR_DEGREE2(OP). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_DEGREE2];
+  [A addChild:B];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@).°", A, B);
+}
+expr(A) ::= expr(B) OPERATOR_FACTORIAL(OP). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_FACTORIAL];
+  [A addChild:B];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@)!", A, B);
+}
+expr(A) ::= expr(B) OPERATOR_FACTORIAL2(OP). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_FACTORIAL2];
+  [A addChild:B];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@).!", A, B);
+}
+expr(A) ::= OPERATOR_ABS(OP1) expr(B) OPERATOR_ABS(OP2). {
+  A = [CHParserOperatorNode parserNodeWithToken:[CHChalkToken chalkTokenUnion:@[OP1,OP2]] operator:CHALK_LEMON_OPERATOR_ABS];
+  [A addChild:B];
+  DebugLogStatic(1, @"expr(%@) ::= |expr(%@)|", A, B);
+}
+expr(A) ::= OPERATOR_NOT(OP) expr(B). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_NOT];
+  [A addChild:B];
+  DebugLogStatic(1, @"expr(%@) ::= !expr(%@)", A, B);
+}
+expr(A) ::= OPERATOR_NOT2(OP) expr(B). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_NOT2];
+  [A addChild:B];
+  DebugLogStatic(1, @"expr(%@) ::= .!expr(%@)", A, B);
+}
+expr(A) ::= expr(B) OPERATOR_LEQ(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_LEQ];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) <= expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_LEQ2(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_LEQ2];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) .<= expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_GEQ(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_GEQ];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) >= expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_GEQ2(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_GEQ2];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) .>= expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_LOW(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_LOW];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) < expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_LOW2(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_LOW2];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) .< expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_GRE(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_GRE];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) > expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_GRE2(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_GRE2];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) .> expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_EQU(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_EQU];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) == expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_EQU2(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_EQU2];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) .== expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_NEQ(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_NEQ];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) != expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_NEQ2(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_NEQ2];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) .!= expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_SHL(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_SHL];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) SHL expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_SHL2(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_SHL2];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) SHL2 expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_SHR(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_SHR];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) SHR expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_SHR2(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_SHR2];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) SHR2 expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_AND(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_AND];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) AND expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_AND2(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_AND2];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) .AND expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_OR(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_OR];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) OR expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_OR2(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_OR2];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) .OR expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_XOR(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_XOR];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) XOR expr(%@)", A, B, C);
+}
+expr(A) ::= expr(B) OPERATOR_XOR2(OP) expr(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:OP operator:CHALK_LEMON_OPERATOR_XOR2];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@) .XOR expr(%@)", A, B, C);
+}
+expr(A) ::= function_call(B). {
+  A=B;
+  DebugLogStatic(1, @"expr(%@) = function_call(%@)", A, B);
+}
+expr(A) ::= matrix(B). {
+  A=B;
+  DebugLogStatic(1, @"expr(%@) = matrix(%@)", A, B);
+}
+expr(A) ::= list(B). {
+  A=B;
+  DebugLogStatic(1, @"expr(%@) = list(%@)", A, B);
+}
+expr(A) ::= expr(B) subscript(C). {
+  A = [CHParserOperatorNode parserNodeWithToken:C.token operator:CHALK_LEMON_OPERATOR_SUBSCRIPT];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"expr(%@) ::= expr(%@)[%@]", A, B, C);
+}
+
+/*enumeration_element(A) ::= . {
+  A = nil;
+  DebugLogStatic(1, @"enumeration_element(%@) ::= .", A);
+}*/
+enumeration_element(A) ::= expr(B). {
+  A = B;
+  DebugLogStatic(1, @"enumeration_element(%@) ::= %@", A, B);
+}
+enumeration_element(A) ::= index_range(B). {
+  A = B;
+  DebugLogStatic(1, @"enumeration_element(%@) ::= %@", A, B);
+}
+enumeration(A) ::= enumeration_element(B). {
+  A = [CHParserEnumerationNode parserNodeWithToken:B.token];
+  [A addChild:B];
+  DebugLogStatic(1, @"enumeration(%@) ::= enumeration_element(%@)", A, B);
+}
+enumeration(A) ::= enumeration(B) ENUMERATION_SEPARATOR(C) enumeration_element(D). {
+  A=B;
+  A.token = [CHChalkToken chalkTokenUnion:@[B.token,C,D.token]];
+  [A addChild:D];
+  DebugLogStatic(1, @"enumeration(%@) ::= enumeration(%@),enumeration_element(%@)", A, B, D);
+}
+
+function_call(A) ::= identifier(B) PARENTHESIS_LEFT enumeration(D) PARENTHESIS_RIGHT. {
+  A=[CHParserFunctionNode parserNodeWithToken:B.token];
+  [A addChild:D];
+  DebugLogStatic(1, @"function_call(%@) ::= identifier(%@)(enumeration(%@))", A, B, D);
+}
+
+/*matrix_row_element(A) ::= . {
+  A = nil;
+  DebugLogStatic(1, @"matrix_row_element(%@) ::= .", A);
+}*/
+matrix_row_element(A) ::= expr(B). {
+  A = B;
+  DebugLogStatic(1, @"matrix_row_element(%@) ::= %@", A, B);
+}
+matrix_row_enumeration(A) ::= matrix_row_element(B). {
+  A = [CHParserMatrixRowNode parserNodeWithToken:B.token];
+  [A addChild:B];
+  DebugLogStatic(1, @"matrix_row_enumeration(%@) ::= matrix_row_element(%@)", A, B);
+}
+matrix_row_enumeration(A) ::= matrix_row_enumeration(B) ENUMERATION_SEPARATOR(C) matrix_row_element(D). {
+  A=B;
+  A.token = [CHChalkToken chalkTokenUnion:@[B.token,C,D.token]];
+  [A addChild:D];
+  DebugLogStatic(1, @"matrix_row_enumeration(%@) ::= matrix_row_enumeration(%@),matrix_row_element(%@)", A, B, D);
+}
+matrix_row(A) ::= PARENTHESIS_LEFT(B) matrix_row_enumeration(C) PARENTHESIS_RIGHT(D). {
+  A = C;
+  A.token = [CHChalkToken chalkTokenUnion:@[B,C.token,D]];
+  DebugLogStatic(1, @"matrix_row(%@) ::= (matrix_row_enumeration(%@))", A, C);
+}
+matrix_rows(A) ::= matrix_row(B). {
+  A = [CHParserMatrixNode parserNodeWithToken:B.token];
+  [A addChild:B];
+  DebugLogStatic(1, @"matrix_rows(%@) ::= (matrix_row_enumeration(%@))", A, B);
+}
+matrix_rows(A) ::= matrix_rows(B) matrix_row(C). {
+  A = B;
+  A.token = [CHChalkToken chalkTokenUnion:@[B.token,C.token]];
+  [A addChild:C];
+  DebugLogStatic(1, @"matrix_rows(%@) ::= matrix_rows(%@) %@", A, B, C);
+}
+matrix(A) ::= PARENTHESIS_LEFT(B) matrix_rows(C) PARENTHESIS_RIGHT(D). {
+  A = C;
+  A.token = [CHChalkToken chalkTokenUnion:@[B,C.token,D]];
+  DebugLogStatic(1, @"matrix(%@) ::= (matrix_row(%@))", A, C);
+}
+
+list(A) ::= LIST_LEFT_DELIMITER(B) enumeration(C) LIST_RIGHT_DELIMITER(D). {
+  A=[CHParserListNode parserNodeWithToken:[CHChalkToken chalkTokenUnion:@[B,C.token,D]]];
+  [A addChild:C];
+  DebugLogStatic(1, @"list(%@) ::= {enumeration(%@)}", A, C);
+}
+
+assignation(A) ::= expr(B) OPERATOR_ASSIGN(OP) expr(C). {
+  A=[CHParserAssignationNode parserNodeWithToken:OP];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"assignation(%@) ::= identifier(%@) <- %@", A, B, C);
+}
+
+assignation(A) ::= expr(B) OPERATOR_ASSIGN_DYNAMIC(OP) expr(C). {
+  A=[CHParserAssignationDynamicNode parserNodeWithToken:OP];
+  [A addChild:B];
+  [A addChild:C];
+  DebugLogStatic(1, @"assignation_dynamic(%@) ::= identifier(%@) <-= %@", A, B, C);
+}

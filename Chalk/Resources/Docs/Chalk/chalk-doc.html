@@ -1,0 +1,1383 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no"/>
+<script type="text/javascript" src="jquery/jquery.js"></script>
+<link href="chalk-doc.css" rel="StyleSheet" type="text/css" />
+</head>
+<body id="body">
+<div id="toc">
+<ol>
+  <li><a href="#introduction">Introduction</a>
+    <ol>
+      <li><a href="#what_is_chalk">What is Chalk, what it is not</a></li>
+      <li><a href="#what_chalk_fixes">What Chalk tries to fix</a>
+        <ol>
+          <li><a href="#open_calculator">Open the calculator</a></li>
+          <li><a href="#typing_expression">Typing an expression</a></li>
+          <li><a href="#get_exact_result">Get an exact result when possible</a></li>
+          <li><a href="#get_inexact_result">If no exact result is possible, display only what is exact</a></li>
+          <li><a href="#standard_math">Give access to standard math</a></li>
+          <li><a href="#much_more">Much more…</a></li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+  <li><a href="#calculator">Calculator</a>
+    <ol>
+      <li><a href="#calculator_different">What is different with Chalk ?</a></li>
+      <li><a href="#computation_modes">Computation modes</a></li>
+      <li><a href="#computation_flags">Computation flags</a></li>
+      <li><a href="#numbers">Numbers</a>
+        <ol>
+          <li><a href="#digits">Digits</a></li>
+          <li><a href="#integers">Integer</a></li>
+          <li><a href="#fractions">Fraction</a></li>
+          <li><a href="#Reals_uncertainty_and_intervals">Reals, uncertainty and intervals</a></li>
+          <li><a href="#Scientific_notation">Scientific notation</a></li>
+          <li><a href="#bases">Bases</a></li>
+        </ol>
+      </li>
+      <li><a href="#quaternion">Complex numbers and quaternions</a></li>
+      <li><a href="#boolean">Boolean</a></li>
+      <li><a href="#matrix">Matrices</a></li>
+      <li><a href="#list">Lists</a></li>
+      <li><a href="#subscript_range">Subscripts and ranges</a></li>
+      <li><a href="#string">Strings</a></li>
+      <li><a href="#raw_value">Raw values</a></li>
+      <li><a href="#external_value">External values</a></li>
+      <li><a href="#variable">Variables</a>
+        <ol>
+          <li><a href="#variable_assign">Assignation</a></li>
+          <li><a href="#variable_dynamic">Dynamic variables</a></li>
+        </ol>
+      </li>
+      <li><a href="#constant">Constants</a></li>
+      <li><a href="#operator">Operators</a>
+        <ol>
+          <li><a href="#operator_standard">Standard operators</a></li>
+          <li><a href="#operator_convenient">Convenient operators</a></li>
+        </ol>
+      </li>
+      <li><a href="#function">Functions</a></li>
+        <ol>
+          <li><a href="#function_standard">Standard functions</a></li>
+          <li><a href="#function_custom">User-defined functions</a></li>
+        </ol>
+      <li><a href="#prime">Prime numbers</a></li>
+      <li><a href="#if_then_else">If...Then...Else</a></li>
+      <li><a href="#RPN">Infix and Reverse Polish Notation (RPN)</a></li>
+      <li><a href="#chalk_limits">Chalk limits</a></li>
+      <li><a href="#presentation">Presentation</a></li>
+      <li><a href="#annotations">Annotations</a></li>
+    </ol>
+  </li>
+  <li><a href="#grapher">Grapher</a>
+    <ol>
+      <li><a href="#grapher_different">What is different with Chalk ?</a></li>
+      <li><a href="#grapher_element_size">Element size</a></li>
+      <li><a href="#grapher_nan">NaN : undefined values</a></li>
+      <li><a href="#grapher_curve">Curves</a></li>
+      <li><a href="#grapher_predicate">Predicates</a></li>
+      <li><a href="#grapher_variable">Variables</a></li>
+    </ol>
+  </li>
+  <li><a href="#bit_manipulator">Bits and digits manipulator</a>
+    <ol>
+      <li><a href="#bit_different">What is different with Chalk ?</a></li>
+      <li><a href="#bit_navigation">Navigation and presentation</a></li>
+      <li><a href="#bit_conversion_interpretation">Conversion and interpretation</a></li>
+      <li><a href="#bit_operation">Operations</a></li>
+      <li><a href="#bit_digits">Digits</a></li>
+    </ol>
+  </li>
+  <li><a href="#equations_generator">Equations generator</a>
+    <ol>
+      <li><a href="#equations_generator_title">What is the equations generator ?</a></li>
+    </ol>
+  </li>
+  <li><a href="#history">History</a>
+  </li>
+</ol>
+</div>
+<div id="content">
+<img style="display:block;margin:auto" src="chalk_icon_256x256.png" srcset="chalk_icon_256x256@2x.png 2x" alt=""/>
+<p style="text-align:center;font-weight:bold;font-size:400%;margin:0px;">Chalk</p>
+<p style="text-align:center;margin:0px;">Computations done right.</p>
+<h1><a name="introduction">Introduction</a></h1>
+<h2><a name="what_is_chalk">What is Chalk, what it is not</a></h2>
+<p>Chalk is a calculator. Great. And so ? Don't we already have a billion calculator softwares ? Yes, we do. <span style="font-style:italic">(And at this point you think : what stupid argument will be advanced this time to justify a new one ? Does it connect to the cloud ? Does it use vocal recognition ? Does it share the computations on Facebook ? What super-sexy feature (that I will never use) *had* to be developed in 2017 ?)</span><br/>
+Well... none of them, of course. Simply : in my opinion, almost all of those existing calculators just fail at being good.<br/>
+Really, they suck.<br/>
+Now, up to me to explain why.<br/>
+I think that computers have always been the worst calculators, less handy than any real &quot;desktop&quot; calculator. The first really good calculator I ever had was a TI-92, and (provocation), in some sense, no computer calculator application can compete.</p>
+<div style="margin:auto;text-align:center;font-style:italic;font-size:small"><img src="TI-92.png" style="display:block;margin:auto;width:300px"/>The TI-92 was what I call a good calculator</div>
+<p>When I say that computers cannot compete, do not misunderstand. I you use Matlab, Octave, Scilab, Maple, Wolfram alpha… you get impressive results. But some of those software are expensive, and they are far from being &quot;light&quot; tools. The problem is that sometimes, even for basic computations, you need them just because nothing else will do the job. And that's a shame.</p>
+<p>What I mean is that computers are powerful, incredibly powerful. And even if a calculator should be in the basic toolbox, it does not mean that the calculator itself should be basic. It must still be a light, handy tool, but able to exploit the computer potential. A very basic example : if you ever have to make an integer multiplication with very large numbers (more than 64 bits), what do you do ? How much time do you spend looking for a decent application that can handle it without overflowing ? Why can't the OS standard calculator do that ? Seriously, it's not that difficult&nbsp;!</p>
+<p><span style="font-weight:bold">To summarize, Chalk tries to fix all the points that I think are failures in standard calculators</span> (and there are a lot of them, see the list below).<br/>
+<span style="font-weight:bold">I think that what you used to think were normal limitations in basic calculators, are irrelevant nowadays.</span><br/>
+Computers are not that limited&nbsp;! Calculators must be improved. Chalk is a try to show that it is possible.</p>
+<p>But Chalk is designed to be a small tool anyway, it is not Matlab. It must be possible to start and discard it like a widget. Neither is Chalk a number crusher. If you want to perform expensive computations, look at another software. Chalk is &quot;slow&quot;. Don't worry, you won't notice lags when computing formulas&nbsp;! But since it is designed for precision and arbitrary large computations, it is not highly efficient.</p>
+
+<h2><a name="what_chalk_fixes">What Chalk tries to fix</a></h2>
+<p>Here is a non-comprehensive list of what Chalk tries to do right. This is just a quick preview, more details will be given along the documentation.</p>
+<p style="font-weight:bold">Do not forget that I want to compare Chalk to what you have in the basic MacOS toolbox, that is to say Calculator and Grapher. For some features, it seems pedantic, and Chalk is not that great. But if Chalk could do it, Calculator could do it too. But it does not. And you can blame it.</p>
+
+
+<h3><a name="open_calculator">Open the calculator</a></h3>
+<p class="imageBlock bad">
+Calculator : Different interfaces, and a single window. You can't even open two calculators. Notice that a programmer is not allowed to use a decimal point.
+<img src="macos-calculators.png" />
+</p>
+<p class="imageBlock good">
+Chalk : Open as many windows as you want. You can have an advanced interface, just display it when needed, you won't have to switch windows.
+<img src="chalk-calculators.png"  />
+</p>
+<p style="clear:both">&nbsp;</p>
+
+<h3><a name="typing_expression">Typing an expression</a></h3>
+
+Let's say you have to compute (12+34)/(56+78).<br/>
+<p class="imageBlock bad">
+Calculator : Where do I type my full expression ? Is it a joke ? I use a computer, with a keyboard and a large screen, why do you mimic the poor interface of minimalist calculators ?
+<img src="macos-calculator.png" />
+</p>
+<p class="imageBlock good">
+Chalk : Here in Chalk you just type it. Notice that I made a mistake. Oh, I can see it and correct it&nbsp;! Incredible&nbsp;!
+<img src="chalk-expression.png" style="display:block;margin:auto;width:300px;" />
+</p>
+<p style="clear:both">&nbsp;</p>
+
+<p class="imageBlock bad">
+Calculator : I hope I didn't make a mistake while typing…
+<img src="macos-calculator-result.png" />
+</p>
+<p class="imageBlock good">
+Chalk : Oh, my expression is visible in a beautiful fraction&nbsp;! And we are only in 2017&nbsp;!
+<img src="chalk-expression-visible.png" />
+</p>
+<p style="clear:both">&nbsp;</p>
+
+<h3><a name="get_exact_result">Get an exact result when possible</a></h3>
+<p>You can find it strange to claim the Chalk is better because it gives exact results. Yet again, do not misunderstand. Some computations cannot give exact results. But Chalk will allow to keep exact (integer) computations as long as you do not need an estimation.<br/>
+Here are some examples of what Chalk computes right (not like Calculator).</p>
+<div class="imageBlock">
+<p style="text-align:center;font-weight:bold">Calculator</p>
+<ul>
+  <li>9223372036854775807+1 = <span class="error">1</span> (because it is limited to 63 bits signed integers)</li>
+  <li>9223372036854775805+1 = <span class="error">1</span> (because it is buggy)</li>
+  <li>9223372036854775807*2 = <span class="error">…</span> (not even possible with integers)</li>
+  <li>1e16+1 = <span class="error">1e16</span> (because it is limited to 64 bits double precision)</li>
+  <li>1/3*3 = <span class="error">0.99999999999999</span> (because it does premature rounding)</li>
+  <li>0.1/3 = <span class="error">0.03333333333333</span> (because it does premature float computations)</li>
+</ul>
+</div>
+<div class="imageBlock">
+<p style="text-align:center;font-weight:bold">Chalk</p>
+<ul>
+  <li>9223372036854775807+1 = <span class="ok">9223372036854775808</span> (no 64 bits limit)</li>
+  <li>9223372036854775805+1 = <span class="ok">9223372036854775806</span> (no 64 bits limit)</li>
+  <li>9223372036854775807*2 = <span class="ok">18446744073709551614</span> (no 64 bits limit)</li>
+  <li>1e16+1 = <span class="ok">10000000000000001</span> (real numbers are interpreted as integers when possible)</li>
+  <li>1/3*3 = <span class="ok">1</span> (Chalk handles fractions)</li>
+  <li>0.1/3 = <span class="ok">1/30</span> (real numbers are interpreted as fractions when possible)</li>
+</ul>
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<p>Please note that we only mentioned integer computations. Limited precision on floats is also managed cleverly in section <a href="#Reals_uncertainty_and_intervals">Reals, uncertainty and intervals</a>.
+
+<h3><a name="get_inexact_result">If no exact result is possible, display only what is exact</a></h3>
+<p>Some computations just cannot give exact results with finite-precision numbers. There will always be some rounding.<br/>
+This is <span style="font-weight:bold">not</span> the problem. The problem is when the calculator gives you wrong numbers instead of limiting the result to what is true.</p>
+<div class="imageBlock">
+<p style="text-align:center;font-weight:bold">Calculator</p>
+<ul>
+  <li>exp(99) = 9.889030319346<span class="error">89</span>E42</span> (Erroneous rounding. A correct rounding should be 9.889030319346<span class="ok">9</span>e42)</li>
+</ul>
+</div>
+<div class="imageBlock">
+<p style="text-align:center;font-weight:bold">Chalk</p>
+With a 53-bits significand precision (which is equivalent to a standard 64-bits double);<br/>
+<ul>
+  <li>exp(99) = 9.889030319346<span class="ok">95…</span>E42</span> (the &quot;…&quot; denotes dirty digits that are ignored because they could be wrong)</li>
+</ul>
+With a 24-bits significand precision (which is equivalent to a standard 32-bits double);<br/>
+<ul>
+  <li>exp(99) = 9.8890<span class="ok">3…</span>E42</span></li>
+</ul>
+And of course, Chalk can use a larger precision.
+<ul>
+  <li style="word-break:break-all">exp(99) = 9.889030319346946770560030967138037101405082607199335173401997153711094447007…E42</li>
+</ul>
+</div>
+<p style="clear:both">&nbsp;</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<p style="text-align:center">Chalk can even show you where the inexact computations occured.</p>
+<img style="display:block;margin:auto" src="chalk-inexact-warnings.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+Chalk is VERY cautious about floating numbers and always answers with true digits. This is possible by using computations with uncertainty intervals (see section <a href="#Reals_uncertainty_and_intervals">Reals, uncertainty and intervals</a>).
+
+<h3><a name="standard_math">Give access to standard math</a></h3>
+<p>When you are a scientist, you often need to perform some computations with a little more math</p>
+<ul>
+  <li>Some arithmetic like GCD or LCM, primes</li>
+  <li>Matrices</li>
+  <li>Complex numbers</li>
+  <li>Quaternions</li>
+  <li>Different bases</li>
+</ul>
+<p>And guess what ? Chalk implements all of them. And more.</p>
+<h3><a name="much_more">Much more…</a></h3>
+<p>For convenience, Chalk also manages <a href="#list">list</a> of numbers to perform the same computation on different arguments. It can also store values into <a href="#variable">variables</a> for reuse, with dynamic variable update if there are dependencies. You can even rely on files to store large input or outputs.</p>
+<p>And we are only talking about the Compute module of Chalk, there is also a <a href="#grapher">grapher</a> and a <a href="#bit_manipulator">bit manipulator</a>.</p>
+
+<h1><a name="calculator">Calculator</a></h1>
+<h2><a name="calculator_different">What is different with Chalk ?</a></h2>
+<p>Apart from all the convenient functions that a tool like Chalk can implement, the real point to look at is the computation engine. Arbitrary large integers of arbitrary precise floating numbers are just a technical detail.<br/>
+The only feature that is really interesting is that Chalk considers real numbers not like a single value, but like intervals, with a lower and an upper bound. This represents the uncertainty inherent to a floating number encoded with a finite number of bits. And since all implemented computations are interval-aware, the result is an interval, that evolved with the uncertainty of all the floating computations. That's how Chalk can display only true digits : they are the ones that are common to the lower and the upper bound of the result.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<p style="text-align:center">Chalk can tell you the underlying uncertainty interval.</p>
+<img style="display:block;margin:auto" src="chalk-intervals.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+<p>And for practical purpose, since exact computations with uncertainty is not always what you want, Chalk provides three <a href="computation_modes">computation modes</a>.</p>
+
+<h2><a name="computation_modes">Computation modes</a></h3>
+<p>Chalk has three computation modes that serve different purposes.</p>
+<img src="chalk-computation-modes-segmented.png" style="display:block;margin:auto;"/>
+<ul>
+  <li>Exact mode (=)&nbsp;: if the result cannot be computed exactly, an error is raised.</li>
+  <li>Approximation (≈)&nbsp;: the way calculators usually work. Rounding can occur to provide a result.</li>
+  <li>Approximation with uncertainty (≈[])&nbsp;: same as before, but the uncertainty is also reported along with the result.</li>
+</ul>
+<p>The main &quot;compute&quot; button gives a quick access to all those modes by pressing alt (⌥) or shift (⇧).
+<img src="chalk-computation-modes-current.png" style="display:inline;margin:auto;position:relative;top:12px;"/>
+</p>
+<p>Please note that for approximation modes, when some numerical events occurs (like rounding, overflow, underflow…), a <a href="#computation_flags">flag</a> is raised and reported with the result.</p>
+
+<h2><a name="computation_flags">Computation flags</a></h3>
+<p>A major feature of Chalk is that when a computation cannot be exact, a flag is raised and reported to the user. Different type of flags can be encountered, and multiple ones can be reported together :</p>
+<ul>
+<li><img src="chalk-compute-flag-inexact.png" /> Inexact : some rounding occured&nbsp;;</li>
+<li><img src="chalk-compute-flag-nan.png" /> Not a number (NaN) : an invalid numeric operation was attempted&nbsp;;</li>
+<li><img src="chalk-compute-flag-divbyzero.png" />Division by zero : a division by zero was attempted&nbsp;;</li>
+<li><img src="chalk-compute-flag-overflow.png" />Overflow : some value was too big to be stored, under the current bit limits&nbsp;;</li>
+<li><img src="chalk-compute-flag-underflow.png" />Underflow : some value was too small to be combined with another, under the current bit limits&nbsp;;</li>
+<li><img src="chalk-compute-flag-erange.png" />Exponent range : an exponent range was too large to be stored in the current floating number representation&nbsp;;</li>
+</ul>
+
+<p>When <a href="#presentation">displaying the text form of the input</a>, you can also use the mouse cursor to see which part of the computation raised the flags.</p>
+<img src="chalk-inexact-warnings.png" style="display:block;margin:auto;position:relative;top:12px;"/>
+
+<h2><a name="numbers">Numbers</a></h3>
+A number in Chalk can take different forms. Here are the different considerations that you should be aware of.
+
+<h3><a name="digits">Digits</a></h3>
+<p>Chalk supports different bases, so a sequence of digits defining a number may contain various alpha-numeric characters.</p>
+<p>Because of the ability of Chalk to optionally group digits for more friendly display, it should also accept spaces between digits on input, to let copy/paste work from output to input even in this case. However, this would not work with Reverse Polish notation. As a compromise, the unbreakable-space character can be used (⌥+&lt;space&gt;). With classical infix notation, regular and unbreakable spaces can be used inside a number&nbsp;; with Reverse Polish Notation, unbreakable spaces are allowed inside a number, but a regular space will delimit a new number. On output, when grouping digits, Chalk always use an unbreakable space.</p>
+
+<h3><a name="integers">Integers</a></h3>
+<p>An integer is the simplest kind of number. It is just a sequence of digits that might be negative. The digits go from 0 to 9 for decimal numbers, but other bases are addressed as well (see <a href="bases">Bases</a>).</p>
+<p>Integers in Chalk can have a very large number of bits. The maximum value is set in the preferences as &quot;Integer compute bits&quot;. Usual applications handle integers with 64 bits, coding numbers up to 2<sup>64</sup>. Chalk has a theroretical upper limit of 2<sup>64</sup> bits, coding numbers up to 2<sup>2<sup>64</sup></sup>, but you will run out of memory far before reaching such a value.</p>
+<p>When Chalk computes in &quot;exact&quot; mode and encounters integer overflow regarding the current limit, it stops with an error. In &quot;estimation&quot; mode, in converts the integer to a float value and raise the &quot;inexact&quot; <a href="#computation_flags">flag</a>.</p>
+<p>When Chalk computes in &quot;exact&quot; mode and must perform a non-integer operations, it tries to use a fraction if possible, or stops with an error otherwise. In &quot;estimation&quot; mode, in converts the integer to a float value and raise the &quot;inexact&quot; <a href="#computation_flags">flag</a>.</p>
+
+<h3><a name="fractions">Fractions</a></h3>
+<p>Fractions are just stored as two integers. They are interesting to keep exact results as long as possible when working with integers and divisions.</p>
+<p>Suprisingly, in the Preferences, you can set a bit limit for the denominator, different from the standard integer bits limit. This is useful to prevent chalk from converting decimal input (like 1.234) to fractions when it would requires a very large denominator. In that case, an &quot;approximation&quot; is more interesting.</p>
+
+<h3><a name="Reals_uncertainty_and_intervals">Reals, uncertainty and intervals</a></h3>
+<p>Some real numbers can be stored with an exact bit representation, if they are a finite sum of power of two components, where the power can be negative and does not exceed the current bits limit. Such numbers are stored with their exact representation.</p>
+<p>A real number that does not have such an exact bit representation, is stored as an interval, with a lower and an upper bound. This is a way to cope with the uncertainty of numerical computations.</p>
+<p>A third value, the &quot;best estimation&quot;, is also stored. This value is obviously within the interval bounds. This is the preferred value to display if the user does not want to see the uncertainty.</p>
+<p>Each operation in Chalk is interval-aware and updates the bounds and the best estimation, so that the final result holds all the cumulated uncertainty of the numerical computations.</p>
+<p>Such values using intervals are created by Chalk when needed (when a computation cannot be exact), but can also be created using an interval syntax (&quot;[…;…]&quot;), or an uncertainty syntax (&quot;x ± d or x +/- d&quot;).</p>
+<p>Finally, please note that the interval bounds use the exact same precision as defined for real numbers in the preferences. But for the sake of simplicity, the uncertainty is always displayed with a single significand digit. For instance, 1±0,071 is displayed as 1…±7e<sup>-2</sup>.</p>
+<p>To be overly conservative, it could have been written 1…±8e<sup>-2</sup>, that is to say that the significand digit of uncertainty could be &quot;rounded to upper&quot; rather than &quot;rounded to nearest&quot;. But this would make uncertainties look artificially large.</p>
+<p>The uncertainty &quot;d&quot; can even be expressed as % (per cent), ‰ (per thousand), ‱ (per ten thousand) or ppm (per million), like x±5%.</p>
+
+<h3><a name="Scientific_notation">Scientific notation</a></h3>
+<p>The standard notation <em>1.23e45</em> is a standard shortcut to mean <em>1.234*10<sup>45</sup></em></p>
+<p>In C language family, it is less known that <em>1.23p45</em> is a standard shortcut to mean <em>1.234*2<sup>45</sup></em>, because in fact, it only works for hexadecimal literal, that is to say some number like <em>0x1.23p45</em>. Chalk supports the <em>p</em> exponent for every base.</p>
+<p>In both case, a problem occurs if <em>e</em> and <em>p</em> are valid digits in the current base, that's why <em>p</em> was introduced for hexadecimal literals in C. Chalk propose a disambiguification by adding a <em>#</em> before the exponent symbol. <em>0x1e2</em> will be interpreted as the value <em>0x1e2</em> (<em>482</em> in decimal), while <em>0x1#e2</em> will be interpreted as <em>0x1*10<sup>2</sup></em>, that is to say <em>0x6A</em> (<em>100</em> in decimal).</p>
+
+<h3><a name="bases">Bases</a></h3>
+Chalk can handle non-decimal bases. It means that :
+<ul>
+<li>On input, a number can be written with the digits of a specific base&nbsp;;</li>
+<li>On output, a number can be displayed in any base&nbsp;;</li>
+</ul>
+<p>To help selecting a base, Chalk provides a way to define suffixes and prefixes identifying a base. For instance, &quot;0x&quot; can be used as an hexadecimal prefix, and &quot;h&quot; as an hexadecimal suffix. Both can be used at the same time. Thus, &quot;0xA&quot;, &quot;Ah&quot; and &quot;0xAh&quot; represent the decimal value 10. It is up to the user to avoid using forbidden characters in the prefixes/suffixes, like a digit used by the base itself.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<p style="text-align:center">The preferences are used to defined base prefixes and suffixes.</p>
+<img style="display:block;margin:auto" src="chalk-preferences-bases.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+
+<p>On output, the right panel of Chalk provides a control to set the base.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<p style="text-align:center">The input using base 10 is displayed using base 2.</p>
+<img style="display:block;margin:auto" src="chalk-base.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<h2><a name="quaternion">Complex numbers and quaternions</a></h2>
+<p>Chalk support complex numbers, so the symbol <span class="symbol">i</span> is reserved. You can enter a number like 1+i.<br/>Please note that <span class="expression">1+2i</span> is invalid for many reasons, you should use the multiply operator as <span class="expression">1+2*i</span>.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-complex.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<p>Complex numbers are just a particular case of quaternions. So, in reality, Chalk supports quaternions, with <span class="symbol">i</span>, <span class="symbol">j</span> and <span class="symbol">k</span>.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-quaternions.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<p>Please note that <span class="symbol">i</span>, <span class="symbol">j</span> and <span class="symbol">k</span> are obviously reserved symbols&nbsp;; nevertheless they can be used as constants.</p>
+
+<p>For quaternions, the division is possible, but the notation p/q is ambiguous and is provided only for convenience. In Chalk, q/r is computed as q*r<sup>-1</sup>, not as r<sup>-1</sup>*q</p>
+
+<h2><a name="boolean">Boolean</a></h2>
+<p>You may be familiar with boolean operations that only take two values : <span class="symbol">true</span> or <span class="symbol">false</span>. Here again, Chalk is somewhat different. It declares instead 5 &quot;boolean&quot; values : <span class="symbol">no</span>, <span class="symbol">unlikely</span>, <span class="symbol">maybe</span>, <span class="symbol">certainly</span>, <span class="symbol">yes</span>. <span class="symbol">true</span> and <span class="symbol">false</span> can still be used instead of <span class="symbol">yes</span> and <span class="symbol">no</span>.</p>
+<p>You are right, it is quite wrong to keep calling it &quot;boolean&quot;, but the terminology has been kept for simplicity.</p>
+<p>It is no more boolean logic, just some fuzzy logic. It was introduced to deal properly with <a href="prime">prime numbers</a>, because when it comes to the primality test of large numbers, most efficient algorithms are probabilistic. Theoretically, when such a test returns &quot;no&quot;, it really means &quot;no&quot;; but when it returns &quot;yes&quot;, it really means &quot;almost 100% sure&quot;, that is to say &quot;certainly&quot; in Chalk's vocabulary. And for the sake of completeness, &quot;unlikely&quot; was introduced as a the opposite of &quot;certainly&quot;, and &quot;maybe&quot; means &quot;could be true as well as false.&quot;</p>
+<p>You will certainly only encounter <span class="symbol">yes</span> and <span class="symbol">no</span> when using the calculator module of Chalk, but those extra logic symbols could be useful in the future.</p>
+<p>If they were to be represented as probabilistic values, <span class="symbol">no</span> is 0, <span class="symbol">unlikely</span> is &epsilon;, <span class="symbol">maybe</span> is <sup>1</sup>&frasl;<sub>2</sub>, <span class="symbol">certainly</span> is 1-&epsilon;, <span class="symbol">yes</span> is 1.<br/></p>
+<p>Even if such a conversion to a real number makes sense, Chalk only allows logic operations for those special values : &quot;certainly*certainly&quot; is not accepted, for instance.</p>
+<p>Operations like AND, OR are defined as a kind of MIN and MAX, NOT is trivial, and XOR is defined as (A AND (NOT B)) OR ((NOT A) AND B).</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-boolean.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+<p>Under the hood, the <span class="symbol">maybe</span> value is also used internally by the <a href="#grapher">Grapher</a> module when displaying 2D predicates, when sub-pixel precision would be needed.</p>
+
+<h2><a name="matrix">Matrices</a></h2>
+<p>Chalk supports matrices with a &quot;parenthesis-only&quot; syntax. A matrix can contain complex or quaternion values. Boolean values are also supported, but it is not very useful apart from structuring data, because it drastically restricts the operations you can perform, since no arithmetic is possible.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-matrix.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+<p>Let <span class="expression">M</span> and <span class="expression">N</span> be matrices and <span class="expression">k</span> a scalar number ; supported operations are :</p>
+<ul>
+  <li>addition, substraction: <span class="expression">M+N, M-N</span> (if dimensions are compatible)</li>
+  <li>multiplication by a matrix: <span class="expression">M*N</span> (if dimensions are compatible).</li>
+  <li>multiplication by a scalar: <span class="expression">k*M</span></li>
+  <li>exponentation: <span class="expression">M^k, M**k</span> (if <span class="expression">k</span> is an integer; negative values invert the matrix).</li>
+  <li>inversion: <span class="expression">M^-1, M**-1</span> or <span class="expression">1/M</span> or <span class="expression">invert(M)</span> (if the matrix is invertible).</li>
+  <li>division: division is ambiguous and should not be defined for matrices, but in Chalk it is a handy syntax for matrix inversion.</li>
+  <li>determinant: <span class="expression">det(M)</span> (if the matrix is invertible).</li>
+  <li>trace: <span class="expression">trace(M)</span> (if the matrix is square).</li>
+  <li>identity: <span class="expression">identity(k)</span> (with <span class="expression">k</span> a positive integer); generates an identity matrix of size <span class="expression">(k,k)</span>.</li>
+</ul>
+<p>Chalk also supplies <a href="#operator_convenient">convenient operators</a>. Let's say you have a matrix <span class="expression">M</span>. The expression <span class="expression">1+M</span> is mathematically invalid, but in most cases, you just want to add 1 to each element of the matrix.<br/>With Chalk you can type <span class="expression">1+?M</span> to exactly say that.</p>
+<p>Similarly, functions like <span class="expression">cos()</span>, <span class="expression">sin()</span>, <span class="expression">tan()</span>… are applied to every element instead of being refused as meaningless or as infinite sums of limited development.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-matrix-convenient.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+<p>Accessing a subset of elements of a matrix is possible using <a href="#subscript_range">Subscripts and ranges</a>.</p>
+
+<h2><a name="list">Lists</a></h2>
+<p>Prime decomposition is one of the rare function that needs to return a list of values. So, Chalk had to support lists just as a kind of storage flavour.<br/>But the support of lists in Chalk has been enlarged to a different meaning : like a set of operands for batch operations.</p>
+<p>When a list is used as an operand, the operation is called as many times as the number of elements in the list, and return a list of all the results.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-list.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<p>Similarly to <a href="#matrix">matrices</a>, lists support <a href="#operator_convenient">convenient operators</a> for a slighly different meaning. Here again, just add a question mark after an operator. For instance, instead of a cartesian product, the operator <span class="expression">*?</span> is an element-wise multiplication, that can work only if list sizes matches.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-list-convenient.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<p>Accessing a subset of elements of a list is possible using <a href="#subscript_range">Subscripts and ranges</a>.</p>
+
+<h2><a name="subscript_range">Subscripts and ranges</a></h2>
+<p>Accessing a subset of elements of matrices or lists is possible with square brackets, and zero-based indexing.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-subscript-index.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<p>More than simple indexing, a range can even be defined between two bounds, with an include (<span class="expression">...</span>) or exclude (<span class="expression">..&lt;</span>) specifier for the upper bound.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-subscript-range.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<p>Finally, the joker <span class="expression">*</span> can be used to match a full subset.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-subscript-joker.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<h2><a name="string">Strings</a></h2>
+<p>Strings are supported in Chalk when a function requires such an argument, like <a href="#external_value">infile</a> and <a href="#external_value">outfile</a>.</p>
+<p>A string is delimited by simple quotes (') or double quotes (&quot;)</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-string.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<h2><a name="raw_value">Raw values</a></h2>
+<p>A Raw value in Chalk denotes the binary representation of an integer or floating value, in a format compatible with the <a href="#bit_manipulator">Bit manipulator</a>. For instance, instead of a native integer with large precision, it can be a 64-bit float in IEEE754 with 1 sign bit, 11 exponent bits, and 52 significand bits.</p>
+<p>Most arithmetic computations are not allowed with such values, because the purpose of Chalk is not to mimic the behaviour of implicit cast and fixed-width bit arithmetic. The only supported operators/functions are bitwise manipulations:</p>
+<ul>
+<li>NOT, AND, OR, XOR</li>
+<li><span class="expression">&lt;&lt;</span> for left shift, <span class="expression">&gt;&gt;</span> for right shift</li>
+<li><span class="expression">shift(x, delta)</span>, for left (delta &gt; 0) or right (delta &lt; 0) shift</li>
+<li><span class="expression">roll(x, delta)</span>, for left (delta &gt; 0) or right (delta &lt; 0) roll</li>
+<li><span class="expression">swap(x, s)</span>, for swapping consecutive packets of bit size s</li>
+</ul>
+<p>To convert a chalk value to a raw value, the target representation must be specified:</p>
+<ul>
+<li>toU8(): converts to unsigned 8 bits integer</li>
+<li>toS8(): converts to signed 8 bits integer (sign bit it the most significand)</li>
+<li>toU16(): converts to unsigned 16 bits integer</li>
+<li>toS16(): converts to signed 16 bits integer (sign bit it the most significand)</li>
+<li>toU32(): converts to unsigned 32 bits integer</li>
+<li>toS32(): converts to signed 32 bits integer (sign bit it the most significand)</li>
+<li>toU64(): converts to unsigned 64 bits integer</li>
+<li>toS64(): converts to signed 64 bits integer (sign bit it the most significand)</li>
+<li>toU128(): converts to unsigned 128 bits integer</li>
+<li>toS128(): converts to signed 128 bits integer (sign bit it the most significand)</li>
+<li>toU256(): converts to unsigned 256 bits integer</li>
+<li>toS256(): converts to signed 256 bits integer (sign bit it the most significand)</li>
+<li>toU256(): converts to unsigned 256 bits integer</li>
+<li>toS256(): converts to signed 256 bits integer (sign bit it the most significand)</li>
+<li>toF16(): converts to IEEE754 16-bits float (1-5-10)</li>
+<li>toF32(): converts to IEEE754 32-bits float (1-8-23)</li>
+<li>toF64(): converts to IEEE754 64-bits float (1-11-52)</li>
+<li>toF128(): converts to IEEE754 128-bits float (1-15-112)</li>
+<li>toF256(): converts to IEEE754 256-bits float (1-19-236)</li>
+</ul>
+Similarly, a raw value can be converted back to a native Chalk format.
+<ul>
+<li>fromU8(): converts from unsigned 8 bits integer</li>
+<li>fromS8(): converts from signed 8 bits integer (sign bit it the most significand)</li>
+<li>fromU16(): converts from unsigned 16 bits integer</li>
+<li>fromS16(): converts from signed 16 bits integer (sign bit it the most significand)</li>
+<li>fromU32(): converts from unsigned 32 bits integer</li>
+<li>fromS32(): converts from signed 32 bits integer (sign bit it the most significand)</li>
+<li>fromU64(): converts from unsigned 64 bits integer</li>
+<li>fromS64(): converts from signed 64 bits integer (sign bit it the most significand)</li>
+<li>fromU128(): converts from unsigned 128 bits integer</li>
+<li>fromS128(): converts from signed 128 bits integer (sign bit it the most significand)</li>
+<li>fromU256(): converts from unsigned 256 bits integer</li>
+<li>fromS256(): converts from signed 256 bits integer (sign bit it the most significand)</li>
+<li>fromU256(): converts from unsigned 256 bits integer</li>
+<li>fromS256(): converts from signed 256 bits integer (sign bit it the most significand)</li>
+<li>fromF16(): converts from IEEE754 16-bits float (1-5-10)</li>
+<li>fromF32(): converts from IEEE754 32-bits float (1-8-23)</li>
+<li>fromF64(): converts from IEEE754 64-bits float (1-11-52)</li>
+<li>fromF128(): converts from IEEE754 128-bits float (1-15-112)</li>
+<li>fromF256(): converts from IEEE754 256-bits float (1-19-236)</li>
+</ul>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-raw-roll.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<h2><a name="external_value">External values</a></h2>
+<p>When dealing with large inputs and large outputs, it may be handy to deport input and output to files. Chalk supplies two functions : <span class="expression">infile(some url)</span> and <span class="expression">outfile(some url)</span> than respectively read and write to the given URLs.</p>
+<p>A URL is specified as a <a href="#string">string</a>.</p>
+<p>An input content must be a string that could have been used as regular Chalk input. It is not restricted to values, it can be expressions.</p>
+<p>The output is a string similar to what would be visible in Chalk if no pretty print was used.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-infile-outfile.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+<p>To write to the output, the <a href="#variable_assign">assignation</a> operator must be used.</p>
+<p>Please note that input URL can be remote locations (http), but output URLs cannot be.</p>
+<p>Please also note that URLs can be named pipes, to stream data easily.</p>
+
+<h2><a name="variable">Variables</a></h2>
+<p>To store results and reuse them easily, Chalk supports variables.</p>
+<p>A variable's name cannot start by a digit, and cannot be the same as a reserved symbol like <span class="symbol">i</span>, <span class="symbol">j</span> or <span class="symbol">k</span> (see <a href="#quaternion">quaternions</a>).</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-variable.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<p>The variables can be seen on the left inspector.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-variable-inspector.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<h3><a name="variable_assign">Assignation</a></h3>
+<p>The <span style="font-style:italic">static</span> assignation to a variable can be done by &quot;:=&quot; or &quot;&lt;-&quot;.<br/>A <span style="font-style:italic">dynamic</span> assignation can be done by &quot;::=&quot; or &quot;&lt;&lt;-&quot;.</p>
+<p>The difference between static and dynamic variables is explained below.</p>
+
+<h3><a name="variable_dynamic">Dynamic and static variables</a></h3>
+<p>Let assume you set the value <span class="expression">1</span> to <span class="expression">a</span> and the value <span class="expression">a+1</span> to <span class="expression">b</span>.<br/>Now, you update <span class="expression">a</span> to <span class="expression">2</span>. Do you want <span class="expression">b</span> to be updated ?<br/>There is no good answer, it will always depend on what you are doing with your variables.<br/>That's why Chalk makes a difference between <span class="expression">static</span> and <span class="expression">dynamic</span> assignation.</p>
+<p>When a variable is dynamic, it will be updated when any dependency is updated. When a variable is static, it won't. The &quot;dynamic&quot; property can be changed aterwards in the variable inspector.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-variable-dynamic.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<h2><a name="constant">Constants</a></h2>
+<p>Chalks defines a few constants.</p>
+<ul>
+  <li><span class="symbol">nan, NaN</span> : The Not A Number special <a href="#Reals_uncertainty_and_intervals">float</a> value</li>
+  <li><span class="symbol">false, no, unlikely, maybe, certainly, yes, true</span> : for <a href="#boolean">booleans</a></li>
+  <li><span class="symbol">i</span> : imaginary part for <a href="#quaternion">complexes</a></li>
+  <li><span class="symbol">j, k</span> : additional imaginary parts for <a href="#quaternion">quaternions</a></li>
+  <li><span class="symbol">pi</span> : &pi;</li>
+  <li><span class="symbol">e</span> : Euler's number equal to <span class="expression">exp(1)</span></li>
+</ul>
+
+<h2><a name="operator">Operators</a></h2>
+<h3><a name="operator_standard">Standard operators</a></h3>
+<p>Chalk defines the following standard operators:</p>
+<ul>
+  <li><span class="symbol">+, -, *, /</span> : arithmetic operators, that can be used for matrices if the dimensions are compatible. See also the <a href="#operator_convenient">convenient operators</a></li>
+  <li><span class="symbol" style="font-style:normal">|…|</span> : absolute value (or magnitude), there is also an <span class="expression">abs()</span> function</li>
+  <li><span class="symbol">^, **</span> : power, there is also a <span class="expression">pow()</span> function. Negative, non-integer and complex exponents are supported</li>
+  <li><span class="symbol">…!</span> factorial. If <span class="expression">x</span> is negative, <span class="expression">x!</span> returns <span class="expression">-(|x|!)</span> </li>
+  <li><span class="symbol">==, &lt;, &leq;, &gt;, &geq;</span> : <a href="#boolean">boolean</a> predicates</li>
+  <li><span class="symbol">NOT, AND ( &amp;&amp; ), OR ( || ), XOR ( ^^ )</span> : <a href="#boolean">boolean</a> operators</li>
+  <li><span class="symbol">&lt;&lt;,&nbsp;&gt;&gt;</span> : shift operator, compatible with regular and <a href="#raw_value">raw</a> values</li>
+  <li>There is no roll operator, but a <span class="expression">roll()</span> <a href="#function">function</a></li>
+  <li><span class="symbol">+/-, ±</span> uncertainty operator that creates an <a href="#Reals_uncertainty_and_intervals">interval</a> around a value (example : <span class="expression">3+/-1</span> or <span class="expression">3±1</span>). Please note that even for integer bounds, an interval is always a float value.</li>
+  <li><span class="symbol">°</span> : The degree operator is just a shortcut for a factor <span class="expression">&pi;/180</span>, so that one can write <span class="expression">sin(90°)</span>, for instance. Trigonometric functions are always in radians in Chalk.</li>
+</ul>
+<h3><a name="operator_convenient">Convenient operators</a></h3>
+<p>Convenient operators are a variation of operators designed to be handy. When dealing with <a href="#matrix">matrices</a> or <a href="#list">lists</a>, it is sometimes useful to apply the same operation to every element instead of performing the mathematical operation that would require the dimensions to match</p>
+<p>Convenient operators are just regular operators postfixed with a question mark.</p>
+<ul>
+<li><span class="symbol">+?, -?, *?, /?, ^?, **?, !?, ==?, &lt;?, &leq;?, &gt;?, &geq;?, NOT?, AND?, OR?, XOR?</span></li>
+</ul>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-convenient-operator-example.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+
+<h2><a name="function">Functions</a></h2>
+<h3><a name="function_standard">Standard functions</a></h3>
+<p>Alphabetical list of supported function:</p>
+<ul>
+  <li><span class="expression">abs(value)</span> : absolute value (or magnitude). For complexes or quaternions, it returns the amplitude (as expected).</li>
+  <li><span class="expression">acos(value)</span> : return the arc cosinus (in radians) of a value.</li>
+  <li><span class="expression">acosh(value)</span> : return the hyperbolic arc cosinus of a value.</li>
+  <li><span class="expression">angle(value)</span> : return the argument (angle in radians) of a <a href="#quaternion">complex</a> value.</li>
+  <li><span class="expression">angles(value)</span> : return the euler angles (in radians) of a <a href="#quaternion">quaternion</a> value.</li>
+  <li><span class="expression">asin(value)</span> : return the arc sinus (in radians) of a value.</li>
+  <li><span class="expression">asinh(value)</span> : return the hyperbolic arc sinus of a value.</li>
+  <li><span class="expression">atan(value)</span> : return the arc tangent (in radians) of a value.</li>
+  <li><span class="expression">atan2(y,x)</span> : return the arc tangent (in radians) of the point <span class="expression">(x,y)</span>. Please note that <span class="expression">y,x</span> are specified in that order, like the usual atan2() function of programming langages.</li>
+  <li><span class="expression">atanh(value)</span> : return the hyperbolic arc tangent of a value.</li>
+  <li><span class="expression">binomial(n,m)</span> : return the binomial <span class="expression">(n,m)</span>.</li>
+  <li><span class="expression">bits_concat_be(values...)</span>: concatenates raw values, bit endian style</li>
+  <li><span class="expression">bits_concat_le(values...)</span>: concatenates raw values, little endian style</li>
+  <li><span class="expression">bits_reverse(value)</span>: reverse the bits of a raw value</li>
+  <li><span class="expression">cbrt(value)</span> : return the cubic root of a value.</li>
+  <li><span class="expression">cos(value)</span> : return the cosinus of a value (in radians, see the ° <a href="#operator">operator</a>).</li>
+  <li><span class="expression">cosh(value)</span> : return the hyperbolic cosinus of a value.</li>
+  <li><span class="expression">conj(value)</span> : return the conjugate of a <a href="#quaternion">quaternion</a> value.</li>
+  <li><span class="expression">det(value)</span> : return the determinant of a <a href="#matrix">matrix</a> value.</li>
+  <li><span class="expression">exp(value)</span> : return the exponential, compatible with <a href="#quaternion">complex</a> values.</li>
+  <li><span class="expression">fibonacci(n)</span> : return the <span class="expression">n<sup>th</sup></span> fibonacci number.</li>
+  <li><span class="expression">fromBase(x, n)</span> : force the interpretation of <span class="expression">x</span> in base <span class="expression">b</span>.</li>
+  <li><span class="expression">fromU8(value)</span>: converts from unsigned 8 bits integer</li>
+  <li><span class="expression">fromS8(value)</span>: converts from signed 8 bits integer (sign bit it the most significand)</li>
+  <li><span class="expression">fromU16(value)</span>: converts from unsigned 16 bits integer</li>
+  <li><span class="expression">fromS16(value)</span>: converts from signed 16 bits integer (sign bit it the most significand)</li>
+  <li><span class="expression">fromU32(value)</span>: converts from unsigned 32 bits integer</li>
+  <li><span class="expression">fromS32(value)</span>: converts from signed 32 bits integer (sign bit it the most significand)</li>
+  <li><span class="expression">fromU64(value)</span>: converts from unsigned 64 bits integer</li>
+  <li><span class="expression">fromS64(value)</span>: converts from signed 64 bits integer (sign bit it the most significand)</li>
+  <li><span class="expression">fromU128(value)</span>: converts from unsigned 128 bits integer</li>
+  <li><span class="expression">fromS128(value)</span>: converts from signed 128 bits integer (sign bit it the most significand)</li>
+  <li><span class="expression">fromU256(value)</span>: converts from unsigned 256 bits integer</li>
+  <li><span class="expression">fromS256(value)</span>: converts from signed 256 bits integer (sign bit it the most significand)</li>
+  <li><span class="expression">fromU256(value)</span>: converts from unsigned 256 bits integer</li>
+  <li><span class="expression">fromS256(value)</span>: converts from signed 256 bits integer (sign bit it the most significand)</li>
+  <li><span class="expression">fromF16(value)</span>: converts from IEEE754 16-bits float (1-5-10)</li>
+  <li><span class="expression">fromF32(value)</span>: converts from IEEE754 32-bits float (1-8-23)</li>
+  <li><span class="expression">fromF64(value)</span>: converts from IEEE754 64-bits float (1-11-52)</li>
+  <li><span class="expression">fromF128(value)</span>: converts from IEEE754 128-bits float (1-15-112)</li>
+  <li><span class="expression">fromF256(value)</span>: converts from IEEE754 256-bits float (1-19-236)</li>
+  <li><span class="expression">Gamma(x)</span> : return the Gamma function result of <span class="expression">x</span>.</li>
+  <li><span class="expression">gcd(n,m)</span> : return the greatest common divisor of <span class="expression">n</span> and <span class="expression">m</span>.</li>
+  <li><span class="expression">golomb_rice_decode(value,[rice parameter=0])</span> : decompress a golomb bit stream, with optional rice encoding</li>
+  <li><span class="expression">golomb_rice_encode(value,[rice parameter=0])</span> : compress a golomb bit stream, with optional rice encoding</li>
+  <li><span class="expression">hconcat(values...)</span>: concatenates matrices horizontally</li>
+  <li><span class="expression">identity(n)</span> : builds the identity <a href="#matrix">matrix</a> of dimensions <span class="expression">(n,n)</span>.</li>
+  <li><span class="expression">interval(x, d, [direction=0])</span>.<br/>
+  If direction is <span class="expression">-1</span>, returns <span class="expression">[x-d;x]</span><br/>
+  If direction is <span class="expression">0</span> (by default), returns <span class="expression">[x-d;x+d]</span><br/>
+  If direction is <span class="expression">1</span>, returns <span class="expression">[x;x+d]</span><br/>
+  </li>
+  <li><span class="expression">infile(url)</span> takes the content from the location <span class="expression">url</span> (see <a href="#external_value">External values</a>).</li>
+  <li><span class="expression">input(n)</span> takes the input (string) from the <span class="expression">n<sup>th</sup></span> previous computation.</li>
+  <li><span class="expression">integral(expression, identifier, inf, sup, step)</span> : integral approximation, by cumulating values of <span class="expression">expression</span> by setting <span class="expression">identifier</span> from <span class="expression">inf</span> to <span class="expression">sup</span> by steps of <span class="expression">step</span>.</li>
+  <li><span class="expression">invert(value)</span> : return the inverse of a scalar value (1/…) or the inverse of a <a href="#matrix">matrix</a> value.</li>
+  <li><span class="expression">isprime(n,[algorithm=0])</span> : tells whether the absolute value of <span class="expression">n</span> is a <a href="prime">prime</a> number. The answer can be <span class="expression">no</span>, <span class="expression">yes</span>, <span class="expression">certainly</span> for a probabilistic test, <span class="expression">maybe</span> if it is out of the range of the selected algorithm. The possible algorithms are detailed in <a href="#prime">Prime numbers</a>.
+  </li>
+  <li><span class="expression">jacobi(n, m)</span> : return the jacobi symbol <span class="expression">(n, m)</span> where <span class="expression">m</span> must be odd.</li>
+  <li><span class="expression">lcm(n,m)</span> : return the lowest common multiple of <span class="expression">n</span> and <span class="expression">m</span>.</li>
+  <li><span class="expression">ln(value)</span> : return the natural logarithm (base <span class="expression">e</span>) of a value.</li>
+  <li><span class="expression">log10(value)</span> : return the 10-based logarithm of a value.</li>
+  <li><span class="expression">matrix(rows,columns,[default value])</span> : builds a <a href="#matrix">matrix</a>.</li>
+  <li><span class="expression">nextprime(n,[algorithm=0])</span> : return the <a href="prime">prime</a> following <span class="expression">n</span>, based on an algorithm similar to isprime(). If the answer is probabilistic, an <a href="#computation_flags">inexact flag</a> is raised.</li>
+  </li>
+  <li><span class="expression">nthprime(n,[algorithm=0])</span> : return the <span class="expression">n<sup>th</sup></span> <a href="prime">prime</a>, based on an algorithm similar to isprime(). If the answer is probabilistic, an <a href="#computation_flags">inexact flag</a> is raised.</li>
+  </li>
+  <li><span class="expression">outfile(url)</span> writes the value to the location <span class="expression">url</span> (see <a href="#external_value">External values</a>).</li>
+  <li><span class="expression">output(n)</span> takes the output (value) from the <span class="expression">n<sup>th</sup></span> previous computation. Note that the index of the computations are displayed in the upper-left gray bubble of each item, and that this is a reverse order so that output(1) is always the last computation.</li>
+  <li><span class="expression">output2(n)</span> takes the output secondary value from the <span class="expression">n<sup>th</sup></span> previous computation, as computed by the <a href="#bit_manipulator">Bit manipulator</a>.</li>
+  <li><span class="expression">pow(x, y)</span> : return <span class="expression">x<sup>y</sup></span>, where y can be negative, non-integer or complex.</li>
+  <li><span class="expression">primes(n,[algorithm=0])</span> : return the <a href="prime">prime</a> decomposition of <span class="expression">n</span>, based on an algorithm similar to isprime(). If the answer is probabilistic, an <a href="#computation_flags">inexact flag</a> is raised. A decomposition is a list of pairs, each pair being a prime and its power.</li>
+  <li><span class="expression">primorial(n)</span> : return the primorial of <span class="expression">n</span>.</li>
+  <li><span class="expression">product(expression, identifier, inf, sup)</span> : product serie, multiplying successive values of <span class="expression">expression</span> by setting <span class="expression">identifier</span> from <span class="expression">inf</span> to <span class="expression">sup</span>, where <span class="expression">inf</span> and <span class="expression">sup</span> are integers.</li>
+  <li><span class="expression">roll(value, delta)</span> : bitwise roll operator, to the left for positive <span class="expression">delta</span>, to the right otherwise. It is only compatible with <a href="#raw_value">raw values</a> (because their bit size is explicit).</li>
+  <li><span class="expression">root(value, n)</span> : return the <span class="expression">n<sup>th</sup></span> root of a value.</li>
+  <li><span class="expression">shift(value, delta)</span> : bitwise shift operator, to the left for positive <span class="expression">delta</span>, to the right otherwise. It is only compatible with <a href="#integers">integers</a> and <a href="#raw_value">raw values</a>.</li>
+  <li><span class="expression">sin(value)</span> : return the sinus of a value (in radians, see the ° <a href="#operator">operator</a>).</li>
+  <li><span class="expression">sinh(value)</span> : return the hyperbolic sinus of a value.</li>
+  <li><span class="expression">sqrt(value)</span> : return the square root of a value.</li>
+  <li><span class="expression">sum(expression, identifier, inf, sup)</span> : sum serie, summing successive values of <span class="expression">expression</span> by setting <span class="expression">identifier</span> from <span class="expression">inf</span> to <span class="expression">sup</span>, where <span class="expression">inf</span> and <span class="expression">sup</span> are integers.</li>
+  <li><span class="expression">swap(value, s)</span> : bitwise swap of consecutive pairs of packets of size s, from lowest significand bits to most significant. It is only compatible with <a href="#raw_value">raw values</a> (because their bit size is explicit).</li>
+  <li><span class="expression">tan(value)</span> : return the tangent of a value (in radians, see the ° <a href="#operator">operator</a>).</li>
+  <li><span class="expression">tanh(value)</span> : return the hyperbolic tangent of a value.</li>
+  <li><span class="expression">toU8(value)</span>: converts to unsigned 8 bits integer</li>
+  <li><span class="expression">toS8(value)</span>: converts to signed 8 bits integer (sign bit it the most significand)</li>
+  <li><span class="expression">toU16(value)</span>: converts to unsigned 16 bits integer</li>
+  <li><span class="expression">toS16(value)</span>: converts to signed 16 bits integer (sign bit it the most significand)</li>
+  <li><span class="expression">toU32(value)</span>: converts to unsigned 32 bits integer</li>
+  <li><span class="expression">toS32(value)</span>: converts to signed 32 bits integer (sign bit it the most significand)</li>
+  <li><span class="expression">toU64(value)</span>: converts to unsigned 64 bits integer</li>
+  <li><span class="expression">toS64(value)</span>: converts to signed 64 bits integer (sign bit it the most significand)</li>
+  <li><span class="expression">toU128(value)</span>: converts to unsigned 128 bits integer</li>
+  <li><span class="expression">toS128(value)</span>: converts to signed 128 bits integer (sign bit it the most significand)</li>
+  <li><span class="expression">toU256(value)</span>: converts to unsigned 256 bits integer</li>
+  <li><span class="expression">toS256(value)</span>: converts to signed 256 bits integer (sign bit it the most significand)</li>
+  <li><span class="expression">toU256(value)</span>: converts to unsigned 256 bits integer</li>
+  <li><span class="expression">toS256(value)</span>: converts to signed 256 bits integer (sign bit it the most significand)</li>
+  <li><span class="expression">toF16(value)</span>: converts to IEEE754 16-bits float (1-5-10)</li>
+  <li><span class="expression">toF32(value)</span>: converts to IEEE754 32-bits float (1-8-23)</li>
+  <li><span class="expression">toF64(value)</span>: converts to IEEE754 64-bits float (1-11-52)</li>
+  <li><span class="expression">toF128(value)</span>: converts to IEEE754 128-bits float (1-15-112)</li>
+  <li><span class="expression">toF256(value)</span>: converts to IEEE754 256-bits float (1-19-236)</li>
+  <li><span class="expression">trace(value)</span> : return the trace of a <a href="#matrix">matrix</a> value.</li>
+  <li><span class="expression">vconcat(values...)</span>: concatenates matrices vertically</li>
+  <li><span class="expression">Zeta(x)</span> : return the Zeta function result of <span class="expression">x</span>.</li>
+</ul>
+
+<p>Thematic list of supported function:</p>
+<ul>
+  <li>Arithmetic or standard math<ul>
+    <li><span class="expression">abs(value)</span> : absolute value (or magnitude). For complexes or quaternions, it returns the amplitude (as expected).</li></li>
+    <li><span class="expression">binomial(n,m)</span> : return the binomial <span class="expression">(n,m)</span>.</li>
+    <li><span class="expression">cbrt(value)</span> : return the cubic root of a value.</li>
+    <li><span class="expression">fibonacci(n)</span> : return the <span class="expression">n<sup>th</sup></span> fibonacci number.</li>
+    <li><span class="expression">Gamma(x)</span> : return the Gamma function result of <span class="expression">x</span>.</li>
+    <li><span class="expression">gcd(n,m)</span> : return the greatest common divisor of <span class="expression">n</span> and <span class="expression">m</span>.</li>
+    <li><span class="expression">integral(expression, identifier, inf, sup, step)</span> : integral approximation, by cumulating values of <span class="expression">expression</span> by setting <span class="expression">identifier</span> from <span class="expression">inf</span> to <span class="expression">sup</span> by steps of <span class="expression">step</span>.</li>
+    <li><span class="expression">jacobi(n, m)</span> : return the jacobi symbol <span class="expression">(n, m)</span> where <span class="expression">m</span> must be odd.</li>
+    <li><span class="expression">lcm(n,m)</span> : return the lowest common multiple of <span class="expression">n</span> and <span class="expression">m</span>.</li>
+    <li><span class="expression">ln(value)</span> : return the natural logarithm (base <span class="expression">e</span>) of a value.</li>
+    <li><span class="expression">log10(value)</span> : return the 10-based logarithm of a value.</li>
+    <li><span class="expression">pow(x, y)</span> : return <span class="expression">x<sup>y</sup></span>, where y can be negative, non-integer or complex.</li>
+    <li><span class="expression">product(expression, identifier, inf, sup)</span> : product serie, multiplying successive values of <span class="expression">expression</span> by setting <span class="expression">identifier</span> from <span class="expression">inf</span> to <span class="expression">sup</span>, where <span class="expression">inf</span> and <span class="expression">sup</span> are integers.</li>
+    <li><span class="expression">root(value, n)</span> : return the <span class="expression">n<sup>th</sup></span> root of a value.</li>
+    <li><span class="expression">sqrt(value)</span> : return the square root of a value.</li>
+  <li><span class="expression">sum(expression, identifier, inf, sup)</span> : sum serie, summing successive values of <span class="expression">expression</span> by setting <span class="expression">identifier</span> from <span class="expression">inf</span> to <span class="expression">sup</span>, where <span class="expression">inf</span> and <span class="expression">sup</span> are integers.</li>
+    <li><span class="expression">Zeta(x)</span> : return the Zeta function result of <span class="expression">x</span>.</li>
+  </ul></li>
+  <li>Base<ul>
+  <li><span class="expression">fromBase(x, n)</span> : force the interpretation of <span class="expression">x</span> in base <span class="expression">b</span>.</li>
+  </ul></li>
+  <li>Trignonometry<ul>
+    <li><span class="expression">acos(value)</span> : return the arc cosinus (in radians) of a value.</li>
+    <li><span class="expression">acosh(value)</span> : return the hyperbolic arc cosinus of a value.</li>
+    <li><span class="expression">asin(value)</span> : return the arc sinus (in radians) of a value.</li>
+    <li><span class="expression">asinh(value)</span> : return the hyperbolic arc sinus of a value.</li>
+    <li><span class="expression">atan(value)</span> : return the arc tangent (in radians) of a value.</li>
+    <li><span class="expression">atan2(y,x)</span> : return the arc tangent (in radians) of the point <span class="expression">(x,y)</span>. Please note that <span class="expression">y,x</span> are specified in that order, like the usual atan2() function of programming langages.</li>
+    <li><span class="expression">atanh(value)</span> : return the hyperbolic arc tangent of a value.</li>
+    <li><span class="expression">cos(value)</span> : return the cosinus of a value (in radians, see the ° <a href="#operator">operator</a>).</li>
+    <li><span class="expression">cosh(value)</span> : return the hyperbolic cosinus of a value.</li>
+    <li><span class="expression">exp(value)</span> : return the exponential, compatible with <a href="#quaternion">complex</a> values.</li>
+    <li><span class="expression">sin(value)</span> : return the sinus of a value (in radians, see the ° <a href="#operator">operator</a>).</li>
+    <li><span class="expression">sinh(value)</span> : return the hyperbolic sinus of a value.</li>
+    <li><span class="expression">tan(value)</span> : return the tangent of a value (in radians, see the ° <a href="#operator">operator</a>).</li>
+    <li><span class="expression">tanh(value)</span> : return the hyperbolic tangent of a value.</li>
+  </ul></li>
+  <li>Complex and quaternions<ul>
+    <li><span class="expression">abs(value)</span> : absolute value (or magnitude).</li>
+    <li><span class="expression">angle(value)</span> : return the argument (angle in radians) of a <a href="#quaternion">complex</a> value.</li>
+    <li><span class="expression">angles(value)</span> : return the euler angles (in radians) of a <a href="#quaternion">quaternion</a> value.</li>
+    <li><span class="expression">conj(value)</span> : return the conjugate of a <a href="#quaternion">quaternion</a> value.</li>
+    <li><span class="expression">exp(value)</span> : return the exponential, compatible with <a href="#quaternion">complex</a> values.</li>
+    <li><span class="expression">pow(x, y)</span> : return <span class="expression">x<sup>y</sup></span>, where y can be negative, non-integer or complex.</li>
+  </ul></li>
+  <li>Matrix<ul>
+    <li><span class="expression">det(value)</span> : return the determinant of a <a href="#matrix">matrix</a> value.</li>
+    <li><span class="expression">identity(n)</span> : builds the identity <a href="#matrix">matrix</a> of dimensions <span class="expression">(n,n)</span>.</li>
+    <li><span class="expression">hconcat(values...)</span>: concatenates matrices horizontally.</li>
+    <li><span class="expression">invert(value)</span> : return the inverse of a scalar value (1/…) or the inverse of a <a href="#matrix">matrix</a> value.</li>
+    <li><span class="expression">matrix(rows,columns,[default value])</span> : builds a <a href="#matrix">matrix</a>.</li>
+    <li><span class="expression">trace(value)</span> : return the trace of a <a href="#matrix">matrix</a> value.</li>
+    <li><span class="expression">vconcat(values...)</span>: concatenates matrices vertically.</li>
+  </ul></li>
+  <li>Prime numbers<ul>
+    <li><span class="expression">isprime(n,[algorithm=0])</span> : tells whether the absolute value of <span class="expression">n</span> is a <a href="prime">prime</a> number. The answer can be <span class="expression">no</span>, <span class="expression">yes</span>, <span class="expression">certainly</span> for a probabilistic test, <span class="expression">maybe</span> if it is out of the range of the selected algorithm. The possible algorithms are detailed in <a href="#prime">Prime numbers</a>.
+    </li>
+    <li><span class="expression">nextprime(n,[algorithm=0])</span> : return the <a href="prime">prime</a> following <span class="expression">n</span>, based on an algorithm similar to isprime(). If the answer is probabilistic, an <a href="#computation_flags">inexact flag</a> is raised.</li>
+    </li>
+    <li><span class="expression">nthprime(n,[algorithm=0])</span> : return the <span class="expression">n<sup>th</sup></span> <a href="prime">prime</a>, based on an algorithm similar to isprime(). If the answer is probabilistic, an <a href="#computation_flags">inexact flag</a> is raised.</li>
+    </li>
+    <li><span class="expression">primes(n,[algorithm=0])</span> : return the <a href="prime">prime</a> decomposition of <span class="expression">n</span>, based on an algorithm similar to isprime(). If the answer is probabilistic, an <a href="#computation_flags">inexact flag</a> is raised. A decomposition is a list of tuples, each tuple being a prime and its power.</li>
+    <li><span class="expression">primorial(n)</span> : return the primorial of <span class="expression">n</span>.</li>
+  </ul></li>
+  <li>Bit manipulation<ul>
+    <li><span class="expression">bits_concat_be(values...)</span>: concatenates raw values, bit endian style</li>
+    <li><span class="expression">bits_concat_le(values...)</span>: concatenates raw values, little endian style</li>
+    <li><span class="expression">bits_reverse(value)</span>: reverse the bits of a raw value</li>
+    <li><span class="expression">fromU8(value)</span>: converts from unsigned 8 bits integer</li>
+    <li><span class="expression">fromS8(value)</span>: converts from signed 8 bits integer (sign bit it the most significand)</li>
+    <li><span class="expression">fromU16(value)</span>: converts from unsigned 16 bits integer</li>
+    <li><span class="expression">fromS16(value)</span>: converts from signed 16 bits integer (sign bit it the most significand)</li>
+    <li><span class="expression">fromU32(value)</span>: converts from unsigned 32 bits integer</li>
+    <li><span class="expression">fromS32(value)</span>: converts from signed 32 bits integer (sign bit it the most significand)</li>
+    <li><span class="expression">fromU64(value)</span>: converts from unsigned 64 bits integer</li>
+    <li><span class="expression">fromS64(value)</span>: converts from signed 64 bits integer (sign bit it the most significand)</li>
+    <li><span class="expression">fromU128(value)</span>: converts from unsigned 128 bits integer</li>
+    <li><span class="expression">fromS128(value)</span>: converts from signed 128 bits integer (sign bit it the most significand)</li>
+    <li><span class="expression">fromU256(value)</span>: converts from unsigned 256 bits integer</li>
+    <li><span class="expression">fromS256(value)</span>: converts from signed 256 bits integer (sign bit it the most significand)</li>
+    <li><span class="expression">fromU256(value)</span>: converts from unsigned 256 bits integer</li>
+    <li><span class="expression">fromS256(value)</span>: converts from signed 256 bits integer (sign bit it the most significand)</li>
+    <li><span class="expression">fromF16(value)</span>: converts from IEEE754 16-bits float (1-5-10)</li>
+    <li><span class="expression">fromF32(value)</span>: converts from IEEE754 32-bits float (1-8-23)</li>
+    <li><span class="expression">fromF64(value)</span>: converts from IEEE754 64-bits float (1-11-52)</li>
+    <li><span class="expression">fromF128(value)</span>: converts from IEEE754 128-bits float (1-15-112)</li>
+    <li><span class="expression">fromF256(value)</span>: converts from IEEE754 256-bits float (1-19-236)</li>
+    <li><span class="expression">golomb_rice_decode(value,[rice parameter=0])</span> : decompress a golomb bit stream, with optional rice encoding</li>
+    <li><span class="expression">golomb_rice_encode(value,[rice parameter=0])</span> : compress a golomb bit stream, with optional rice encoding</li>
+    <li><span class="expression">roll(value, delta)</span> : bitwise roll operator, to the left for positive <span class="expression">delta</span>, to the right otherwise. It is only compatible with <a href="#raw_value">raw values</a> (because their bit size is explicit).</li>
+    <li><span class="expression">shift(value, delta)</span> : bitwise shift operator, to the left for positive <span class="expression">delta</span>, to the right otherwise. It is only compatible with <a href="#integers">integers</a> and <a href="#raw_value">raw values</a>.</li>
+    <li><span class="expression">swap(value, s)</span> : bitwise swap of consecutive pairs of packets of size s, from lowest significand bits to most significant. It is only compatible with <a href="#raw_value">raw values</a> (because their bit size is explicit).</li>
+    <li><span class="expression">toU8(value)</span>: converts to unsigned 8 bits integer</li>
+    <li><span class="expression">toS8(value)</span>: converts to signed 8 bits integer (sign bit it the most significand)</li>
+    <li><span class="expression">toU16(value)</span>: converts to unsigned 16 bits integer</li>
+    <li><span class="expression">toS16(value)</span>: converts to signed 16 bits integer (sign bit it the most significand)</li>
+    <li><span class="expression">toU32(value)</span>: converts to unsigned 32 bits integer</li>
+    <li><span class="expression">toS32(value)</span>: converts to signed 32 bits integer (sign bit it the most significand)</li>
+    <li><span class="expression">toU64(value)</span>: converts to unsigned 64 bits integer</li>
+    <li><span class="expression">toS64(value)</span>: converts to signed 64 bits integer (sign bit it the most significand)</li>
+    <li><span class="expression">toU128(value)</span>: converts to unsigned 128 bits integer</li>
+    <li><span class="expression">toS128(value)</span>: converts to signed 128 bits integer (sign bit it the most significand)</li>
+    <li><span class="expression">toU256(value)</span>: converts to unsigned 256 bits integer</li>
+    <li><span class="expression">toS256(value)</span>: converts to signed 256 bits integer (sign bit it the most significand)</li>
+    <li><span class="expression">toU256(value)</span>: converts to unsigned 256 bits integer</li>
+    <li><span class="expression">toS256(value)</span>: converts to signed 256 bits integer (sign bit it the most significand)</li>
+    <li><span class="expression">toF16(value)</span>: converts to IEEE754 16-bits float (1-5-10)</li>
+    <li><span class="expression">toF32(value)</span>: converts to IEEE754 32-bits float (1-8-23)</li>
+    <li><span class="expression">toF64(value)</span>: converts to IEEE754 64-bits float (1-11-52)</li>
+    <li><span class="expression">toF128(value)</span>: converts to IEEE754 128-bits float (1-15-112)</li>
+    <li><span class="expression">toF256(value)</span>: converts to IEEE754 256-bits float (1-19-236)</li>
+  </ul></li>
+  <li>Data<ul>
+    <li><span class="expression">infile(url)</span> takes the content from the location <span class="expression">url</span> (see <a href="#external_value">External values</a>).</li>
+    <li><span class="expression">input(n)</span> takes the input (string) from the <span class="expression">n<sup>th</sup></span> previous computation.</li>
+    <li><span class="expression">outfile(url)</span> writes the value to the location <span class="expression">url</span> (see <a href="#external_value">External values</a>).</li>
+    <li><span class="expression">output(n)</span> takes the output (value) from the <span class="expression">n<sup>th</sup></span> previous computation. Note that the index of the computations are displayed in the upper-left gray bubble of each item, and that this is a reverse order so that output(1) is always the last computation.</li>
+    <li><span class="expression">output2(n)</span> takes the output secondary value from the <span class="expression">n<sup>th</sup></span> previous computation, as computed by the <a href="#bit_manipulator">Bit manipulator</a>.</li>
+  </ul></li>
+  <li>Miscellaneous<ul>
+    <li><span class="expression">interval(x, d, [direction=0])</span>.<br/>
+    If direction is <span class="expression">-1</span>, returns <span class="expression">[x-d;x]</span><br/>
+    If direction is <span class="expression">0</span> (by default), returns <span class="expression">[x-d;x+d]</span><br/>
+    If direction is <span class="expression">1</span>, returns <span class="expression">[x;x+d]</span><br/>
+    </li>
+  </ul></li>
+</ul>
+
+<h3><a name="function_custom">User-defined functions</a></h3>
+<p>A user can define his own functions with the assignation syntax.</p>
+Example : <span class="expression">f(x, y) := x+y</span> can then be used with <span class="expression">f(1, 2)</span>.
+
+<h2><a name="prime">Prime numbers</a></h2>
+<p>A few <a href="#function">functions</a> are dedicated to prime computations : <span class="expression">isprime()</span>, <span class="expression">nextprime()</span>, <span class="expression">nthprime()</span> and <span class="expression">primes()</span>. Optionaly, a specific algorithm can be used to deal with primality tests, used as a secondary argument of those functions :</p>
+   <ul>
+     <li>0 : best combination of the following algorithms</li>
+     <li>1 : use only the precomputed primes set embedded in Chalk</li>
+     <li>2 : use a standard Miller Rabin probabilistic test</li>
+     <li>3 : use an enforced Miller Rabin probabilistic test</li>
+     <li>4 : use a Miller Rabin deterministic test</li>
+     <li>5 : use a totally recreative and useless AKS implementation</li>
+   </ul>
+
+<h2><a name="if_then_else">If...Then...Else</a></h2>
+<p>The syntax <span class="expression">IF (A) THEN (B) ELSE (C)</span>, or alternatively <span class="expression">A ? B : C</span>, evaluates to B if and only if A is equal to <span class="expression">true</span>, and evaluates to C otherwise.</p>
+<p>Beware that Chalk has more <a href="#boolean">booleans</a> than <span class="expression">true</span> and <span class="expression">false</span>, and that obviously, <span class="expression">certainly</span> and <span class="expression">maybe</span> are not considered equal to <span class="expression">true</span>.
+
+<h2><a name="RPN">Infix and Reverse Polish Notation (RPN)</a></h2>
+<p>If you ever want to enter your expression using reverse polish notation, it is possible. You must set that in Chalk's preferences, as the &quot;parse mode&quot;.
+<p class="imageBlock good">
+<img style="display:block;margin:auto" src="chalk-preferences-rpn.png"/>
+</p>
+<p class="imageBlock good">
+<img style="display:block;margin:auto" src="chalk-rpn.png"/>
+</p>
+<p style="clear:both">&nbsp;</p>
+
+<h2><a name="chalk_limits">Chalk limits</a></h2>
+<p>In practice, Chalk can always be configured so that you won't be limited by the size of your numbers. In theory, there is obviously a limit, but you will certainly be limited by the RAM and the computation capacity of your computer far before reaching such a limit. Chalk is only available as a 64 bits application, so that the limits do not depend on the support architecture.</p>
+<ul>
+  <li>The input strings are limited by Apple's NSString internal storage. It is certainly up to 2<sup>64</sup> or 2<sup>63</sup> characters, I am not sure about that.</li>
+  <li>The parser (<a href="https://github.com/westes/flex">flex</a>+<a href="https://www.sqlite.org/src/doc/trunk/doc/lemon.html">lemon</a>) is certainly limited to 2<sup>31</sup> characters for input, or perhaps 2<sup>63</sup>.</li>
+  <li>The integers and floats are <a href="https://gmplib.org">GMP</a> numbers with <a href="http://www.mpfr.org">mpfr</a> variants, that can be configured to hold 2<sup>64</sup> bits at most.</li>
+  <li>The storage of documents is limited by your OS and filesystem, and by the CoreData framework.</li>
+</ul>
+
+
+<h2><a name="presentation">Presentation</a></h2>
+<p>The pretty print done by Chalk, to render maths properly, is performed thanks to <a href="https://www.mathjax.org">MathJax</a>.<br/>
+It is possible to switch from that rendering to a string that can be copied to the clipboard, using a little button on the left of the expression.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-render.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+<p>Various presentation options are available in the right-side inspector panel of the calculator window, like the number of displayed digits (rounding from full available precision), output base, or digits grouping. Those options do not trigger a new computation, they serve the purpose of displaying numbers in the most user-friendly way.</p>
+
+<h2><a name="annotations">Annotations</a></h2>
+<p>For convenience, the little triangle in the upper left of each item can reveal an annotation area to take notes about the current computations. The fact that the triangle is full or empty is a hint to know that an annotation has been filled.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-annotation.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<h1><a name="grapher">Grapher</a></h1>
+<h2><a name="grapher_different">What is different with Chalk ?</a></h2>
+<p>Rendering a curve is rather easy. The problem is that it is almost always done wrong. What I mean is that a standard rendering usually samples values and draws a line by connecting the samples. Most of the time it works well and is very fast. But when things become serious, it can be very misleading.</p>
+<p>A graph is also very difficult to render when NaN values (Not A Number) are encountered. For a given pixel range, you might not compute any value (for instance logaritm of negative values), but for more complex functions, can you be sure that there is not a smaller pixel range where it could be defined ? Once again, Chalk has not the answer, but it highlights the question, by displaying uncertainty when NaN is encountered. For convenience, this can be disabled, but it is naturally built-in.</p>
+<p>Here is an example with <a href="file:///Applications/Utilities/Grapher.app">Grapher</a>. A gaussian is drawn, and we try to make the standard deviation very small.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<p>A gaussian (with the MacOS Grapher tool)</p>
+<img style="display:block;margin:auto" src="grapher-gaussian-1.png" />
+</div>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<p>A thinner gaussian (with the MacOS Grapher tool)</p>
+<img style="display:block;margin:auto" src="grapher-gaussian-2.png" />
+</div>
+<div class="imageBlock bad" style="float:center;margin:auto;display:block;width:900px">
+<p>An even thinner… wait… where is my curve ? (with the MacOS Grapher tool)</p>
+<img style="display:block;margin:auto" src="grapher-gaussian-3.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+<p>As you can see, the sampling could not catch a value of the gaussian peak. So you see nothing.</p>
+
+<p>Another example of the sampling problem is when it comes to values changing very quickly along the x-axis:</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<p>A sinus (with the MacOS Grapher tool)</p>
+<img style="display:block;margin:auto" src="grapher-sin-1.png" />
+</div>
+<div class="imageBlock bad" style="float:center;margin:auto;display:block;width:900px">
+<p>An &quot;accelerating&quot; sinus… wait… what do I just see ? Isn't it only glitches from sampling ? (with the MacOS Grapher tool)</p>
+<img style="display:block;margin:auto" src="grapher-sin-2.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<p>In both cases, the problem is just that when drawing a curve properly, you cannot ignore that a pixel does have a width. So, there is some uncertainty for each pixel, it does not cover a single value, but a range of values.<br/>
+Since Chalk is familiar with uncertainty, it has none of these problems.<br/>
+On the other hand, the performance of such a drawing is obviously far behind the usual sampling strategy. And even more surprising, the performance depends on the size of the presentation window, since every pixel will count.</p>
+
+<div class="imageBlock bad" style="float:center;margin:auto;display:block;width:900px">
+<p>An even thinner… wait… where is my curve ? (with the MacOS Grapher tool)</p>
+<img style="display:block;margin:auto" src="grapher-gaussian-3.png" />
+</div>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<p>An even thinner gaussian in Chalk</p>
+<img style="display:block;margin:auto" src="chalk-gaussian-3.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<div class="imageBlock bad" style="float:center;margin:auto;display:block;width:900px">
+<p>An &quot;accelerating&quot; sinus… wait… what do I just see ? Isn't it only glitches from sampling ? (with the MacOS Grapher tool)</p>
+<img style="display:block;margin:auto" src="grapher-sin-2.png" />
+</div>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<p>An &quot;accelerating&quot; sinus in Chalk. For convienence, a sampled curve is drawn, but it is quickly surrounded by the exploding uncertainty range, so that you know that you are looking at something fuzzy.</p>
+<img style="display:block;margin:auto" src="chalk-sin-2.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<p>The way Chalk considers pixel width may have surprising results. Consider for instance the expression <span class="expression">sin(x)/x</span>. This expression is undefined for <span class="expression">x=0</span>, and the numerical uncertainty explodes around 0. (The fact that mathematically, uniform continuity can be applied, since lim sin(x)/x -> 1 for x -> 0, is not really useful here).<br/>
+In that case, <span style="font-style:italic">whatever the precision</span> (53, 64, 1024, 65728982897 bits), the rendering will always be the same :</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<p>Increasing the precision (number of bits for float computation) does not help to get rid of the uncertainty near x=0. The &quot;problem&quot; is here the width of a pixel)</p>
+<img style="display:block;margin:auto" src="chalk-sinx_x-1.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+<p>What will happen here is that the uncertainty will just &quot;retreat&quot; as you zoom in. The width of the pixel just match smaller and smaller x intervals, but the effect on uncertainty is very comparable.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<p>scale -10…10</p>
+<img style="display:block;margin:auto" src="chalk-sinx_x-1.png" />
+</div>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<p>zoom x10 : scale -1…1</p>
+<img style="display:block;margin:auto" src="chalk-sinx_x-2.png" />
+</div>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<p>zoom x100 : scale -0.1…0.1</p>
+<img style="display:block;margin:auto" src="chalk-sinx_x-3.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<h2><a name="grapher_element_size">Element size</a></h2>
+<p>The &quot;element size&quot; parameter makes pixels &quot;bigger&quot;. It has two meanings :</p>
+<ul>
+  <li>Performance will be better because the rendering is coarser</li>
+  <li>A peak value is easier to locate</li>
+</ul>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<p>An very thin gaussian in Chalk, with an element size of 1.</p>
+<img style="display:block;margin:auto" src="chalk-gaussian-3.png" />
+</div>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<p>An very thin gaussian in Chalk, with an element size of 10.</p>
+<img style="display:block;margin:auto" src="chalk-grapher-element-size.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<p>You may miss at first sight the little yellow dot at (2,2)</p>
+<img style="display:block;margin:auto" src="chalk-grapher-2d-element-size-1.png" />
+</div>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<p>Enlarging the element size makes it difficult to miss</p>
+<img style="display:block;margin:auto" src="chalk-grapher-2d-element-size-2.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<h2><a name="grapher_nan">NaN : undefined values</a></h2>
+<p>When the function to draw is not defined everywhere, some pixels may not lead to any value, for instance logarithm of a negative input. During a computation the special values NaN (Not a Number) or infinity are raised. To draw it, the simplest (and usual) way is to just ignore it and draw nothing. This has major drawbacks:</p>
+<ul>
+<li>This will usually draw lines over gaps of invalid ranges, pretending a wrong continuity;</li>
+<li>it does not inform really well that something is wrong in some pixel range.</li>
+<li>it does not care if a smaller sub-sampling could reach valid inputs for the function being evaluated.</li>
+</ul>
+<p>Once again, Chalk will cannot make a better mathematical analysis, but since it works with ranges an uncertainties, it is able to draw with another color those special pixel ranges. Thus, it can draw differently what is true for sure (when all the range is valid) and what should be taken carefully (when some non regular value occurs within a pixel range).</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<p>A NaN range could have two origins : either the full range is invalid, or a subrange is invalid. Unless a mathematical analysis is done, a NaN pixel cannot guarantee that zooming deeper in the pixel won't raise tiny valid ranges.</p>
+<img style="display:block;margin:auto" src="grapher-nan-uncertainty.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<h2><a name="grapher_curve">Curves</a></h2>
+<p>There is not much to say about curves. Just enter the <span class="expression">x</span> formula, without any <span class="expression">y=</span> prefix.</p>
+<p>When a curve is added to the list on the left, its color can be changed.</p>
+
+<h2><a name="grapher_predicate">Predicates</a></h2>
+<p>A <span class="expression">predicate</span> in Chalk's grapher is just an expression using <span class="expression">x</span> and <span class="expression">y</span> and returning a <a href="#boolean">boolean</a> value. The color of each pixel will take the color associated to the result (by default green for <span class="expression">yes</span>, red for <span class="expression">no</span>, and yellow for <span class="expression">maybe</span>).</p>
+<p>The <span class="expression">maybe</span> value is typically used on pixels which width does not allow a single answer.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<p>The edges are in yellow because the corresponding pixels which have a non-zero width, cover the inside and the outside of the ellipse.</p>
+<img style="display:block;margin:auto" src="chalk-grapher-predicate.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+<p>If the predicate contains logical operators like AND, please note that the right operand won't be evaluated if the left one returns an error. This is particularly useful when trying to draw a predicate when some values cannot be defined.<br/>
+  For instance, the expression <span class="expression">ln(sin(x))&lt;y</span> is not defined when <span class="expression">sin(x)&leq;0</span>. In those area, the predicate returns <span class="expression">maybe</span> to mean that no value can be relevant. Anyway, there is still a cost for Chalk, because the relevant intervals cannot be predicted. Writing <span class="expression">(sin(x)>0) AND ln(sin(x))&lt;y</span> will save much time by not trying to compute the logarithm on invalid intervals.
+</p>
+
+<h2><a name="grapher_variable">Variables</a></h2>
+<p>Like with the <a href="#calculator">Calculator</a>, variables can be defined to help writing expressions.<br/>
+Unlike with the <a href="#calculator">Calculator</a>, the assignment operator cannot be used in the expression field; instead, a variable must be added in the table on the left, and then the expression field can be used to specify the value.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:800px">
+<img style="display:block;margin:auto" src="chalk-grapher-variable.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+
+<h1><a name="bit_manipulator">Bits and digits manipulator</a></h1>
+<p>The bits and digits manipulator is designed to act on the <span class="expression">representation</span> of a number and see how it modifies its <span class="expression">value</span>.</p>
+
+<h2><a name="bit_different">What is different with Chalk ?</a></h2>
+<p>Usually, calculators provide a fixed-size bit representation. Such a tool is somewhat useful for developers
+ or computer scientists, but honestly, it misses a lot of features that Chalk provides:</p>
+<ul>
+  <li>The fixed-size bit-representation can be chosen between many standard integers, unsigned integers, or IEEE754 float numbers</li>
+  <li>there is a difference between <span class="expression">conversion</span> and <span class="expression">interpretation</span>. Converting is like a <span class="expression">cast</span>, while interpreting is useful to explore the different <span class="expression">meanings</span> of a single set of bits.</li>
+  <li>when using a given representation, different colors are used to highlight the different parts like sign, exponent and significand.</li>
+</ul>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<p style="text-align:center">An hexadecimal number reveals &pi; when interpreted as IEEE754 32 bits float. The yellow, blue and purple parts are sign, exponent and significand.</p>
+<img style="display:block;margin:auto" src="chalk-bit-manipulator-pi.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<h2><a name="bit_navigation">Navigation and presentation</a></h2>
+<p>The bit manipulator is compatible with a set of well-known standard representations known as <a href="#raw_value">Raw values</a> in the calculator module.</p>
+<ul>
+<li>Chalk integer (bit width defined in the preferences)</li>
+<li>Chalk float (bit precision defined in the preferences)</li>
+<li>8-bit signed or unsigned integer</li>
+<li>16-bit signed or unsigned integer</li>
+<li>32-bit signed or unsigned integer</li>
+<li>64-bit signed or unsigned integer</li>
+<li>128-bit signed or unsigned integer</li>
+<li>256-bit signed or unsigned integer</li>
+<li>16-bit IEEE754 float (&quot;half&quot;)</li>
+<li>32-bit IEEE754 float (&quot;single&quot;)</li>
+<li>64-bit IEEE754 float (&quot;double&quot;)</li>
+<li>128-bit IEEE754 float (&quot;quadruple&quot;)</li>
+<li>256-bit IEEE754 float (&quot;octuple&quot;)</li>
+</ul>
+<p>Each representation has a known bit size for sign, exponent and significand. Modifiying the width is not allowed, but chosing a color is possible.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<img style="display:block;margin:auto" src="chalk-bit-manipulator-parts.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<p>The total bit width being known, since it is only displayed by groups of 64 bits, navigation through the groups is provided, to the &quot;left&quot; or to the &quot;right&quot; (which can be most or least significand bits according to a display option). There are three buttons to navigate in a direction : to the end, to the next relevant bit, or to the next group.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<img style="display:block;margin:auto" src="chalk-bit-manipulator-navigate.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<p>Bits can be displayed with least significand bits in the lower-right corner, and most significand bits in the upper left corner, or the contrary.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<img style="display:block;margin:auto" src="chalk-bit-manipulator-order.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+
+<h2><a name="bit_conversion_interpretation">Conversion and interpretation</a></h2>
+<p>The bit-manipulator must be configured to <span class="expression">convert</span> the input value to a standard representation, and to compute an output value regarding a <span class="expression">interpretation</span> in a standard representation, which may be different.</p>
+<p>Thus, each bit has two colors : the one of the input representation, and the one of the output interpretation. The color of the upper half of a cell comes from the input, the color of the lower half is for the output.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<img style="display:block;margin:auto" src="chalk-bit-manipulator-parts.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<h2><a name="bit_operation">Operations</a></h2>
+<p>The displayed bit can support a number of operation that will ultimately modify the output value. When a bit has been changed, it is display in <span style="font-weight:bold">bold</span>.</p>
+
+<p>Each operation can be applied to a subset of bits, which can be different from the visible bits.</p>
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<img style="display:block;margin:auto" src="chalk-bit-manipulator-operations-range.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+<p>Group of bits can be</p>
+<ul>
+  <li>individually flipped by clicking them</li>
+  <li>set to 0</li>
+  <li>set to 1</li>
+  <li>1-complemented</li>
+  <li>2-complemented</li>
+  <li>left or right shifted</li>
+  <li>left or right rolled</li>
+  <li>incremented</li>
+  <li>decremented</li>
+  <li>swapped by pairs of packets</li>
+  <li>reversed (from left to right)</li>
+  <li>reset to their input value (which may not be 0)</li>
+</ul>
+
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<img style="display:block;margin:auto" src="chalk-bit-manipulator-operations.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<h2><a name="bit_digits">Digits</a></h2>
+<p>As an advanced feature, it is possible to consider digits by groups of 1, 2, 3, 4 or 5 bits, which is equivalent to work in base 2, 4, 8, 16 or 32.</p>
+<p>Currently, Chalk still apply operations bit-wise and not digit-wise, so the result may be surprising. Moreover, when grouping bits, significand and exponent may not exactly fit, but Chalk will reflect the colors accordingly.</p>
+
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<p style="text-align:center">In base 16 (4 bits per digit), the cells with multiple horizontal colors reveal that they do not fit the bit limits of the different components, and span over.</p>
+<img style="display:block;margin:auto" src="chalk-bit-manipulator-pi-b16.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<h1><a name="equations_generator">Equations generator</a></h1>
+<h2><a name="equation_generator_title">What is the equations generator ?</a></h2>
+<p>The equations generator (menu &quot;Equations&quot;) is a minimalist tool to generate beautifully rendered equations in PDF or SVG.</p>
+<p>It is in no way a tool to solve equations, just render them for copy and paste in other documents.</p>
+<p>The input language to typeset the equations is TeX. If you do not know TeX, you should learn it.</p>
+<p>Only a small part of TeX is supported, you cannot even type a preamble. Consider it as a minimalist tool for small equations that would fit in a $$...$$ environment.</p>
+
+<div class="imageBlock good" style="float:center;margin:auto;display:block;width:900px">
+<img style="display:block;margin:auto" src="equations-generator.png" />
+</div>
+<p style="clear:both">&nbsp;</p>
+
+<h1><a name="history">History</a></h1>
+<p style="font-weight:bold">13<sup>th</sup> March 2021 : v1.6.8</p>
+<ul>
+  <li>fixed crash due to bad linking to a shared library.</li>
+</ul>
+<p style="font-weight:bold">12<sup>th</sup> March 2021 : v1.6.7</p>
+<ul>
+  <li>fixed crash in some text parsing;</li>
+  <li>changed displayed uncertainty to be rounded up instead of rounded to nearest;</li>
+  <li>updated third-party libraries.</li>
+</ul>
+<p style="font-weight:bold">26<sup>th</sup> January 2021 : v1.6.6</p>
+<ul>
+  <li>fixed a miscompilation of MPFR regarding multi-threading, resulting in crashes in the Graph tool;</li>
+  <li>updated third-party libraries.</li>
+</ul>
+<p style="font-weight:bold">20<sup>th</sup> December 2020 : v1.6.5</p>
+<ul>
+  <li>updated third-party libraries;</li>
+  <li>Universal build (x86_64 and arm64 for native Apple Silicon support).</li>
+</ul>
+<p style="font-weight:bold">24<sup>th</sup> November 2020 : v1.6.4</p>
+<ul>
+  <li>updated third-party libraries, enabling previously missing optimizations.</li>
+</ul>
+<p style="font-weight:bold">6<sup>th</sup> September 2020 : v1.6.3</p>
+<ul>
+  <li>updated third-party libraries.</li>
+</ul>
+<p style="font-weight:bold">9<sup>th</sup> August 2020 : v1.6.2</p>
+<ul>
+  <li>increased maximal floating point exponent to 2<sup>62</sup>-1.</li>
+  <li>fixed problems with the bit manipulator tool;</li>
+  <li>minor fixes and GUI improvements.</li>
+</ul>
+<p style="font-weight:bold">17<sup>th</sup> July 2020 : v1.6.1</p>
+<ul>
+  <li>Fixed problems with the bit manipulator tool;</li>
+  <li>fixed problems (possibly crash) regarding signed to unsigned conversion of exponents of magnitude larger than 2<sup>32</sup>;</li>
+  <li>if the "inexact indicator" "…" is used in a decimal input, it is no more converted into a fraction;</li>
+  <li>√ and ∛ are now prefix operators that do not require parenthesis - this is on the way to support formal values;</li>
+  <li>optimize some images sizes to reduce the size of the application;</li>
+  <li>minor fixes and GUI improvements.</li>
+</ul>
+<p style="font-weight:bold">10<sup>th</sup> July 2020 : v1.6.0</p>
+<ul>
+  <li>Fixed crashes due to XCode compiler regressions;</li>
+  <li>added the 'swap()' function, visible as well in the bit manipulator;</li>
+  <li>added the '#' desambiguifier for the exponent symbol (of the scientific notation of a number) in a base where 'e' and 'p' are digits;</li>
+  <li>added support of Unicode characters √ and ∛ as shortcuts for sqrt() and cbrt(), for the sole purpose of making those functions easier to find in the documentation;</li>
+  <li>minor fixes and GUI improvements;</li>
+  <li>updated third-party libraries.</li>
+</ul>
+<p style="font-weight:bold">10<sup>th</sup> June 2020 : v1.5.7</p>
+<ul>
+  <li>Input now accepts spaces between digits, to allow easier manipulation of digits grouping;</li>
+  <li>better error reporting when invalid digits are used in a given base;</li>
+  <li>updated third-party libraries.</li>
+</ul>
+<p style="font-weight:bold">1<sup>st</sup> May 2020 : v1.5.6</p>
+<ul>
+  <li>The digits grouping could not be honoured in some case.</li>
+</ul>
+<p style="font-weight:bold">27<sup>th</sup> April 2020 : v1.5.5</p>
+<ul>
+  <li>Prevent the use of a reserved identifier as iterator for functions like sum() that iterate over a custom identifier;</li>
+  <li>Updated Sparkle framework.</li>
+</ul>
+<p style="font-weight:bold">24<sup>th</sup> April 2020 : v1.5.4</p>
+<ul>
+  <li>new compatibility fix for MacOS 10.9;</li>
+  <li>minor fixes.</li>
+</ul>
+<p style="font-weight:bold">23<sup>th</sup> April 2020 : v1.5.3</p>
+<ul>
+  <li>fixed compatibility with MacOS 10.9;</li>
+  <li>computation and presentation options (base, digits groups...) are now automatically saved.</li>
+</ul>
+<p style="font-weight:bold">16<sup>th</sup> April 2020 : v1.5.2</p>
+<ul>
+  <li>binary compatibility with MacOS &lt;10.15 was broken;</li>
+  <li>binary compatibility with processors older than Broadwell was broken.</li>
+</ul>
+<p style="font-weight:bold">15<sup>th</sup> April 2020 : v1.5.1</p>
+<ul>
+  <li>Notarized version;</li>
+  <li>fixed MacOS Catalina+Autosave bug by using Sandboxing;</li>
+  <li>fixed dragging in equation editor;</li>
+  <li>fixed some Apple's XCode miscompilations that could result in unexpected behaviour;</li>
+  <li>big refactoring to use WKWebView (when available) and MathJax v3;</li>
+  <li>updated third-party libraries.</li>
+</ul>
+<p style="font-weight:bold">13<sup>th</sup> January 2020 : v1.4.2</p>
+<ul>
+  <li>Fixed crash due to dynamic library loading failure.</li>
+</ul>
+<p style="font-weight:bold">12<sup>th</sup> January 2020 : v1.4.1</p>
+<ul>
+  <li>Fixed a bug in quaternion (and complex) division;</li>
+  <li>Fixed π symbol;</li>
+  <li>added NOT operator;</li>
+  <li>fixed some error reporting;</li>
+  <li>fixed focus on input field at launch.</li>
+</ul>
+<p style="font-weight:bold">19<sup>th</sup> July 2019 : v1.4.0</p>
+<ul>
+  <li>The preference &quot;Raise error on NaN&quot; was not properly applied;</li>
+  <li>fixed base prefix/suffix parsing;</li>
+  <li>added the fromBase() function;</li>
+  <li>added the primorial() function;</li>
+  <li>ability to change the number of display digits when the value is an integer displayed as a real;</li>
+  <li>updated known Mersenne primes;</li>
+  <li>sorted entries in Quick reference;</li>
+  <li>updated third-party libraries.</li>
+</ul>
+<p style="font-weight:bold">21<sup>st</sup> April 2018 : v1.3.2</p>
+<ul>
+  <li>Fixed string parsing when a base suffix is involved;</li>
+  <li>fixed explicit uncertainty handling in some cases;</li>
+  <li>do not use superscript any more after the 'e' of scientific notation;</li>
+  <li>change the number of bits to display by the approximation of digits to display;</li>
+  <li>updated third-party libraries.</li>
+</ul>
+<p style="font-weight:bold">30<sup>th</sup> March 2018 : v1.3.1</p>
+<ul>
+  <li>Fixed bugs regarding string parsing and exponent notation.</li>
+</ul>
+<p style="font-weight:bold">5<sup>th</sup> March 2018 : v1.3.0</p>
+<ul>
+  <li>Fixed bit inspector regression some float number interpretations;</li>
+  <li>improved detection of exact display of floating point number values;</li>
+  <li>improved parser to allow more characters for &quot;degree&quot; symbol;</li>
+  <li>added MathML export in the equation generator;</li>
+  <li>Greek localization;</li>
+  <li>updated third-party libraries.</li>
+</ul>
+<p style="font-weight:bold">8<sup>th</sup> February 2018 : v1.2.0</p>
+<ul>
+  <li>Fixed bit inspector regression regarding float number interpretations;</li>
+  <li>fixed parsing performance in some cases;</li>
+  <li>added IF ... THEN ... ELSE and the ternary operator ... ? ... : ...</li>
+  <li>added ability to define user functions;</li>
+  <li>added sum() and product() for series;</li>
+  <li>added integral() to numerically compute integral approximations;</li>
+  <li>added log10();</li>
+  <li>added operator ** as equivalent for ^ (power);</li>
+  <li>using approximation compute mode for large integers will display them with scientific notation;</li>
+  <li>better parsing in some corner cases;</li>
+  <li>better fraction display in output field;</li>
+  <li>reduced MathJax footprint to reduce global Chalk size;</li>
+  <li>updated third-party libraries.</li>
+</ul>
+<p style="font-weight:bold">17<sup>th</sup> November 2017 : v1.1.0</p>
+<ul>
+  <li>Fixed wrong computation optimization leading to wrong results when inverting matrices with fractions that were inverse of integers;</li>
+  <li>fixed regression where dynamic variables may not be automatically updated properly;</li>
+  <li>fixed 0! to return 1 (by mathematical convention);</li>
+  <li>added Gamma and Zeta functions;</li>
+  <li>added preference to select how the next input is prepared;</li>
+  <li>adjust displayed uncertainty when reducing the number of display bits;</li>
+  <li>minor help improvements;</li>
+  <li>updated third-party libraries.</li>
+</ul>
+<p style="font-weight:bold">30<sup>th</sup> May 2017 : v1.0.0</p>
+<ul>
+  <li>More graph refinements regarding uncertainty;</li>
+  <li>first non beta release.</li>
+</ul>
+<p style="font-weight:bold">20<sup>th</sup> May 2017 : v1.0.0 rc 5</p>
+<ul>
+  <li>Fixed regressions introduced in rc4 about graph drawing;</li>
+  <li>added ability to fill curves;</li>
+  <li>minor GUI refinements.</li>
+</ul>
+<p style="font-weight:bold">20<sup>th</sup> May 2017 : v1.0.0 rc 4</p>
+<ul>
+  <li>Added themes for calculator;</li>
+  <li>more graph rendering settings;</li>
+  <li>GUI refinements.</li>
+</ul>
+<p style="font-weight:bold">18<sup>th</sup> May 2017 : v1.0.0 rc 3</p>
+<ul>
+  <li>many GUI changes in the Grapher;</li>
+  <li>fixed display error with exclusive subscript range;</li>
+  <li>minor GUI refinements;</li>
+  <li>updated doc.</li>
+</ul>
+<p style="font-weight:bold">16<sup>th</sup> May 2017 : v1.0.0 rc 2</p>
+<ul>
+  <li>GUI refinements;</li>
+  <li>added ability to make text annotations on items;</li>
+  <li>added print menu for the calculator.</li>
+</ul>
+<p style="font-weight:bold">11<sup>th</sup> May 2017 : v1.0.0 rc 1</p>
+<ul>
+  <li>French GUI localization;</li>
+  <li>minor GUI changes;</li>
+  <li>first attempt to leave beta state, this is the first release candidate.</li>
+</ul><p style="font-weight:bold">9<sup>th</sup> May 2017 : v1.0.0 beta 14</p>
+<ul>
+  <li>At last, found a bug in Core Data and a misbehaviour in MacOS 10.12 that did not occur with previous versions of MacOS. This should fix a big problem of items being impossible to select reliably, that I could not see or reproduce before;</li>
+  <li>minor GUI changes.</li>
+</ul>
+<p style="font-weight:bold">5<sup>th</sup> May 2017 : v1.0.0 beta 13</p>
+<ul>
+  <li>The equation generator now supports document save/load;</li>
+  <li>minor GUI changes.</li>
+</ul>
+<p style="font-weight:bold">5<sup>th</sup> May 2017 : v1.0.0 beta 12</p>
+<ul>
+  <li>The equation generator can now reopen a PDF generated by Chalk;</li>
+  <li>the default document is now only hidden when closed, so that it can be reopened very quickly;</li>
+  <li>minor GUI changes.</li>
+</ul>
+<p style="font-weight:bold">4<sup>th</sup> May 2017 : v1.0.0 beta 11</p>
+<ul>
+  <li>Added minimalist equation generator to create PDF or SVG rendered equations in TeX language;</li>
+  <li>minor GUI changes.</li>
+</ul>
+<p style="font-weight:bold">3<sup>rd</sup> May 2017 : v1.0.0 beta 10</p>
+<ul>
+  <li>Added buttons to feed pasteboard with PDF or SVG with input or output of items.</li>
+</ul>
+<p style="font-weight:bold">2<sup>nd</sup> May 2017 : v1.0.0 beta 9</p>
+<ul>
+  <li>The bit inspector now accepts a one-value list or matrix, and disables itself for non supported values;</li>
+  <li>added hconcat() and vconcat() for matrices.</li>
+</ul>
+<p style="font-weight:bold">1<sup>st</sup> May 2017 : v1.0.0 beta 8</p>
+<ul>
+  <li>fixed bits_reverse() for non-raw values.</li>
+</ul>
+<p style="font-weight:bold">1<sup>st</sup> May 2017 : v1.0.0 beta 7</p>
+<ul>
+  <li>Added reverse bits operation in the bits inspector;</li>
+  <li>added bits_concat_be(), bits_concat_le(), bits_reverse(), golomb_rice_decode(), golomb_rice_encode();</li>
+  <li>fixed initialization problem when converting the base after using a raw value.</li>
+</ul>
+<p style="font-weight:bold">25<sup>th</sup> April 2017 : v1.0.0 beta 6</p>
+<ul>
+  <li>Fixed a case where fractions could be displayed incorrecly and lead to misleading value interpretation;</li>
+  <li>adjusted graph zoom behaviour.</li>
+</ul>
+<p style="font-weight:bold">24<sup>th</sup> April 2017 : v1.0.0 beta 5</p>
+<ul>
+  <li>Fixed a regression that results in a crash. By the way I am sorry, but that's what beta are for.</li>
+</ul>
+<p style="font-weight:bold">23<sup>th</sup> April 2017 : v1.0.0 beta 4</p>
+<ul>
+  <li>Fixed incoherences that could occur in the document database.</li>
+</ul>
+<p style="font-weight:bold">23<sup>th</sup> April 2017 : v1.0.0 beta 3</p>
+<ul>
+  <li>Tentatively fix an obscure reported bug of instability that I cannot observe myself.</li>
+</ul>
+<p style="font-weight:bold">22<sup>th</sup> April 2017 : v1.0.0 beta 2</p>
+<ul>
+  <li>Fixed interface on most recent versions of MacOS;</li>
+  <li>fixed minor bugs.</li>
+</ul>
+<p style="font-weight:bold">13<sup>th</sup> April 2017 : v1.0.0 beta 1</p>
+<ul>
+  <li>First public beta.</li>
+</ul>
+</div>
+</body>
+</html>

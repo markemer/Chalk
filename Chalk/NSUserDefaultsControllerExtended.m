@@ -1,0 +1,27 @@
+//
+//  NSUserDefaultsControllerExtended.m
+// Chalk
+//
+//  Created by Pierre Chatelier on 26/04/09.
+//  Copyright 2005, 2006, 2007, 2008, 2009, 2010, 2011 Pierre Chatelier. All rights reserved.
+//
+
+#import "NSUserDefaultsControllerExtended.h"
+
+@implementation NSUserDefaultsController (Extended)
+
++(NSString*) adaptedKeyPath:(NSString*)keyPath
+{
+  NSString* result = [@"values." stringByAppendingString:keyPath];
+  return result;
+}
+//end adaptedKeyPath:
+
+-(NSString*) adaptedKeyPath:(NSString*)keyPath
+{
+  NSString* result = [[self class] adaptedKeyPath:keyPath];
+  return result;
+}
+//end adaptedKeyPath:
+
+@end

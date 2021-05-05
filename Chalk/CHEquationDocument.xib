@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="13F1911" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="CHEquationDocument">
+            <connections>
+                <outlet property="errorTextField" destination="iek-oh-Qih" id="Hwi-hU-m4t"/>
+                <outlet property="foregroundColorColorWell" destination="Qyy-cU-RU7" id="RKQ-8N-cQy"/>
+                <outlet property="imageView" destination="aaM-BI-aLc" id="E6J-45-UPG"/>
+                <outlet property="inputTextView" destination="GKr-U9-Iy8" id="Knw-8h-jSz"/>
+                <outlet property="renderButton" destination="23C-dS-8BZ" id="sOz-iF-1Kk"/>
+                <outlet property="window" destination="hOh-F0-ILq" id="NXo-rA-AO0"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Equation generator" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" showsToolbarButton="NO" animationBehavior="default" id="hOh-F0-ILq" customClass="NSPanel">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES"/>
+            <rect key="contentRect" x="139" y="154" width="200" height="220"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <view key="contentView" id="en6-be-OFS">
+                <rect key="frame" x="0.0" y="0.0" width="200" height="220"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button verticalHuggingPriority="750" id="23C-dS-8BZ">
+                        <rect key="frame" x="60" y="-5" width="80" height="28"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Render" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ids-QD-I3J">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="smallSystem"/>
+                            <string key="keyEquivalent">l</string>
+                            <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="renderAction:" target="-2" id="dx8-xb-8Qt"/>
+                            <outlet property="nextKeyView" destination="GKr-U9-Iy8" id="IaY-O6-Nwq"/>
+                        </connections>
+                    </button>
+                    <splitView dividerStyle="paneSplitter" id="Zn0-QN-Eh5">
+                        <rect key="frame" x="0.0" y="20" width="200" height="200"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <customView id="CQv-Ix-ySP">
+                                <rect key="frame" x="0.0" y="0.0" width="200" height="93"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <subviews>
+                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="aaM-BI-aLc" customClass="CHEquationImageView">
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="93"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" imageFrameStyle="grayBezel" id="cM4-pU-9Bx"/>
+                                        <connections>
+                                            <outlet property="nextKeyView" destination="Qyy-cU-RU7" id="jh3-bf-VxI"/>
+                                        </connections>
+                                    </imageView>
+                                    <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="iek-oh-Qih">
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="90"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <textFieldCell key="cell" selectable="YES" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" drawsBackground="YES" id="euf-Me-msJ">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                </subviews>
+                            </customView>
+                            <customView id="VjU-XU-tc9">
+                                <rect key="frame" x="0.0" y="103" width="200" height="97"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <subviews>
+                                    <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="EpR-Py-VlG">
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="97"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <clipView key="contentView" id="7PB-dD-qiu">
+                                            <rect key="frame" x="1" y="1" width="223" height="133"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <textView importsGraphics="NO" richText="NO" findStyle="panel" allowsUndo="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" id="GKr-U9-Iy8" customClass="CHEquationTextView">
+                                                    <rect key="frame" x="0.0" y="0.0" width="223" height="133"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <size key="minSize" width="183" height="95"/>
+                                                    <size key="maxSize" width="463" height="10000000"/>
+                                                    <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                    <size key="minSize" width="183" height="95"/>
+                                                    <size key="maxSize" width="463" height="10000000"/>
+                                                    <connections>
+                                                        <outlet property="nextKeyView" destination="aaM-BI-aLc" id="JBL-YC-OkQ"/>
+                                                    </connections>
+                                                </textView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </clipView>
+                                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="ESM-yw-zc6">
+                                            <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </scroller>
+                                        <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="ypo-lb-vin">
+                                            <rect key="frame" x="224" y="1" width="15" height="133"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </scroller>
+                                    </scrollView>
+                                </subviews>
+                            </customView>
+                        </subviews>
+                        <holdingPriorities>
+                            <real value="250"/>
+                            <real value="250"/>
+                        </holdingPriorities>
+                    </splitView>
+                    <colorWell id="Qyy-cU-RU7">
+                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <connections>
+                            <outlet property="nextKeyView" destination="23C-dS-8BZ" id="gID-UD-24F"/>
+                        </connections>
+                    </colorWell>
+                </subviews>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="b4e-od-tje"/>
+                <outlet property="initialFirstResponder" destination="23C-dS-8BZ" id="wPP-Kg-DcA"/>
+            </connections>
+            <point key="canvasLocation" x="-86" y="313"/>
+        </window>
+    </objects>
+</document>

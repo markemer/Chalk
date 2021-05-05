@@ -1,0 +1,2064 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no"/>
+<script type="text/javascript" src="../Web/jquery/jquery.js"></script>
+<script type="text/javascript" src="chalk-quick-reference-mathjax-config.js"></script>
+<script type="text/javascript" src="../Web/mathjax/current/tex-chtml.js"></script>
+<script type="text/javascript" src="chalk-quick-reference.js"></script>
+<link href="chalk-quick-reference.css" rel="StyleSheet" type="text/css" />
+</head>
+<body id="body" onload="initialize()">
+
+<div class="entry constants boolean" id="certainly">
+  <p class="name"><span class="name">certainly</span></p>
+  <div class="explanation">The &quot;boolean&quot; \(certainly\) value (almost certain)
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(certainly\)
+  </div>
+</div>
+
+<div class="entry constants" id="e">
+  <p class="name"><span class="name">e</span></p>
+  <div class="explanation">The \(e\) value
+    <h2>Notes:</h2>
+    <ul>
+    <li>The precision of the value is the current significand precision</li>
+    <li>The power of e (for instance e^x) is equivalent to the function exp(x)</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(e\)
+  </div>
+</div>
+
+<div class="entry constants complex quaternion" id="i">
+  <p class="name"><span class="name">i</span></p>
+  <div class="explanation">The complex \(i\)
+    <h2>Notes:</h2>
+    <ul>
+    <li>The value is exact</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(i, 1+2*i\)
+  </div>
+</div>
+
+<div class="entry constants complex quaternion" id="j">
+  <p class="name"><span class="name">j</span></p>
+  <div class="explanation">The quaternion part \(j\)
+    <h2>Notes:</h2>
+    <ul>
+    <li>The value is exact</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(j, 1+2*i+3*j\)
+  </div>
+</div>
+
+<div class="entry constants complex quaternion" id="k">
+  <p class="name"><span class="name">k</span></p>
+  <div class="explanation">The quaternion part \(k\)
+    <h2>Notes:</h2>
+    <ul>
+    <li>The value is exact</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(j, 1+2*i+3*j+4*k\)
+  </div>
+</div>
+
+<div class="entry constants boolean" id="maybe">
+  <p class="name"><span class="name">maybe</span></p>
+  <div class="explanation">The &quot;boolean&quot; \(maybe\) value (totally uncertain)
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(maybe\)
+  </div>
+</div>
+
+<div class="entry constants boolean" id="no">
+  <p class="name"><span class="name">no</span>, <span class="name">false</span></p>
+  <div class="explanation">The boolean \(no\) value
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(no, false\)
+  </div>
+</div>
+
+<div class="entry constants symbols" id="pi">
+  <p class="name"><span class="name">pi</span>, <span class="name">π</span></p>
+  <div class="explanation">The \(\pi\) value
+    <h2>Notes:</h2>
+    <ul>
+    <li>The precision of the value is the current significand precision</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(pi, \pi\)
+  </div>
+</div>
+
+<div class="entry constants boolean" id="unlikely">
+  <p class="name"><span class="name">unlikely</span></p>
+  <div class="explanation">The &quot;boolean&quot; \(unlikely\) value (almost \(no\))
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(unlikely\)
+  </div>
+</div>
+
+<div class="entry constants boolean" id="yes">
+  <p class="name"><span class="name">yes</span>, <span class="name">true</span></p>
+  <div class="explanation">The boolean \(yes\) value
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(yes, true\)
+  </div>
+</div>
+
+<div class="entry operator arithmetic symbols" id="operator_degree">
+  <p class="name"><span class="name">°</span>, <span class="name">°?</span></p>
+  <div class="explanation">Converts degrees to radians
+    <h2>Notes:</h2>
+    <ul>
+    <li>It simply multiplies by \(\frac{\pi}{180}\)</li>
+    <li>It is only useful to simplify use of degrees for trignonometry functions</li>
+    <li>The convenient operator <span class="name">°?</span> can be used when operands are not mathematically compatible, but the result is driven by common sense, like a matrix</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(45°, \sin\left(45°\right), \left(\begin{matrix}1 & 2\\3 & 4\\\end{matrix}\right)°? \)
+  </div>
+</div>
+
+<div class="entry operator misc uncertainty symbols" id="operator_plus_minus">
+  <p class="name"><span class="name">+/-</span>, <span class="name">±</span></p>
+  <div class="explanation">Creates uncertainty
+    <h2>Notes:</h2>
+    <ul>
+    <li>Using \(x±d\) is equivalent to the function \(interval(x, d, 0)\)</span></li>
+    <li>Only reals are supported. Even integer operands are converted to reals</li>
+    <li>See operators %, ‰, ‱ and ppm to see how uncertainty can be expressed relatively</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(1\textrm{+/-}2, 1±2\)
+  </div>
+</div>
+
+<div class="entry operator misc variables symbols" id="operator_assignation">
+  <p class="name"><span class="name">:=</span>, <span class="name">::=</span></p>
+  <div class="explanation">Assigns a value to a variable
+    <h2>Notes:</h2>
+    <ul>
+    <li>The ::= version instead of := sets the variable to &quot;dynamic&quot;. A dynamic variable is automatically updated when it is dependent on other variables values.</li>
+    <li>The := operator can also be used to send data to a file.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(x := 1, y ::= 2, \textrm{outfile}(\textrm{"a file"}) := 345\)
+  </div>
+</div>
+
+<div class="entry operator arithmetic symbols" id="operator_plus">
+  <p class="name"><span class="name">+</span>, <span class="name">+?</span></p>
+  <div class="explanation">Adds two values
+    <h2>Notes:</h2>
+    <ul>
+    <li>The operands can be of any type as long as it is mathematically valid (scalars, complexes, quaternions, matrices...)</li>
+    <li>The convenient operator <span class="name">+?</span> can be used when operands are not mathematically compatible, but the result is driven by common sense, like a scalar and a matrix</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(1+2, \left(\begin{matrix}1 & 2\\3 & 4\\\end{matrix}\right)+\left(\begin{matrix}5 & 6\\7 & 8\\\end{matrix}\right),~1~+? \left(\begin{matrix}2 & 3\\4 & 5\\\end{matrix}\right) \)
+  </div>
+</div>
+
+<div class="entry operator arithmetic symbols" id="operator_minus">
+  <p class="name"><span class="name">-</span>, <span class="name">-?</span></p>
+  <div class="explanation">Subtract two values
+    <h2>Notes:</h2>
+    <ul>
+    <li>The operands can be of any type as long as it is mathematically valid (scalars, complexes, quaternions, matrices...)</li>
+    <li>The convenient operator <span class="name">-?</span> can be used when operands are not mathematically compatible, but the result is driven by common sense, like a scalar and a matrix</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(1-2, \left(\begin{matrix}1 & 2\\3 & 4\\\end{matrix}\right)-\left(\begin{matrix}5 & 6\\7 & 8\\\end{matrix}\right),~1~-? \left(\begin{matrix}2 & 3\\4 & 5\\\end{matrix}\right) \)
+  </div>
+</div>
+
+<div class="entry operator arithmetic symbols" id="operator_times">
+  <p class="name"><span class="name">*</span>, <span class="name">*?</span></p>
+  <div class="explanation">Multiples two values
+    <h2>Notes:</h2>
+    <ul>
+    <li>The operands can be of any type as long as it is mathematically valid (scalars, complexes, quaternions, matrices...)</li>
+    <li>The convenient operator <span class="name">*?</span> can be used when operands are not mathematically compatible, but the result is driven by common sense, like when you want the operation to be applied element-by element for two matrices of the same size.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(1*2, \left(\begin{matrix}1 & 2\\3 & 4\\\end{matrix}\right)*\left(\begin{matrix}5 & 6\\7 & 8\\\end{matrix}\right),~\left(\begin{matrix}1\\2\end{matrix}\right)*?\left(\begin{matrix}3\\4\end{matrix}\right) \)
+  </div>
+</div>
+
+<div class="entry operator arithmetic symbols" id="operator_divide">
+  <p class="name"><span class="name">/</span>, <span class="name">/?</span></p>
+  <div class="explanation">Divides two values
+    <h2>Notes:</h2>
+    <ul>
+    <li>The operands can be of any type as long as it is mathematically valid (scalars, complexes, quaternions, matrices...)</li>
+    <li>for quaternions, this notation is ambiguous and is provided for convenience. In Chalk, \(q/r\) is computed as \(q*{r^{-1}}\), not as \(r^{-1}*q)\)</li>
+    <li>The convenient operator <span class="name">/?</span> can be used when operands are not mathematically compatible, but the result is driven by common sense, like when you want the operation to be applied element-by-element for two matrices of the same size.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(1*2, \left(\begin{matrix}1 & 2\\3 & 4\\\end{matrix}\right)*\left(\begin{matrix}5 & 6\\7 & 8\\\end{matrix}\right),~\left(\begin{matrix}1\\2\end{matrix}\right)/?\left(\begin{matrix}3\\4\end{matrix}\right) \)
+  </div>
+</div>
+
+<div class="entry operator arithmetic symbols" id="operator_power">
+  <p class="name"><span class="name">^</span>, <span class="name">**</span>, <span class="name">^?</span>, <span class="name">**?</span></p>
+  <div class="explanation">Power of a value
+    <h2>Notes:</h2>
+    <ul>
+    <li>The operands can be of any type as long as it is mathematically valid (scalars, complexes, quaternions, matrices...)</li>
+    <li>The convenient operator <span class="name">^?</span> or <span class="name">**?</span> can be used when operands are not mathematically compatible, but the result is driven by common sense, like when you want the operation to be applied element-by element for two matrices of the same size.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(\textrm{1^2}, \textrm{1**2}, ~\left(\begin{matrix}1\\2\end{matrix}\right)\textrm{^?}\left(\begin{matrix}3\\4\end{matrix}\right) \)
+  </div>
+</div>
+
+<div class="entry operator arithmetic symbols" id="operator_greater_than">
+  <p class="name"><span class="name">&gt;</span>, <span class="name">&gt;?</span></p>
+  <div class="explanation">Compares two values (strictly greater than)
+    <h2>Notes:</h2>
+    <ul>
+    <li>The operands can be of any type as long as it is mathematically valid (scalars, complexes, quaternions, matrices...)</li>
+    <li>The convenient operator <span class="name">&gt;?</span> can be used when operands are not mathematically compatible, but the result is driven by common sense, like when you want the operation to be applied element-by-element for two matrices of the same size.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(1>2,1.2>3.456,~1±3>1±2,~\left(\begin{matrix}1 & 2\\3 & 4\\\end{matrix}\right)>?2,~\left(\begin{matrix}1\\2\end{matrix}\right)>?\left(\begin{matrix}3\\4\end{matrix}\right) \)
+  </div>
+</div>
+
+<div class="entry operator arithmetic symbols" id="operator_greater_equal_than">
+  <p class="name"><span class="name">&gt;=</span>, <span class="name">&gt;=?</span>, <span class="name">&ge;</span>, <span class="name">&ge;?</span></p>
+  <div class="explanation">Compares two values (greater than or equal)
+    <h2>Notes:</h2>
+    <ul>
+    <li>The operands can be of any type as long as it is mathematically valid (scalars, complexes, quaternions, matrices...)</li>
+    <li>The convenient operator <span class="name">&ge;?</span> can be used when operands are not mathematically compatible, but the result is driven by common sense, like when you want the operation to be applied element-by-element for two matrices of the same size.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(1&gt;=2,1.2≥3.456,~1±3&gt;=1±2,~\left(\begin{matrix}1 & 2\\3 & 4\\\end{matrix}\right)&gt;=?2,~\left(\begin{matrix}1\\2\end{matrix}\right)&gt;=?\left(\begin{matrix}3\\4\end{matrix}\right) \)
+  </div>
+</div>
+
+<div class="entry operator arithmetic symbols" id="operator_lower_than">
+  <p class="name"><span class="name">&lt;</span>, <span class="name">&lt;?</span></p>
+  <div class="explanation">Compares two values (strictly lower than)
+    <h2>Notes:</h2>
+    <ul>
+    <li>The operands can be of any type as long as it is mathematically valid (scalars, complexes, quaternions, matrices...)</li>
+    <li>The convenient operator <span class="name">&lt;?</span> can be used when operands are not mathematically compatible, but the result is driven by common sense, like when you want the operation to be applied element-by-element for two matrices of the same size.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(1&lt;2,1.2&lt;3.456,~1±3&lt;1±2,~\left(\begin{matrix}1 & 2\\3 & 4\\\end{matrix}\right)&lt;?2,~\left(\begin{matrix}1\\2\end{matrix}\right)&lt;?\left(\begin{matrix}3\\4\end{matrix}\right) \)
+  </div>
+</div>
+
+<div class="entry operator arithmetic symbols" id="operator_lower_equal_than">
+  <p class="name"><span class="name">&lt;=</span>, <span class="name">&lt;=?</span>, <span class="name">&le;</span>, <span class="name">&le;?</span></p>
+  <div class="explanation">Compares two values (lower than or equal)
+    <h2>Notes:</h2>
+    <ul>
+    <li>The operands can be of any type as long as it is mathematically valid (scalars, complexes, quaternions, matrices...)</li>
+    <li>The convenient operator <span class="name">&le;?</span> can be used when operands are not mathematically compatible, but the result is driven by common sense, like when you want the operation to be applied element-by-element for two matrices of the same size.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(1&lt;=2,1.2≤3.456,~1±3&lt;=1±2,~\left(\begin{matrix}1 & 2\\3 & 4\\\end{matrix}\right)&lt;=?2,~\left(\begin{matrix}1\\2\end{matrix}\right)&lt;=?\left(\begin{matrix}3\\4\end{matrix}\right) \)
+  </div>
+</div>
+
+<div class="entry operator arithmetic symbols" id="operator_equal">
+  <p class="name"><span class="name">==</span>, <span class="name">==?</span></p>
+  <div class="explanation">Compares equality of two values
+    <h2>Notes:</h2>
+    <ul>
+    <li>The operands can be of any type as long as it is mathematically valid (scalars, complexes, quaternions, matrices...)</li>
+    <li>The convenient operator <span class="name">==?</span> can be used when operands are not mathematically compatible, but the result is driven by common sense, like when you want the operation to be applied element-by-element for two matrices of the same size.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(1==2,1.2==3.456,~1±3==1±2,~\left(\begin{matrix}1 & 2\\3 & 4\\\end{matrix}\right)==?2,~\left(\begin{matrix}1\\2\end{matrix}\right)==?\left(\begin{matrix}3\\4\end{matrix}\right) \)
+  </div>
+</div>
+
+<div class="entry operator misc uncertainty symbols" id="operator_per_cent">
+  <p class="name"><span class="parameter">x</span><span class="name">%</span></p>
+  <div class="explanation">used to express a per cent uncertainty
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : scalar</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(12±3\%, 12\textrm{+/-)3\%\)
+  </div>
+</div>
+
+<div class="entry operator misc uncertainty symbols" id="operator_per_thousand">
+  <p class="name"><span class="parameter">x</span><span class="name">‰</span></p>
+  <div class="explanation">used to express a per thousand uncertainty
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : scalar</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(12±3‰, 12\textrm{+/-}3‰\)
+  </div>
+</div>
+
+<div class="entry operator misc uncertainty symbols" id="operator_per_ten_thousand">
+  <p class="name"><span class="parameter">x</span><span class="name">‱</span></p>
+  <div class="explanation">used to express a per ten thousand uncertainty
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : scalar</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(12±3‱, 12\textrm{+/-}3‱\)
+  </div>
+</div>
+
+<div class="entry operator misc uncertainty" id="operator_per_million">
+  <p class="name"><span class="parameter">x</span><span class="name">ppm</span></p>
+  <div class="explanation">used to express a per million uncertainty
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : scalar</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(12±3ppm, 12\textrm{+/-}3ppm\)
+  </div>
+</div>
+
+<div class="entry operator arithmetic symbols" id="operator_abs">
+  <p class="name"><span class="name">|</span><span class="parameter">x</span><span class="name">|</span></p>
+  <div class="explanation">Returns the magnitude of a value.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : scalar, complex, quaternion or matrix.</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+    <li>The operator \(|\ldots|\) is equivalent to the \(abs{(\ldots)}\) function</li>
+    <li>For complexes and quaternions, returns the norm (as expected);</li>
+    <li>Matrices are supported for convenience and |…| is simply applied to all the elements separately.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(|1.234|,~|1+2*i|,~|1+2*i-3*j+4*k|,~\left|\left(\begin{matrix}1 & 2\\3 & 4\\\end{matrix}\right)\right|\)<br/>
+    \(abs(1.234),~abs(1+2*i),~abs(1+2*i-3*j+4*k),~abs\left(\begin{matrix}1 & 2\\3 & 4\\\end{matrix}\right)\)<br/>
+  </div>
+</div>
+
+<div class="entry operator arithmetic symbols" id="operator_factorial">
+  <p class="name"><span class="parameter">x</span><span class="name">!</span></p>
+  <div class="explanation">Returns the factorial of a value.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : integer.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(5!\)<br/>
+  </div>
+</div>
+
+<div class="entry operator boolean raw bits symbols" id="operator_and">
+  <p class="name"><span class="name">AND</span>, <span class="parameter">&amp;&amp;</span>, <span class="name">AND?</span>, <span class="parameter">&amp;&amp;?</span></p>
+  <div class="explanation">Logical AND between two booleans, or bitwise AND between raw values
+    <h2>Parameters:</h2>
+    <h2>Notes:</h2>
+    <ul>
+    <li>Matrices are supported for convenience and the operator is simply applied to all the elements separately.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(x~AND~y, x~\&\&~y, \left(\begin{matrix}x & y\\z & t\\\end{matrix}\right)~AND?~\left(\begin{matrix}x & y\\z & t\\\end{matrix}\right)\)
+  </div>
+</div>
+
+<div class="entry operator boolean raw bits" id="operator_not">
+  <p class="name"><span class="name">NOT</span>, <span class="name">NOT?</span></span></p>
+  <div class="explanation">Logical NOT for a boolean, or complement to 1 for a raw value
+    <h2>Parameters:</h2>
+    <h2>Notes:</h2>
+    <ul>
+    <li>Matrices are supported for convenience and the operator is simply applied to all the elements separately.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(NOT(x), NOT?~\left(\begin{matrix}x & y\\z & t\\\end{matrix}\right)\)
+  </div>
+</div>
+
+<div class="entry operator boolean raw bits symbols" id="operator_or">
+  <p class="name"><span class="name">OR</span>, <span class="parameter">||;</span>, <span class="name">OR?</span>, <span class="parameter">||?</span></p>
+  <div class="explanation">Logical OR between two booleans, or bitwise OR between raw values
+    <h2>Parameters:</h2>
+    <h2>Notes:</h2>
+    <ul>
+    <li>Matrices are supported for convenience and the operator is simply applied to all the elements separately.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(x~OR~y, x~||~y, \left(\begin{matrix}x & y\\z & t\\\end{matrix}\right)~OR?~\left(\begin{matrix}x & y\\z & t\\\end{matrix}\right)\)
+  </div>
+</div>
+
+<div class="entry operator boolean raw bits symbols" id="operator_xor">
+  <p class="name"><span class="name">XOR</span>, <span class="parameter">^^</span>, <span class="name">XOR?</span>, <span class="parameter">^^?</span></p>
+  <div class="explanation">Logical XOR between two booleans, or bitwise XOR between raw values
+    <h2>Parameters:</h2>
+    <h2>Notes:</h2>
+    <ul>
+    <li>Matrices are supported for convenience and the operator is simply applied to all the elements separately.</li>
+    <li>There is no ambiguity with the pow operator that is written ^ in Chalk</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(x~XOR~y, x~\hat{}\hat{}~y, \left(\begin{matrix}x & y\\z & t\\\end{matrix}\right)~XOR?~\left(\begin{matrix}x & y\\z & t\\\end{matrix}\right)\)
+  </div>
+</div>
+
+<div class="entry operator boolean raw bits symbols" id="operator_neg">
+  <p class="name"><span class="name">~</span>, <span class="parameter">~?</span></p>
+  <div class="explanation">Bitwise complement to 1 of a raw value, equivalent to NOT for booleans
+    <h2>Parameters:</h2>
+    <h2>Notes:</h2>
+    <ul>
+    <li>Matrices are supported for convenience and the operator is simply applied to all the elements separately.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(\tilde{}x, \tilde{}?\left(\begin{matrix}x & y\\z & t\\\end{matrix}\right)\)
+  </div>
+</div>
+
+<div class="entry arithmetic symbols" id="abs">
+  <p class="name"><span class="name">abs</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the magnitude of a value.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : scalar, complex, quaternion or matrix.</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+    <li>The operator \(|\ldots|\) can be used instead of \(abs{(\ldots)}\)</li>
+    <li>For complexes and quaternions, returns the norm (as expected);</li>
+    <li>Matrices are supported for convenience and abs() is simply applied to all the elements separately.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(abs(1.234),~abs(1+2*i~),~abs(1+2*i-3*j+4*k~),~abs\left(\begin{matrix}1 & 2\\3 & 4\\\end{matrix}\right),~abs(\{1, 2, 3, 4\}) \)
+  </div>
+</div>
+
+<div class="entry trigonometry" id="acos">
+  <p class="name"><span class="name">acos</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the arccosinus (in radians) of \(x\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Matrices are supported for convenience, and the arccosinus is simply applied to every element, this is not a Taylor development.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(acos{(12.34)}, acos{\left(\begin{matrix}1&2\\3&4\end{matrix}\right)}\)
+  </div>
+</div>
+
+<div class="entry arithmetic trigonometry" id="acosh">
+  <p class="name"><span class="name">acosh</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the hyperbolic arccosinus of \(x\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Matrices are supported for convenience, and the hyperbolic arccosinus is simply applied to every element, this is not a Taylor development.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(acosh{(12.34)}, acosh{\left(\begin{matrix}1&2\\3&4\end{matrix}\right)}\)
+  </div>
+</div>
+
+<div class="entry trigonometry complex" id="angle">
+  <p class="name"><span class="name">angle</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the argument (angle in radians) of a complex value \(x\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : complex</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(angle{(12.34)}, angle{(12+34*i)}\)
+  </div>
+</div>
+
+<div class="entry trigonometry quaternion" id="angles">
+  <p class="name"><span class="name">angles</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the euler angles (in radians) of a quaternion value \(x\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : quaternion</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(angles{(12.34)}, angles{(12+34*i)}, angles{(1+2*i+3*j+4*k)}\)
+  </div>
+</div>
+
+<div class="entry trigonometry" id="asin">
+  <p class="name"><span class="name">asin</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the arcsinus (in radians) of \(x\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Matrices are supported for convenience, and the arcsinus is simply applied to every element, this is not a Taylor development.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(asin{(12.34)}, asin{\left(\begin{matrix}1&2\\3&4\end{matrix}\right)}\)
+  </div>
+</div>
+
+<div class="entry arithmetic trigonometry" id="asinh">
+  <p class="name"><span class="name">asinh</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the hyperbolic arcsinus of \(x\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Matrices are supported for convenience, and the hyperbolic arcsinus is simply applied to every element, this is not a Taylor development.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(asinh{(12.34)}, asinh{\left(\begin{matrix}1&2\\3&4\end{matrix}\right)}\)
+  </div>
+</div>
+
+<div class="entry trigonometry" id="atan">
+  <p class="name"><span class="name">atan</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the arctangent (in radians) of \(x\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Matrices are supported for convenience, and the arctangent is simply applied to every element, this is not a Taylor development.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(atan{(12.34)}, atan{\left(\begin{matrix}1&2\\3&4\end{matrix}\right)}\)
+  </div>
+</div>
+
+<div class="entry trigonometry" id="atan2">
+  <p class="name"><span class="name">atan</span>(<span class="parameter">y</span>, <span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the arctangent (in radians) of the point \((x, y)\)</span>.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">y</span> : real</li>
+      <li><span class="parameter">x</span> : real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li><span class="expression">y, x</span> are specified in that order, like the usual atan2() function of programming langages</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(atan2{(12, 34)}\)
+  </div>
+</div>
+
+<div class="entry arithmetic trigonometry" id="atanh">
+  <p class="name"><span class="name">atanh</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the hyperbolic arctangent of \(x\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Matrices are supported for convenience, and the hyperbolic arctangent is simply applied to every element, this is not a Taylor development.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(atanh{(12.34)}, atanh{\left(\begin{matrix}1&2\\3&4\end{matrix}\right)}\)
+  </div>
+</div>
+
+<div class="entry arithmetic" id="binomial">
+  <p class="name"><span class="name">binomial</span>(<span class="parameter">n</span>, <span class="parameter">k</span>)</p>
+  <div class="explanation">Returns the binomial coefficients \({n \choose k}\) of a value, for <span class="parameter">n</span> and <span class="parameter">k</span> positive integers.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">n</span> : integer</li>
+      <li><span class="parameter">k</span> : positive integer</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+    <li>Negative values of \(n\) are supported, so that \({-n \choose k} = (-1)^k{n+k-1 \choose k}\)</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(binomial(1, 2)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="bits_concat_be">
+  <p class="name"><span class="name">bits_concat_be</span>(<span class="parameter">x</span>,...)</p>
+  <div class="explanation"> concatenates all arguments at the bit level, big endian style
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value or list</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>There can be any number of arguments</li>
+      <li>&quot;big endian&quot; means that the first argument will be he most significand bits of the results. However, the bits of the argument itself are not rearranged</li>
+      <li>if an argument is a list, it is automatically split</li>
+      <li>all arguments must be raw values with a know bit size, but not necessarily the same</li>
+      <li>the result is always defined by default as an unsigned integer, which bit size if the sum of all the arguments bit sizes</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(\textrm{bits_concat_be}(ToU8(123), ToU32(\{456, 789\}))\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="bits_concat_le">
+  <p class="name"><span class="name">bits_concat_le</span>(<span class="parameter">x</span>,...)</p>
+  <div class="explanation"> concatenates all arguments at the bit level, little endian style
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value or list</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>There can be any number of arguments</li>
+      <li>&quot;little endian&quot; means that the first argument will be he least significand bits of the results. However, the bits of the argument itself are not rearranged</li>
+      <li>if an argument is a list, it is automatically split</li>
+      <li>all arguments must be raw values with a know bit size, but not necessarily the same</li>
+      <li>the result is always defined by default as an unsigned integer, which bit size if the sum of all the arguments bit sizes</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(\textrm{bits_concat_le}(ToU8(123), ToU32(\{456, 789\}))\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="bits_reverse">
+  <p class="name"><span class="name">bits_reverse</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> reverse the bits of the argument
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value or list</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>When the argument is a list, the reverse operation is applied for convenience to every element of the list; it does not change the order of the elements in the list.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(\textrm{bits_reverse}(ToU8(123)), \textrm{bits_reverse}(ToU32(\{456, 789\}))\)
+  </div>
+</div>
+
+<div class="entry arithmetic symbols" id="∛">
+  <p class="name"><span class="name">∛</span>(<span class="parameter">x</span>), <span class="name">cbrt</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns \(\sqrt[3]{x}\), the cube root of \(x\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : positive real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(cbrt(123)\), \(∛(123)\)
+  </div>
+</div>
+
+<div class="entry arithmetic" id="cbrt">
+  <p class="name"><span class="name">cbrt</span>(<span class="parameter">x</span>), <span class="name">∛</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns \(\sqrt[3]{x}\), the cube root of \(x\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : positive real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(cbrt(123)\), \(∛(123)\)
+  </div>
+</div>
+
+<div class="entry trigonometry" id="cos">
+  <p class="name"><span class="name">cos</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the cosinus of \(x\) (in radians).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Matrices are supported for convenience, and the cosinus is simply applied to every element, this is not a Taylor development.</li>
+      <li>The operator ° can be used to enter x in degrees</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(\cos{(12.34)}, \cos{(90°)}, \cos{\left(\begin{matrix}1&2\\3&4\end{matrix}\right)}\)
+  </div>
+</div>
+
+<div class="entry arithmetic trigonometry" id="cosh">
+  <p class="name"><span class="name">cosh</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the hyperbolic cosinus of \(x\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Matrices are supported for convenience, and the hyperbolic cosinus is simply applied to every element, this is not a Taylor development.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(\cosh{(12.34)}, \cosh{\left(\begin{matrix}1&2\\3&4\end{matrix}\right)}\)
+  </div>
+</div>
+
+<div class="entry arithmetic complex" id="conj">
+  <p class="name"><span class="name">conj</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the conjugate of a quaternion \(x\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : quaternion or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Of course, real and complexes are supported.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(conj{(1+2*i+3*j+4*k)}, conj{\left(\begin{matrix}1&2+i\\3+j&4+k\end{matrix}\right)}\)
+  </div>
+</div>
+
+<div class="entry matrix linear-algebra" id="det">
+  <p class="name"><span class="name">det</span>(<span class="parameter">M</span>)</p>
+  <div class="explanation">Returns the determinant of a matrix M</span>.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">m</span> : scalar or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>scalars are supported for convenience</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(det{(1)}, det\left(\begin{matrix}1 & 2\\3 & 4\end{matrix}\right)\)
+  </div>
+</div>
+
+<div class="entry arithmetic" id="exp">
+  <p class="name"><span class="name">exp</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the exponential of <span class="parameter">x</span>.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real or complex</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Complex values are supported, so that \(e^{i\theta} = \cos\theta+i\sin\theta\)
+      <li>The function exp(x) is equivalent to e^x (power of constant \(e\))</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(exp(1), exp(1+2*i)\)
+  </div>
+</div>
+
+<div class="entry arithmetic" id="fibonacci">
+  <p class="name"><span class="name">fibonacci</span>(<span class="parameter">n</span>)</p>
+  <div class="explanation">Returns the \(n^{th}\) Fibonacci number.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">n</span> : positive integer</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(fibonacci(123)\)
+  </div>
+</div>
+
+<div class="entry base" id="fromBase">
+  <p class="name"><span class="name">fromBase</span>(<span class="parameter">x</span>, <span class="parameter">b</span>)</p>
+  <div class="explanation">Force the interpretation of \(x\) in base \(b\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : number</li>
+      <li><span class="parameter">b</span> : base</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>If the number has a valid base prefix or suffix, it will prevent the interpretation in the specified base \(b\)</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(fromBase{(100, 16)}\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="fromU8">
+  <p class="name"><span class="name">fromU8</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts from unsigned 8 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(fromU8(x)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="fromS8">
+  <p class="name"><span class="name">fromS8</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts from signed 8 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>sign bit is the most significand bit.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(fromS8(x)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="fromU16">
+  <p class="name"><span class="name">fromU16</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts from unsigned 16 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(fromU16(x)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="fromS16">
+  <p class="name"><span class="name">fromS16</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts from signed 16 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>sign bit is the most significand bit.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(fromS16(x)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="fromU32">
+  <p class="name"><span class="name">fromU32</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts from unsigned 32 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(fromU32(x)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="fromS32">
+  <p class="name"><span class="name">fromS32</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts from signed 32 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>sign bit is the most significand bit.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(fromS32(x)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="fromU64">
+  <p class="name"><span class="name">fromU64</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts from unsigned 64 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(fromU64(x)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="fromS64">
+  <p class="name"><span class="name">fromS64</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts from signed 64 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>sign bit is the most significand bit.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(fromS64(x)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="fromU128">
+  <p class="name"><span class="name">fromU128</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts from unsigned 128 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(fromU128(x)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="fromS128">
+  <p class="name"><span class="name">fromS128</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts from signed 128 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>sign bit is the most significand bit.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(fromS128(x)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="fromU256">
+  <p class="name"><span class="name">fromU256</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts from unsigned 256 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(fromU256(x)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="fromS256">
+  <p class="name"><span class="name">fromS256</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts from signed 256 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>sign bit is the most significand bit.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(fromS256(x)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="fromF16">
+  <p class="name"><span class="name">fromF16</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts from IEEE754 16 bits float.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>1 sign bit, 5 exponent bits, 10 significand bits</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(fromF16(x)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="fromF32">
+  <p class="name"><span class="name">fromF32</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts from IEEE754 32 bits float.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>1 sign bit, 8 exponent bits, 23 significand bits</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(fromF32(x)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="fromF64">
+  <p class="name"><span class="name">fromF64</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts from IEEE754 64 bits float.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>1 sign bit, 11 exponent bits, 52 significand bits</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(fromF64(x)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="fromF128">
+  <p class="name"><span class="name">fromF128</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts from IEEE754 128 bits float.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>1 sign bit, 5 exponent bits, 112 significand bits</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(fromF128(x)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="fromF256">
+  <p class="name"><span class="name">fromF256</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts from IEEE754 256 bits float.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>1 sign bit, 19 exponent bits, 236 significand bits</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(fromF256(x)\)
+  </div>
+</div>
+
+<div class="entry arithmetic" id="gamma">
+  <p class="name"><span class="name">gamma</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the Gamma function result of \(x\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Matrices are supported for convenience, and the gamma value is simply applied to every element.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(gamma{(12.34)}, gamma{\left(\begin{matrix}1&2\\3&4\end{matrix}\right)}\)
+  </div>
+</div>
+
+<div class="entry arithmetic" id="gcd">
+  <p class="name"><span class="name">gcd</span>(<span class="parameter">n</span>, <span class="parameter">m</span>)</p>
+  <div class="explanation">Returns the greatest common divisor of \(n\) and \(m\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">n</span> : integer</li>
+      <li><span class="parameter">m</span> : integer</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+    <li>Negative values are supported.</li>
+    <li>Matrices are supported for convenience, and the gcd is simply applied to every element.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(gcd(12, 34)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="golomb_rice_decode">
+  <p class="name"><span class="name">golomb_rice_decode</span>(<span class="parameter">x</span>,[<span class="parameter">rice=0</span>])</p>
+  <div class="explanation"> decompress a golomb bit stream, with optional rice encoding
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value or list of raw values</li>
+      <li><span class="parameter">rice</span> : if 0, no rice encoding, otherwise the rice parameter</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>the output is a list of unsigned values;</li>
+      <li>inexact flag is raised if some bits are missing.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(\textrm{golomb_rice_decode}(ToU32({123, 456})), \textrm{golomb_rice_decode}(ToU32({123, 456}), 8)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="golomb_rice_encode">
+  <p class="name"><span class="name">golomb_rice_encode</span>(<span class="parameter">x</span>,[<span class="parameter">rice=0</span>])</p>
+  <div class="explanation"> compress a golomb bit stream, with optional rice encoding
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value or unsigned integer value, or list of such values</li>
+      <li><span class="parameter">rice</span> : if 0, no rice encoding, otherwise the rice parameter</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>the output is a single raw value with exact bit count.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(\textrm{golomb_rice_encode}(123)), \textrm{golomb_rice_encode}({123, 456, 789}), 8)\)
+  </div>
+</div>
+
+<div class="entry matrix linear-algebra" id="hconcat">
+  <p class="name"><span class="name">hconcat</span>(<span class="parameter">M</span>,...)</p>
+  <div class="explanation">Concatenates matrices horizontally</span>.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">M</span> : list or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Matrices must have the same row count;</li>
+      <li>Lists are supported for convenience and are automatically split.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(hconcat{(M1)}, hconcat{(M1, M2)}, hconcat{(\{M1, M2\})}\)
+  </div>
+</div>
+
+<div class="entry matrix linear-algebra" id="identity">
+  <p class="name"><span class="name">identity</span>(<span class="parameter">n</span>)</p>
+  <div class="explanation">Builds the identity matrix \(n\times n\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">n</span> : positive integer</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(identity(12)\)
+  </div>
+</div>
+
+<div class="entry misc uncertainty" id="interval">
+  <p class="name"><span class="name">interval</span>(<span class="parameter">x</span>, <span class="parameter">d</span>[, <span class="parameter">direction=0</span>])</p>
+  <div class="explanation">Builds an interval around x.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real</li>
+      <li><span class="parameter">d</span> : real</li>
+      <li><span class="parameter">direction</span> : -1, 0 or 1</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>direction = -1 builds the interval [x-d;x]</li>
+      <li>direction = 0 builds the interval [x-d;x+d]</li>
+      <li>direction = 1 builds the interval [x;x+d]</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(interval(1,2), interval(1,-2), interval(1,2,1)\)
+  </div>
+</div>
+
+<div class="entry data" id="infile">
+  <p class="name"><span class="name">infile</span>(<span class="parameter">url</span>)</p>
+  <div class="explanation">takes the content from the location \(url\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">url</span> : url string</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>the url can be an Unix file path or a full URL</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(infile(\textrm{'/home/Desktop/toto.txt'}), infile(\textrm{'file:///home/Desktop/toto.txt'}), infile(\textrm{'http://host/location/page.txt'})\)
+  </div>
+</div>
+
+<div class="entry misc" id="input">
+  <p class="name"><span class="name">input</span>(<span class="parameter">n</span>)</p>
+  <div class="explanation">takes the input (string) from the \(n^{th}\) previous computation.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">n</span> : positive integer</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+    <li>Note that the index of the computations are displayed in the upper-left gray bubble of each item, and that this is a reverse order so that input(1) is always the last computation.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(input(1)\)
+  </div>
+</div>
+
+<div class="entry arithmetic" id="integral">
+  <p class="name"><span class="name">integral</span>(<span class="parameter">expression</span>, <span class="parameter">identifier</span>, <span class="parameter">inf</span>, <span class="parameter">sup</span>, <span class="parameter">step</span>)</p>
+  <div class="explanation">Returns an approximation of \(\int_{inf}^{sup}{(expression)}\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">expression</span> : an expression that can be evaluated</li>
+      <li><span class="parameter">identifier</span> : an identifier</li>
+      <li><span class="parameter">inf</span> : a real number</li>
+      <li><span class="parameter">sup</span> : a real number</li>
+      <li><span class="parameter">step</span> : a real number</li>
+    </ul>
+    <h2>Notes:</h2>
+      <ul>
+        <li>It is required that <span class="parameter">inf</span> &leq; <span class="parameter">sup</span>, and <span class="parameter">step</span> &gt; 0</li>
+      </ul>
+    <h2>Examples:</h2>
+    \(integral(sqrt(x), x, 0, 1, 0.01)\)
+  </div>
+</div>
+
+<div class="entry matrix linear-algebra" id="invert">
+  <p class="name"><span class="name">invert</span>(<span class="parameter">M</span>)</p>
+  <div class="explanation">Return the invert of a matrix M</span>.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">M</span> : scalar or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>scalars are supported for convenience an returns \(\frac{1}{x}\)</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(invert{(1)}, invert\left(\begin{matrix}1 & 2\\3 & 4\end{matrix}\right)\)
+  </div>
+</div>
+
+<div class="entry primes" id="isprime">
+  <p class="name"><span class="name">isprime</span>(<span class="parameter">n</span>[, <span class="parameter">algorithm=0</span>])</p>
+  <div class="explanation">tells if \(n\) is a prime number
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">n</span> : integer</li>
+      <li><span class="parameter">algorithm</span> : 0, 1, 2, 3, 4 or 5</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>The answer can be <span class="expression">no</span>, <span class="expression">yes</span>, <span class="expression">certainly</span> for a probabilistic test, <span class="expression">maybe</span> if it is out of the range of the selected algorithm.</li>
+      <li>negative values are supported for convenience</li>
+      <li>Possibles algorithm are
+         <ul>
+           <li>0 : best combination of the following algorithms</li>
+           <li>1 : use only the precomputed primes set embedded in Chalk</li>
+           <li>2 : use a standard Miller Rabin probabilistic test</li>
+           <li>3 : use an enforced Miller Rabin probabilistic test</li>
+           <li>4 : use a Miller Rabin deterministic test</li>
+           <li>5 : use a totally recreative and useless AKS implementation</li>
+         </ul>
+      </li>
+    </ul>
+    <h2>Examples:</h2>
+    \(isprime(12345), isprime(12345,4)\)
+  </div>
+</div>
+
+<div class="entry arithmetic" id="jacobi">
+  <p class="name"><span class="name">jacobi</span>(<span class="parameter">n</span>, <span class="parameter">m</span>)</p>
+  <div class="explanation">Returns the jacobi symbol of \(n\) and \(m\).</li>
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">n</span> : integer</li>
+      <li><span class="parameter">m</span> : odd integer</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+    <li>Negative values are supported.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(jacobi(1, 3)\)
+  </div>
+</div>
+
+<div class="entry arithmetic" id="lcm">
+  <p class="name"><span class="name">lcm</span>(<span class="parameter">n</span>, <span class="parameter">m</span>)</p>
+  <div class="explanation">Returns the lowest common multiple of \(n\) and \(m\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">n</span> : integer</li>
+      <li><span class="parameter">m</span> : integer</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+    <li>Negative values are supported.</li>
+    <li>Matrices are supported for convenience, and the lcm is simply applied to every element.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(lcm(12, 34)\)
+  </div>
+</div>
+
+<div class="entry arithmetic" id="ln">
+  <p class="name"><span class="name">ln</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the natural logarithm of <span class="parameter">x</span> (base <span class="parameter">e</span>).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : scalar</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(\ln(123)\)
+  </div>
+</div>
+
+<div class="entry arithmetic" id="log10">
+  <p class="name"><span class="name">log10</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the 10-based logarithm of <span class="parameter">x</span>.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : scalar</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(\log_{10}(123)\)
+  </div>
+</div>
+
+<div class="entry list" id="list_build">
+  <p class="name"><span class="name">{..., ...}</span></p>
+  <div class="explanation">Builds a list
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    {1, 2, 3, 4, 5, 6}
+  </div>
+</div>
+
+<div class="entry matrix linear-algebra" id="matrix_build">
+  <p class="name"><span class="name">((..., ...)(..., ...) ...)</span></p>
+  <div class="explanation">Builds a matrix (by rows)
+    <h2>Notes:</h2>
+    <ul>
+    <li>The rows must have the same size</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(((1,2,3)(4,5,6))\)
+  </div>
+</div>
+
+<div class="entry matrix linear-algebra" id="matrix">
+  <p class="name"><span class="name">matrix</span>(<span class="parameter">n</span>, <span class="parameter">m</span>[, <span class="parameter">defaultValue=0</span>])</p>
+  <div class="explanation">Builds a matrix \(n\times m\) (n rows, m columns)
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">n</span> : positive integer</li>
+      <li><span class="parameter">m</span> : positive integer</li>
+      <li><span class="parameter">defaultValue</span> : scalar</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(matrix(12, 34), matrix(12, 34, 5)\)
+  </div>
+</div>
+
+<div class="entry arithmetic" id="mod">
+  <p class="name"><span class="name">mod</span>(<span class="parameter">x</span>, <span class="parameter">y</span>)</p>
+  <div class="explanation">Returns the remainder of \(x\) modulo \(y\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : scalar</li>
+      <li><span class="parameter">y</span> : scalar</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+    <li>Negative values are supported, but the result is always positive</li>
+    <li>Uncertainty is not supported for y</li>
+    <li>Matrices are supported for convenience, and the modulo is simply applied to every element.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(mod(123, 4)\), \(mod(123.4, 56)\), \(mod(\frac{123}{4}, \frac{5}{6})\)
+  </div>
+</div>
+
+<div class="entry primes" id="nextprime">
+  <p class="name"><span class="name">nextprime</span>(<span class="parameter">n</span>[, <span class="parameter">algorithm=0</span>])</p>
+  <div class="explanation">returns the prime following \(n\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">n</span> : positive integer</li>
+      <li><span class="parameter">algorithm</span> : 0, 1, 2, 3, 4 or 5</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>if \(n\) is already prime, the next prime is returned, not \(n\)</li>
+      <li>if the answer is probabilistic, an inexact flag is raised</li>
+      <li>Possibles algorithms are
+         <ul>
+           <li>0 : best combination of the following algorithms</li>
+           <li>1 : use only the precomputed primes set embedded in Chalk</li>
+           <li>2 : use a standard Miller Rabin probabilistic test</li>
+           <li>3 : use an enforced Miller Rabin probabilistic test</li>
+           <li>4 : use a Miller Rabin deterministic test</li>
+           <li>5 : use a totally recreative and useless AKS implementation</li>
+         </ul>
+      </li>
+    </ul>
+    <h2>Examples:</h2>
+    \(nextprime(12345), nextprime(12345,4)\)
+  </div>
+</div>
+
+<div class="entry primes" id="nthprime">
+  <p class="name"><span class="name">nthprime</span>(<span class="parameter">n</span>[, <span class="parameter">algorithm=0</span>])</p>
+  <div class="explanation">returns the \(n^{th}\) prime.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">n</span> : positive integer</li>
+      <li><span class="parameter">algorithm</span> : 0, 1, 2, 3, 4 or 5</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>if the answer is probabilistic, an inexact flag is raised</li>
+      <li>Possibles algorithms are
+         <ul>
+           <li>0 : best combination of the following algorithms</li>
+           <li>1 : use only the precomputed primes set embedded in Chalk</li>
+           <li>2 : use a standard Miller Rabin probabilistic test</li>
+           <li>3 : use an enforced Miller Rabin probabilistic test</li>
+           <li>4 : use a Miller Rabin deterministic test</li>
+           <li>5 : use a totally recreative and useless AKS implementation</li>
+         </ul>
+      </li>
+    </ul>
+    <h2>Examples:</h2>
+    \(nthprime(12345), nthprime(12345,4)\)
+  </div>
+</div>
+
+<div class="entry data" id="outfile">
+  <p class="name"><span class="name">outfile</span>(<span class="parameter">url</span>)</p>
+  <div class="explanation">writes the content to the location \(url\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">url</span> : url string</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>the url can be an Unix file path or a full URL</li>
+      <li>only file URLs are supported, it is note possible to write to a remote location</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(outfile(\textrm{'/home/Desktop/toto.txt'}), outfile(\textrm{'file:///home/Desktop/toto.txt'})\)
+  </div>
+</div>
+
+<div class="entry misc" id="output">
+  <p class="name"><span class="name">output</span>(<span class="parameter">n</span>)</p>
+  <div class="explanation">takes the output (value) from the \(n^{th}\) previous computation.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">n</span> : positive integer</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+    <li>Note that the index of the computations are displayed in the upper-left gray bubble of each item, and that this is a reverse order so that output(1) is always the last computation.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(output(1)\)
+  </div>
+</div>
+
+<div class="entry misc" id="output2">
+  <p class="name"><span class="name">output2</span>(<span class="parameter">n</span>)</p>
+  <div class="explanation">takes the secondary output (value) from the \(n^{th}\) previous computation.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">n</span> : positive integer</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+    <li>the secondary output is the one added to  the regular output if the bit manipulator has been used</li>
+    <li>Note that the index of the computations are displayed in the upper-left gray bubble of each item, and that this is a reverse order so that output2(1) is always the last computation.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(output(1)\)
+  </div>
+</div>
+
+<div class="entry arithmetic" id="pow">
+  <p class="name"><span class="name">pow</span>(<span class="parameter">x</span>, <span class="parameter">y</span>)</p>
+  <div class="explanation">Returns \(x^y\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">n</span> : scalar (even complex or quaternion) or matrix</li>
+      <li><span class="parameter">m</span> : integer, real or complex</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+    <li>The power operator \(x\hat{}y\) can be used instead of \(pow(x, y)\)</li>
+    <li>Complex \(y\) power is only supported for real \(x\) operand.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(pow(12, -34),~pow(12, 3+4*i)\)
+  </div>
+</div>
+
+<div class="entry primes" id="primes">
+  <p class="name"><span class="name">primes</span>(<span class="parameter">n</span>[, <span class="parameter">algorithm=0</span>])</p>
+  <div class="explanation">returns the prime decomposition of \(n\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">n</span> : positive integer</li>
+      <li><span class="parameter">algorithm</span> : 0, 1, 2, 3, 4 or 5</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>a decomposition is a list of pairs, each pair being a prime and its power.</lI>
+      <li>if the answer is probabilistic, an inexact flag is raised</li>
+      <li>Possibles algorithms are
+         <ul>
+           <li>0 : best combination of the following algorithms</li>
+           <li>1 : use only the precomputed primes set embedded in Chalk</li>
+           <li>2 : use a standard Miller Rabin probabilistic test</li>
+           <li>3 : use an enforced Miller Rabin probabilistic test</li>
+           <li>4 : use a Miller Rabin deterministic test</li>
+           <li>5 : use a totally recreative and useless AKS implementation</li>
+         </ul>
+      </li>
+    </ul>
+    <h2>Examples:</h2>
+    \(primes(12345), primes(12345,4)\)
+  </div>
+</div>
+
+<div class="entry primes" id="primorial">
+  <p class="name"><span class="name">primorial</span>(<span class="parameter">n</span>)</p>
+  <div class="explanation">Returns the primorial of \(n\) (product of primes &leq; \(n\)).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">n</span> : integer</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(primorial(10)\)
+  </div>
+</div>
+
+<div class="entry arithmetic" id="product">
+  <p class="name"><span class="name">product</span>(<span class="parameter">expression</span>, <span class="parameter">identifier</span>, <span class="parameter">inf</span>, <span class="parameter">sup</span>)</p>
+  <div class="explanation">Returns \(\prod_{identifier=inf}^{sup}{(expression)}\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">expression</span> : an expression that can be evaluated</li>
+      <li><span class="parameter">identifier</span> : an identifier</li>
+      <li><span class="parameter">inf</span> : an integer</li>
+      <li><span class="parameter">sup</span> : an integer</li>
+    </ul>
+    <h2>Notes:</h2>
+      <ul>
+        <li>It is required that <span class="parameter">inf</span> &leq; <span class="parameter">sup</span></li>
+      </ul>
+    <h2>Examples:</h2>
+    \(product(1/(x^2), x, 1, 10)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="roll">
+  <p class="name"><span class="name">roll</span>(<span class="parameter">x</span>, <span class="parameter">delta</span>)</p>
+  <div class="explanation"> bitwise roll operator.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+      <li><span class="parameter">delta</span> : integer</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Roll occurs to the left for \(delta>0\) and to the right for \(delta<0\).</li>
+      <li>No roll occurs for \(delta=0\)</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(roll(x, 1), roll(x, -123)\)
+  </div>
+</div>
+
+<div class="entry arithmetic" id="root">
+  <p class="name"><span class="name">root</span>(<span class="parameter">x</span>, <span class="parameter">n</span>)</p>
+  <div class="explanation">Returns \(\sqrt[n]{x}\), the \(n^{th}\) root of \(x\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : positive real</li>
+      <li><span class="parameter">n</span> : positive integer</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+    <li>Returns 1 for \(n=0\)</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(root(12.34, 56)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="shift">
+  <p class="name"><span class="name">shift</span>(<span class="parameter">x</span>, <span class="parameter">delta</span>)</p>
+  <div class="explanation"> bitwise shift operator.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+      <li><span class="parameter">delta</span> : integer</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Shift occurs to the left for \(delta>0\) and to the right for \(delta<0\).</li>
+      <li>No shift occurs for \(delta=0\)</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(roll(x, 1), roll(x, -123)\)
+  </div>
+</div>
+
+<div class="entry trigonometry" id="sin">
+  <p class="name"><span class="name">sin</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the sinus of \(x\) (in radians).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Matrices are supported for convenience, and the sinus is simply applied to every element, this is not a Taylor development.</li>
+      <li>The operator ° can be used to enter x in degrees</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(\sin{(12.34)}, \sin{(90°)}, \sin{\left(\begin{matrix}1&2\\3&4\end{matrix}\right)}\)
+  </div>
+</div>
+
+<div class="entry trigonometry" id="sinh">
+  <p class="name"><span class="name">sinh</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the hyperbolic sinus of \(x\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Matrices are supported for convenience, and the hyperbolic sinus is simply applied to every element, this is not a Taylor development.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(\sinh{(12.34)}, \sinh{\left(\begin{matrix}1&2\\3&4\end{matrix}\right)}\)
+  </div>
+</div>
+
+<div class="entry arithmetic symbols" id="√">
+  <p class="name"><span class="name">√</span>(<span class="parameter">x</span>), <span class="name">sqrt</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns \(\sqrt{x}\), the square root of \(x\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : positive real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(sqrt(12.34)\), \(√(12.34)\)
+  </div>
+</div>
+
+<div class="entry arithmetic" id="sqrt">
+  <p class="name"><span class="name">sqrt</span>(<span class="parameter">x</span>), <span class="name">√</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns \(\sqrt{x}\), the square root of \(x\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : positive real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(sqrt(12.34)\), \(√(12.34)\)
+  </div>
+</div>
+
+<div class="entry arithmetic" id="sum">
+  <p class="name"><span class="name">sum</span>(<span class="parameter">expression</span>, <span class="parameter">identifier</span>, <span class="parameter">inf</span>, <span class="parameter">sup</span>)</p>
+  <div class="explanation">Returns \(\sum_{identifier=inf}^{sup}{(expression)}\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">expression</span> : an expression that can be evaluated</li>
+      <li><span class="parameter">identifier</span> : an identifier</li>
+      <li><span class="parameter">inf</span> : an integer</li>
+      <li><span class="parameter">sup</span> : an integer</li>
+    </ul>
+    <h2>Notes:</h2>
+      <ul>
+        <li>It is required that <span class="parameter">inf</span> &leq; <span class="parameter">sup</span></li>
+      </ul>
+    <h2>Examples:</h2>
+    \(sum(1/(x^2), x, 1, 10)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="swap">
+  <p class="name"><span class="name">swap</span>(<span class="parameter">x</span>, <span class="parameter">s</span>)</p>
+  <div class="explanation"> swap packets pairs of given bit size.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : raw value</li>
+      <li><span class="parameter">s</span> : positive integer</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Each consecutive pairs of packets of bit size \(s\) each are swapped (8 is byte swap, 16 is word swap, for instance)</li>
+      <li>The swaps occur from lowest significant bits to most significant ones. If there are remaining bits that do not have the size of two packets, they remain untouched, instead of using a virtual zero-filled space outside of bounds</li>
+      <li>A packet bit size of 0 is a no-op<li>
+    </ul>
+    <h2>Examples:</h2>
+    \(swap(x, 1), swap(x, 8)\)
+  </div>
+</div>
+
+<div class="entry trigonometry" id="tan">
+  <p class="name"><span class="name">tan</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the tangent of \(x\) (in radians).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Matrices are supported for convenience, and the tangent is simply applied to every element, this is not a Taylor development.</li>
+      <li>The operator ° can be used to enter x in degrees</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(\tan{(12.34)}, \tan{(45°)}, \tan{\left(\begin{matrix}1&2\\3&4\end{matrix}\right)}\)
+  </div>
+</div>
+
+<div class="entry trigonometry" id="tanh">
+  <p class="name"><span class="name">tanh</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the hyperbolic tangent of \(x\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Matrices are supported for convenience, and the hyperbolic tangent is simply applied to every element, this is not a Taylor development.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(\tanh{(12.34)}, \tanh{\left(\begin{matrix}1&2\\3&4\end{matrix}\right)}\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="toU8">
+  <p class="name"><span class="name">toU8</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts to unsigned 8 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(toU8(123)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="toS8">
+  <p class="name"><span class="name">toS8</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts to signed 8 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>sign bit is the most significand bit.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(toS8(123)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="toU16">
+  <p class="name"><span class="name">toU16</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts to unsigned 16 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(toU16(123)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="toS16">
+  <p class="name"><span class="name">toS16</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts to signed 16 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>sign bit is the most significand bit.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(toS16(123)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="toU32">
+  <p class="name"><span class="name">toU32</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts to unsigned 32 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(toU32(123)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="toS32">
+  <p class="name"><span class="name">toS32</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts to signed 32 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>sign bit is the most significand bit.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(toS32(123)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="toU64">
+  <p class="name"><span class="name">toU64</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts to unsigned 64 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(toU64(123)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="toS64">
+  <p class="name"><span class="name">toS64</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts to signed 64 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>sign bit is the most significand bit.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(toS64(123)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="toU128">
+  <p class="name"><span class="name">toU128</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts to unsigned 128 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(toU128(123)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="toS128">
+  <p class="name"><span class="name">toS128</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts to signed 128 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>sign bit is the most significand bit.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(toS128(123)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="toU256">
+  <p class="name"><span class="name">toU256</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts to unsigned 256 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <h2>Examples:</h2>
+    \(toU256(123)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="toS256">
+  <p class="name"><span class="name">toS256</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts to signed 256 bits integer.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>sign bit is the most significand bit.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(toS256(123)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="toF16">
+  <p class="name"><span class="name">toF16</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts to IEEE754 16 bits float.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>1 sign bit, 5 exponent bits, 10 significand bits</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(toF16(123)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="toF32">
+  <p class="name"><span class="name">toF32</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts to IEEE754 32 bits float.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>1 sign bit, 8 exponent bits, 23 significand bits</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(toF32(123)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="toF64">
+  <p class="name"><span class="name">toF64</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts to IEEE754 64 bits float.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>1 sign bit, 11 exponent bits, 52 significand bits</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(toF64(123)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="toF128">
+  <p class="name"><span class="name">toF128</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts to IEEE754 128 bits float.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>1 sign bit, 5 exponent bits, 112 significand bits</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(toF128(123)\)
+  </div>
+</div>
+
+<div class="entry raw bits" id="toF256">
+  <p class="name"><span class="name">toF256</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation"> converts to IEEE754 256 bits float.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>1 sign bit, 19 exponent bits, 236 significand bits</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(toF256(123)\)
+  </div>
+</div>
+
+<div class="entry matrix linear-algebra" id="trace">
+  <p class="name"><span class="name">trace</span>(<span class="parameter">M</span>)</p>
+  <div class="explanation">Returns the trace of a matrix M</span>.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">m</span> : scalar or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>scalars are supported for convenience</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(trace{(1)}, trace\left(\begin{matrix}1 & 2\\3 & 4\end{matrix}\right)\)
+  </div>
+</div>
+
+<div class="entry matrix linear-algebra" id="vconcat">
+  <p class="name"><span class="name">vconcat</span>(<span class="parameter">M</span>,...)</p>
+  <div class="explanation">Concatenates matrices vertically</span>.
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">M</span> : list or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Matrices must have the same column count;</li>
+      <li>Lists are supported for convenience and are automatically split.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(vconcat{(M1)}, vconcat{(M1, M2)}, vconcat{(\{M1, M2\})}\)
+  </div>
+</div>
+
+<div class="entry arithmetic" id="zeta">
+  <p class="name"><span class="name">zeta</span>(<span class="parameter">x</span>)</p>
+  <div class="explanation">Returns the Zeta function result of \(x\).
+    <h2>Parameters:</h2>
+    <ul class="parameters">
+      <li><span class="parameter">x</span> : real or matrix</li>
+    </ul>
+    <h2>Notes:</h2>
+    <ul>
+      <li>Matrices are supported for convenience, and the zeta value is simply applied to every element.</li>
+    </ul>
+    <h2>Examples:</h2>
+    \(zeta{(12.34)}, zeta{\left(\begin{matrix}1&2\\3&4\end{matrix}\right)}\)
+  </div>
+</div>
+
+</body>
+</html>

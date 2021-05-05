@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="13F1911" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="CHGraphCurveParametersViewController">
+            <connections>
+                <outlet property="color1ColorWell" destination="8wz-J5-1Ng" id="iJX-WT-7Yy"/>
+                <outlet property="color1Label" destination="brm-uv-Y33" id="jof-rr-XOq"/>
+                <outlet property="color2ColorWell" destination="3Zq-87-8M9" id="ipW-fX-JUa"/>
+                <outlet property="color2Label" destination="r2T-e6-iFa" id="uhU-vt-zjl"/>
+                <outlet property="elementPixelSizeLabel" destination="Tco-z0-IfN" id="m07-WN-ifx"/>
+                <outlet property="elementPixelSizeStepper" destination="7On-q3-Kb1" id="Ccn-uh-kIu"/>
+                <outlet property="elementPixelSizeTextField" destination="WDE-fE-EoX" id="Zcc-Je-S5D"/>
+                <outlet property="elementSizeFormatter" destination="qT3-eK-0CM" id="cCg-FR-off"/>
+                <outlet property="thicknessFormatter" destination="6FB-zA-Nfd" id="H6h-4t-BIu"/>
+                <outlet property="thicknessLabel" destination="eHM-dx-3i3" id="QHZ-3D-guJ"/>
+                <outlet property="thicknessStepper" destination="vYK-ob-oFe" id="rAh-F5-WFH"/>
+                <outlet property="thicknessTextField" destination="QLg-CP-aI8" id="xkr-aa-eEv"/>
+                <outlet property="uncertaintyColorWell" destination="ErA-t7-OOU" id="oQ7-ly-JgT"/>
+                <outlet property="uncertaintyNaNColorWell" destination="GGX-Hz-y3E" id="HpO-rQ-9HX"/>
+                <outlet property="uncertaintyNaNVisibleCheckBox" destination="wbh-7I-hxb" id="fnV-fW-4Ss"/>
+                <outlet property="uncertaintyVisibleCheckBox" destination="mhw-Mh-baT" id="I4Y-Lq-6yM"/>
+                <outlet property="view" destination="c22-O7-iKe" id="3bL-dS-mPh"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe">
+            <rect key="frame" x="0.0" y="-4" width="303" height="170"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="7On-q3-Kb1">
+                    <rect key="frame" x="47" y="118" width="15" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <stepperCell key="cell" controlSize="small" continuous="YES" alignment="left" maxValue="100" id="9HX-l8-hob"/>
+                    <connections>
+                        <action selector="changeParameter:" target="-2" id="pIZ-Gr-Ex5"/>
+                        <outlet property="formatter" destination="6FB-zA-Nfd" id="ixZ-wZ-Pgb"/>
+                    </connections>
+                </stepper>
+                <textField verticalHuggingPriority="750" id="WDE-fE-EoX">
+                    <rect key="frame" x="8" y="120" width="40" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Pkn-94-uYl">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <action selector="changeParameter:" target="-2" id="PsO-AD-FDy"/>
+                        <outlet property="formatter" destination="6FB-zA-Nfd" id="0Vd-d2-YZq"/>
+                        <outlet property="nextKeyView" destination="7On-q3-Kb1" id="q6S-kz-xEx"/>
+                    </connections>
+                </textField>
+                <colorWell id="8wz-J5-1Ng" customClass="CHColorWell">
+                    <rect key="frame" x="8" y="94" width="52" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <action selector="changeParameter:" target="-2" id="C5a-y3-Ocq"/>
+                    </connections>
+                </colorWell>
+                <colorWell id="3Zq-87-8M9" customClass="CHColorWell">
+                    <rect key="frame" x="8" y="68" width="52" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <action selector="changeParameter:" target="-2" id="JTg-Jy-QuM"/>
+                    </connections>
+                </colorWell>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Tco-z0-IfN">
+                    <rect key="frame" x="66" y="122" width="71" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Element size" id="71x-mE-OXn">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="vYK-ob-oFe">
+                    <rect key="frame" x="47" y="141" width="15" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <stepperCell key="cell" controlSize="small" continuous="YES" alignment="left" maxValue="100" id="ilO-Kb-vNM"/>
+                    <connections>
+                        <action selector="changeParameter:" target="-2" id="QM8-eo-zGG"/>
+                        <outlet property="formatter" destination="6FB-zA-Nfd" id="3xn-nt-cKv"/>
+                    </connections>
+                </stepper>
+                <textField verticalHuggingPriority="750" id="QLg-CP-aI8">
+                    <rect key="frame" x="8" y="143" width="40" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Lye-9j-D7a">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <action selector="changeParameter:" target="-2" id="JHn-qO-EDO"/>
+                        <outlet property="formatter" destination="6FB-zA-Nfd" id="yw5-ae-DHc"/>
+                        <outlet property="nextKeyView" destination="vYK-ob-oFe" id="xGf-i8-gbh"/>
+                    </connections>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="eHM-dx-3i3">
+                    <rect key="frame" x="66" y="145" width="56" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Thickness" id="WHU-SP-QTE">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="brm-uv-Y33">
+                    <rect key="frame" x="66" y="97" width="193" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Curve color/Predicate &lt;true> color" id="2mh-mb-CFE">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="r2T-e6-iFa">
+                    <rect key="frame" x="66" y="70" width="239" height="14"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Curve interior color/Predicate &lt;false> color" id="Paz-D7-7ch">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button id="mhw-Mh-baT">
+                    <rect key="frame" x="7" y="41" width="113" height="20"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Draw uncertainty" bezelStyle="regularSquare" imagePosition="left" controlSize="small" state="on" inset="2" id="4Qf-IG-VZ1">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="changeParameter:" target="-2" id="Nb1-pc-GtX"/>
+                    </connections>
+                </button>
+                <colorWell id="ErA-t7-OOU" customClass="CHColorWell">
+                    <rect key="frame" x="126" y="40" width="52" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <action selector="changeParameter:" target="-2" id="9au-PJ-zWQ"/>
+                    </connections>
+                </colorWell>
+                <button id="wbh-7I-hxb">
+                    <rect key="frame" x="29" y="17" width="154" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Draw NaN as uncertainty" bezelStyle="regularSquare" imagePosition="left" controlSize="small" state="on" inset="2" id="tGQ-36-UQu">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="changeParameter:" target="-2" id="XeH-XR-nQL"/>
+                    </connections>
+                </button>
+                <colorWell id="GGX-Hz-y3E" customClass="CHColorWell">
+                    <rect key="frame" x="189" y="15" width="52" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <action selector="changeParameter:" target="-2" id="aMb-FW-EQi"/>
+                    </connections>
+                </colorWell>
+            </subviews>
+            <point key="canvasLocation" x="51.5" y="106"/>
+        </customView>
+        <numberFormatter formatterBehavior="custom10_4" numberStyle="decimal" allowsFloats="NO" minimumIntegerDigits="1" maximumIntegerDigits="309" positiveSuffix=" px" id="6FB-zA-Nfd" userLabel="thicknessFormatter">
+            <real key="minimum" value="0.0"/>
+        </numberFormatter>
+        <numberFormatter formatterBehavior="custom10_4" numberStyle="decimal" allowsFloats="NO" minimumIntegerDigits="1" maximumIntegerDigits="309" positiveSuffix=" px" id="qT3-eK-0CM" userLabel="elementSizeFormatter">
+            <real key="minimum" value="1"/>
+        </numberFormatter>
+    </objects>
+</document>

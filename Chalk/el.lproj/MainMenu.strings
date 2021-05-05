@@ -1,0 +1,282 @@
+
+/* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "5"; */
+"5.title" = "Τοποθέτηση όλων μπροστά";
+
+/* Class = "NSMenuItem"; title = "Window"; ObjectID = "19"; */
+"19.title" = "Παράθυρο";
+
+/* Class = "NSMenuItem"; title = "Minimize"; ObjectID = "23"; */
+"23.title" = "Ελαχιστοποίηση";
+
+/* Class = "NSMenu"; title = "Window"; ObjectID = "24"; */
+"24.title" = "Παράθυρο";
+
+/* Class = "NSMenu"; title = "AMainMenu"; ObjectID = "29"; */
+"29.title" = "AMainMenu";
+
+/* Class = "NSMenuItem"; title = "Chalk"; ObjectID = "56"; */
+"56.title" = "Chalk";
+
+/* Class = "NSMenu"; title = "Chalk"; ObjectID = "57"; */
+"57.title" = "Chalk";
+
+/* Class = "NSMenuItem"; title = "About Chalk"; ObjectID = "58"; */
+"58.title" = "Περί του Chalk";
+
+/* Class = "NSMenuItem"; title = "Open…"; ObjectID = "72"; */
+"72.title" = "Άνοιγμα…";
+
+/* Class = "NSMenuItem"; title = "Close"; ObjectID = "73"; */
+"73.title" = "Κλείσιμο";
+
+/* Class = "NSMenuItem"; title = "Save…"; ObjectID = "75"; */
+"75.title" = "Αποθήκευση…";
+
+/* Class = "NSMenu"; title = "File"; ObjectID = "81"; */
+"81.title" = "Αρχείο";
+
+/* Class = "NSMenuItem"; title = "New"; ObjectID = "82"; */
+"82.title" = "Νέο";
+
+/* Class = "NSMenuItem"; title = "File"; ObjectID = "83"; */
+"83.title" = "Αρχείο";
+
+/* Class = "NSMenuItem"; title = "Revert to Saved"; ObjectID = "112"; */
+"112.title" = "Επαναφορά στην σωσμένη κατάσταση";
+
+/* Class = "NSMenuItem"; title = "Open Recent"; ObjectID = "124"; */
+"124.title" = "Άνοιγμα Πρόσφατου";
+
+/* Class = "NSMenu"; title = "Open Recent"; ObjectID = "125"; */
+"125.title" = "Άνοιγμα Πρόσφατου";
+
+/* Class = "NSMenuItem"; title = "Clear Menu"; ObjectID = "126"; */
+"126.title" = "Καθαρισμός Μενού";
+
+/* Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "129"; */
+"129.title" = "Προτιμήσεις…";
+
+/* Class = "NSMenu"; title = "Services"; ObjectID = "130"; */
+"130.title" = "Υπηρεσίες";
+
+/* Class = "NSMenuItem"; title = "Services"; ObjectID = "131"; */
+"131.title" = "Υπηρεσίες";
+
+/* Class = "NSMenuItem"; title = "Hide Chalk"; ObjectID = "134"; */
+"134.title" = "Απόκρυψη Chalk";
+
+/* Class = "NSMenuItem"; title = "Quit Chalk"; ObjectID = "136"; */
+"136.title" = "Τερματισμός Chalk";
+
+/* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "145"; */
+"145.title" = "Απόκρυψη Άλλων";
+
+/* Class = "NSMenuItem"; title = "Show All"; ObjectID = "150"; */
+"150.title" = "Εμφάνιση όλων";
+
+/* Class = "NSMenuItem"; title = "Stop Speaking"; ObjectID = "195"; */
+"195.title" = "Τερματισμός ομιλίας";
+
+/* Class = "NSMenuItem"; title = "Start Speaking"; ObjectID = "196"; */
+"196.title" = "Έναρξη ομιλίας";
+
+/* Class = "NSMenuItem"; title = "Copy"; ObjectID = "197"; */
+"197.title" = "Αντιγραφή";
+
+/* Class = "NSMenuItem"; title = "Select All"; ObjectID = "198"; */
+"198.title" = "Επιλογή Όλων";
+
+/* Class = "NSMenuItem"; title = "Cut"; ObjectID = "199"; */
+"199.title" = "Αποκοπή";
+
+/* Class = "NSMenu"; title = "Spelling and Grammar"; ObjectID = "200"; */
+"200.title" = "Συλλαβισμός και Γραμματική";
+
+/* Class = "NSMenuItem"; title = "Check Document Now"; ObjectID = "201"; */
+"201.title" = "Έλεγχος Εγγράφου Τώρα";
+
+/* Class = "NSMenuItem"; title = "Delete"; ObjectID = "202"; */
+"202.title" = "Διαγραφή";
+
+/* Class = "NSMenuItem"; title = "Paste"; ObjectID = "203"; */
+"203.title" = "Επικόλληση";
+
+/* Class = "NSMenuItem"; title = "Show Spelling and Grammar"; ObjectID = "204"; */
+"204.title" = "Εμφάνιση Συλλαβισμού και Γραμματικής";
+
+/* Class = "NSMenu"; title = "Edit"; ObjectID = "205"; */
+"205.title" = "Επεξεργασία";
+
+/* Class = "NSMenuItem"; title = "Undo"; ObjectID = "207"; */
+"207.title" = "Αναίρεση";
+
+/* Class = "NSMenuItem"; title = "Find Next"; ObjectID = "208"; */
+"208.title" = "Εύρεση Επόμενου";
+
+/* Class = "NSMenuItem"; title = "Find…"; ObjectID = "209"; */
+"209.title" = "Εύρεση…";
+
+/* Class = "NSMenuItem"; title = "Jump to Selection"; ObjectID = "210"; */
+"210.title" = "Μετακίνηση στην Επιλογή";
+
+/* Class = "NSMenuItem"; title = "Speech"; ObjectID = "211"; */
+"211.title" = "Ομιλία";
+
+/* Class = "NSMenu"; title = "Speech"; ObjectID = "212"; */
+"212.title" = "Ομιλία";
+
+/* Class = "NSMenuItem"; title = "Find Previous"; ObjectID = "213"; */
+"213.title" = "Εύρεση Προηγούμενου";
+
+/* Class = "NSMenuItem"; title = "Redo"; ObjectID = "215"; */
+"215.title" = "Επανεκτέλεση";
+
+/* Class = "NSMenuItem"; title = "Spelling and Grammar"; ObjectID = "216"; */
+"216.title" = "Συλλαβισμός και Γραμματική";
+
+/* Class = "NSMenuItem"; title = "Edit"; ObjectID = "217"; */
+"217.title" = "Επεξεργασία";
+
+/* Class = "NSMenuItem"; title = "Find"; ObjectID = "218"; */
+"218.title" = "Εύρεση";
+
+/* Class = "NSMenuItem"; title = "Check Spelling While Typing"; ObjectID = "219"; */
+"219.title" = "Έλεγχος Συλλαβισμού κατά την πληκτρολόγηση";
+
+/* Class = "NSMenu"; title = "Find"; ObjectID = "220"; */
+"220.title" = "Εύρεση";
+
+/* Class = "NSMenuItem"; title = "Use Selection for Find"; ObjectID = "221"; */
+"221.title" = "Χρήση Επιλεγμένου για Εύρεση";
+
+/* Class = "NSMenuItem"; title = "Zoom"; ObjectID = "239"; */
+"239.title" = "Zoom";
+
+/* Class = "NSMenuItem"; title = "View"; ObjectID = "295"; */
+"295.title" = "Εμφάνιση";
+
+/* Class = "NSMenu"; title = "View"; ObjectID = "296"; */
+"296.title" = "Εμφάνιση";
+
+/* Class = "NSMenuItem"; title = "Show Toolbar"; ObjectID = "297"; */
+"297.title" = "Εμφάνιση Toolbar";
+
+/* Class = "NSMenuItem"; title = "Customize Toolbar…"; ObjectID = "298"; */
+"298.title" = "Προσαρμογή Toolbar…";
+
+/* Class = "NSMenuItem"; title = "Check Grammar With Spelling"; ObjectID = "346"; */
+"346.title" = "Έλεγχος Γραμματικής κατά την πληκτρολόγηση";
+
+/* Class = "NSMenuItem"; title = "Substitutions"; ObjectID = "348"; */
+"348.title" = "Αντικαταστάσεις";
+
+/* Class = "NSMenu"; title = "Substitutions"; ObjectID = "349"; */
+"349.title" = "Αντικαταστάσεις";
+
+/* Class = "NSMenuItem"; title = "Smart Copy/Paste"; ObjectID = "350"; */
+"350.title" = "Έξυπνη Αντιγραφή/Επικόλληση";
+
+/* Class = "NSMenuItem"; title = "Smart Quotes"; ObjectID = "351"; */
+"351.title" = "Έξυπνα Εισαγωγικά";
+
+/* Class = "NSMenuItem"; title = "Smart Links"; ObjectID = "354"; */
+"354.title" = "Έξυπνα Links";
+
+/* Class = "NSMenuItem"; title = "Format"; ObjectID = "374"; */
+"374.title" = "Μορφοποίηση";
+
+/* Class = "NSMenu"; title = "Format"; ObjectID = "375"; */
+"375.title" = "Μορφοποίηση";
+
+/* Class = "NSMenuItem"; title = "Show Fonts"; ObjectID = "388"; */
+"388.title" = "Εμφάνιση Γραμματοσειρών";
+
+/* Class = "NSMenuItem"; title = "Show Colors"; ObjectID = "400"; */
+"400.title" = "Εμφάνιση Χρωμάτων";
+
+/* Class = "NSMenuItem"; title = "Transformations"; ObjectID = "449"; */
+"449.title" = "Μετατροπές";
+
+/* Class = "NSMenu"; title = "Transformations"; ObjectID = "450"; */
+"450.title" = "Μετατροπές";
+
+/* Class = "NSMenuItem"; title = "Make Upper Case"; ObjectID = "451"; */
+"451.title" = "Μετατροπή σε Κεφαλαία";
+
+/* Class = "NSMenuItem"; title = "Make Lower Case"; ObjectID = "452"; */
+"452.title" = "Μετατροπή σε Πεζά";
+
+/* Class = "NSMenuItem"; title = "Capitalize"; ObjectID = "453"; */
+"453.title" = "Σε Κεφαλαία";
+
+/* Class = "NSMenuItem"; title = "Smart Dashes"; ObjectID = "457"; */
+"457.title" = "Έξυπνες παύλες";
+
+/* Class = "NSMenuItem"; title = "Show Substitutions"; ObjectID = "458"; */
+"458.title" = "Εμφάνιση Μετασχηματισμών";
+
+/* Class = "NSMenuItem"; title = "Text Replacement"; ObjectID = "462"; */
+"462.title" = "Αντικατάσταση Κειμένου";
+
+/* Class = "NSMenuItem"; title = "Correct Spelling Automatically"; ObjectID = "465"; */
+"465.title" = "Αυτόματος συλλαβισμός";
+
+/* Class = "NSMenuItem"; title = "Paste and Match Style"; ObjectID = "470"; */
+"470.title" = "Επικόλληση με ταίριασμα Μορφοποίησης";
+
+/* Class = "NSMenuItem"; title = "Help"; ObjectID = "491"; */
+"491.title" = "Βοήθεια";
+
+/* Class = "NSMenu"; title = "Help"; ObjectID = "492"; */
+"492.title" = "Βοήθεια";
+
+/* Class = "NSMenuItem"; title = "Chalk Help"; ObjectID = "493"; */
+"493.title" = "Βοήθεια του Chalk";
+
+/* Class = "NSMenuItem"; title = "Find and Replace…"; ObjectID = "532"; */
+"532.title" = "Εύρεση και Αντικατάσταση…";
+
+/* Class = "NSMenuItem"; title = "New Calculator"; ObjectID = "0nk-C5-ovJ"; */
+"0nk-C5-ovJ.title" = "Νέο κομπιουτεράκι";
+
+/* Class = "NSMenuItem"; title = "Make a donation..."; ObjectID = "PSa-As-aFm"; */
+"PSa-As-aFm.title" = "Κάντε δωρεά…";
+
+/* Class = "NSMenu"; title = "Graph"; ObjectID = "R4E-Bi-vwC"; */
+"R4E-Bi-vwC.title" = "Σχεδιάγραμμα";
+
+/* Class = "NSMenuItem"; title = "Delete all items"; ObjectID = "Sk1-wK-jJ9"; */
+"Sk1-wK-jJ9.title" = "Διαγραφή όλων των αντικειμένων";
+
+/* Class = "NSMenu"; title = "Equations"; ObjectID = "TI1-Rc-rmF"; */
+"TI1-Rc-rmF.title" = "Εξισώσεις";
+
+/* Class = "NSMenuItem"; title = "New Graph"; ObjectID = "Txe-rL-vd6"; */
+"Txe-rL-vd6.title" = "Νέο σχεδιάγραμμα";
+
+/* Class = "NSMenuItem"; title = "Quick reference"; ObjectID = "VuF-0j-EcD"; */
+"VuF-0j-EcD.title" = "Γρήγορη αναφορά";
+
+/* Class = "NSMenu"; title = "Calculator"; ObjectID = "b0Y-Cb-JQV"; */
+"b0Y-Cb-JQV.title" = "Κομπιουτεράκι";
+
+/* Class = "NSMenuItem"; title = "Render"; ObjectID = "bC8-NW-Fef"; */
+"bC8-NW-Fef.title" = "Απόδοση";
+
+/* Class = "NSMenuItem"; title = "Delete current item"; ObjectID = "mOr-dP-zUA"; */
+"mOr-dP-zUA.title" = "Διαγραφή αυτού του αντικειμένου";
+
+/* Class = "NSMenuItem"; title = "Calculator"; ObjectID = "nkK-Uu-4ri"; */
+"nkK-Uu-4ri.title" = "Κομπιουτεράκι";
+
+/* Class = "NSMenuItem"; title = "New Equations generator"; ObjectID = "pcq-za-YXN"; */
+"pcq-za-YXN.title" = "Δημιουργός εξίσωσης";
+
+/* Class = "NSMenuItem"; title = "Equations"; ObjectID = "vtd-31-h1V"; */
+"vtd-31-h1V.title" = "Εξισώσεις";
+
+/* Class = "NSMenuItem"; title = "Check for updates..."; ObjectID = "xe4-6g-R0p"; */
+"xe4-6g-R0p.title" = "Έλεγχος για αναβαθμίσεις…";
+
+/* Class = "NSMenuItem"; title = "Graph"; ObjectID = "yAf-mn-d8r"; */
+"yAf-mn-d8r.title" = "Σχεδιάγραμμα";

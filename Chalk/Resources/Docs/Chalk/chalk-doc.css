@@ -1,0 +1,145 @@
+#body {
+  width:100%;
+  margin:0px;
+  padding:0px;
+  /*background-color:transparent;*/
+  background-color:rgb(240, 240, 240);
+}
+
+div#toc {
+  position:fixed;
+  padding-top:15px;
+  padding-left:10px;
+  padding-right:10px;
+  width:280px;
+  height:100%;
+  overflow:hidden;
+  overflow-y:scroll;
+}
+
+div#content {
+  position:absolute;
+  padding-left:25px;
+  padding-right:25px;
+  left:300px;
+  border-left-style:solid;
+  border-left-width:1px;
+  border-left-color:gray;
+  background-image:url('background-paper-texture.jpg');
+  font-family: "Myriad Set Pro", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+ol { counter-reset: item }
+ol li { display: block }
+ol li:before { content: counters(item, ".") " "; counter-increment: item }
+
+li {
+  margin-left: -20px;
+}
+
+ol li a {
+  text-decoration:none;
+  color:inherit;
+}
+
+body {
+  counter-reset: h1counter;
+}
+h1 {
+  counter-reset: h2counter;
+}
+h2 {
+  counter-reset: h3counter;
+}
+h3 {
+}
+
+h1:before {
+  counter-increment: h1counter;
+  content: counter(h1counter) "\0000a0\0000a0";
+}
+
+h2:before {
+  counter-increment: h2counter;
+  content: counter(h1counter) "." counter(h2counter) "\0000a0\0000a0";
+}
+
+h3:before {
+  counter-increment: h3counter;
+  content: counter(h1counter) "." counter(h2counter) "." counter(h3counter) "\0000a0\0000a0";
+}
+
+p {
+  text-align:justify;
+}
+
+span.error {
+  background-color:salmon;
+  border-width:0px;
+  border-style:solid;
+  border-radius:3px;
+  margin:1px;
+}
+
+span.ok {
+  background-color:lime;
+  border-width:0px;
+  border-style:solid;
+  border-radius:3px;
+  margin:1px;
+}
+
+p.imageBlock {
+  float:left;
+  font-size:small;
+  text-align:center;
+  width:45%;
+  margin-right:1%;
+  margin-bottom:0.5em;
+  border-width:1px;
+  border-style:solid;
+  border-color:rgb(50, 50, 50);
+  border-radius:8px;
+  padding:5px;
+}
+
+p.imageBlock img {
+  display:block;
+  width:100%;
+  margin-top:10px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+div.imageBlock {
+  float:left;
+  font-size:small;
+  width:45%;
+  margin-right:1%;
+  margin-bottom:0.5em;
+  border-width:1px;
+  border-style:solid;
+  border-color:rgb(50, 50, 50);
+  border-radius:8px;
+}
+
+.expression {
+  font-style:italic;
+}
+
+.symbol {
+  font-weight:bold;
+  font-style:italic;
+}
+
+.good {
+  border-style:none;
+  border-width:0px;
+  background-color:rgb(220, 255, 220);
+}
+
+.bad {
+  border-style:none;
+  border-width:0px;
+  background-color:rgb(255, 220, 220);
+}

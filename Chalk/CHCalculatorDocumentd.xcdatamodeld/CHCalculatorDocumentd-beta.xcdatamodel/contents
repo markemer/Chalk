@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="13F1911" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="CHDocumentData" representedClassName="CHDocumentDataEntity" syncable="YES">
+        <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
+    </entity>
+    <entity name="ComputationConfiguration" representedClassName="CHComputationConfigurationEntity" syncable="YES">
+        <attribute name="baseDefault" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="computeMode" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="propagateNaN" attributeType="Boolean" syncable="YES"/>
+        <attribute name="softFloatSignificandBits" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="softIntegerDenominatorMaxBits" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="softIntegerMaxBits" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="owner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComputationEntry" inverseName="computationConfiguration" inverseEntity="ComputationEntry" syncable="YES"/>
+    </entity>
+    <entity name="ComputationEntry" representedClassName="CHComputationEntryEntity" parentEntity="ValueHolder" syncable="YES">
+        <attribute name="computationResult" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="dateCreation" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
+        <attribute name="dateModification" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="inputInterpretedHTMLString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inputInterpretedTeXString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inputRawHTMLString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inputRawString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="output2HtmlCumulativeFlags" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="output2HTMLString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="output2RawString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="output2TeXString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="outputHtmlCumulativeFlags" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="outputHTMLString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="outputRawString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="outputTeXString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueIdentifier" attributeType="Integer 64" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <relationship name="computationConfiguration" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ComputationConfiguration" inverseName="owner" inverseEntity="ComputationConfiguration" syncable="YES"/>
+        <relationship name="presentationConfiguration" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="PresentationConfiguration" inverseName="owner" inverseEntity="PresentationConfiguration" syncable="YES"/>
+    </entity>
+    <entity name="ComputedValue" representedClassName="CHComputedValueEntity" syncable="YES">
+        <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
+        <relationship name="owner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ValueHolder" inverseName="computedValues" inverseEntity="ValueHolder" syncable="YES"/>
+    </entity>
+    <entity name="PresentationConfiguration" representedClassName="CHPresentationConfigurationEntity" syncable="YES">
+        <attribute name="base" optional="YES" attributeType="Integer 64" defaultValueString="10" syncable="YES"/>
+        <attribute name="baseUseDecimalExponent" attributeType="Boolean" syncable="YES"/>
+        <attribute name="baseUseLowercase" attributeType="Boolean" syncable="YES"/>
+        <attribute name="integerGroupSize" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="printOptions" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="softFloatDisplayBits" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="softPrettyPrintEndNegativeExponent" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="softPrettyPrintEndPositiveExponent" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="owner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComputationEntry" inverseName="presentationConfiguration" inverseEntity="ComputationEntry" syncable="YES"/>
+    </entity>
+    <entity name="UserVariable" representedClassName="CHUserVariableEntity" parentEntity="ValueHolder" syncable="YES">
+        <attribute name="identifierName" attributeType="String" syncable="YES"/>
+        <attribute name="inputRawString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isDynamic" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+    </entity>
+    <entity name="ValueHolder" representedClassName="CHValueHolderEntity" isAbstract="YES" syncable="YES">
+        <relationship name="computedValues" optional="YES" toMany="YES" maxCount="2" deletionRule="Cascade" ordered="YES" destinationEntity="ComputedValue" inverseName="owner" inverseEntity="ComputedValue" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="CHDocumentData" positionX="-252" positionY="-144" width="128" height="58"/>
+        <element name="ComputationConfiguration" positionX="-252" positionY="-33" width="128" height="148"/>
+        <element name="ComputationEntry" positionX="-63" positionY="-18" width="128" height="315"/>
+        <element name="ComputedValue" positionX="178" positionY="72" width="128" height="73"/>
+        <element name="PresentationConfiguration" positionX="-253" positionY="200" width="128" height="178"/>
+        <element name="UserVariable" positionX="162" positionY="-141" width="128" height="88"/>
+        <element name="ValueHolder" positionX="-63" positionY="-126" width="128" height="58"/>
+    </elements>
+</model>

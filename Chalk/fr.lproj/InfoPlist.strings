@@ -1,0 +1,8 @@
+/* Localized versions of Info.plist keys */
+
+CFBundleName = "Chalk";
+CFBundleVersion = "1.6.8";
+CFBundleShortVersionString = "1.6.8";
+CFBundleGetInfoString = "Chalk version 1.6.8";
+NSHumanReadableCopyright = "© Pierre Chatelier, 2017-2021";
+SUFeedURL = "https://pierre.chachatelier.fr/chalk/downloads/chalk-sparkle-en.rss";
