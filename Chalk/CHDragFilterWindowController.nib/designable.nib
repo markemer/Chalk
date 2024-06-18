@@ -1,82 +1,577 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
-    <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
-        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
-    </dependencies>
-    <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="CHDragFilterWindowController">
-            <connections>
-                <outlet property="closeButton" destination="27" id="29"/>
-                <outlet property="dragFilterButtonsView" destination="7" id="23"/>
-                <outlet property="dragFilterView" destination="6" id="22"/>
-                <outlet property="window" destination="3" id="5"/>
-            </connections>
-        </customObject>
-        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
-        <window title="CHDragFilterWindow" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="3" customClass="CHDragFilterWindow">
-            <windowStyleMask key="styleMask" titled="YES" utility="YES"/>
-            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="406" y="668" width="200" height="48"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1025"/>
-            <value key="minSize" type="size" width="200" height="48"/>
-            <value key="maxSize" type="size" width="160" height="48"/>
-            <view key="contentView" id="4">
-                <rect key="frame" x="0.0" y="0.0" width="200" height="48"/>
-                <autoresizingMask key="autoresizingMask"/>
-                <subviews>
-                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6" customClass="CHDragFilterView">
-                        <rect key="frame" x="0.0" y="0.0" width="200" height="48"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button fixedFrame="YES" tag="-1" translatesAutoresizingMaskIntoConstraints="NO" id="27" customClass="CHDragThroughButton">
-                                <rect key="frame" x="9" y="8" width="34" height="43"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="button-close" imagePosition="only" alignment="center" controlSize="mini" inset="2" id="28">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="miniSystem"/>
-                                </buttonCell>
-                            </button>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7">
-                                <rect key="frame" x="51" y="19" width="114" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <subviews>
-                                    <button fixedFrame="YES" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="15" customClass="CHDragThroughButton">
-                                        <rect key="frame" x="0.0" y="0.0" width="43" height="20"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="square" title="PDF" bezelStyle="shadowlessSquare" alignment="center" controlSize="mini" borderStyle="border" tag="2" inset="2" id="16">
-                                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
-                                            <font key="font" metaFont="miniSystem"/>
-                                        </buttonCell>
-                                    </button>
-                                    <button fixedFrame="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="30" customClass="CHDragThroughButton">
-                                        <rect key="frame" x="42" y="0.0" width="28" height="20"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="square" title="SVG" bezelStyle="shadowlessSquare" alignment="center" controlSize="mini" borderStyle="border" tag="1" inset="2" id="31">
-                                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
-                                            <font key="font" metaFont="miniSystem"/>
-                                        </buttonCell>
-                                    </button>
-                                    <button fixedFrame="YES" tag="5" translatesAutoresizingMaskIntoConstraints="NO" id="34" userLabel="MathML" customClass="CHDragThroughButton">
-                                        <rect key="frame" x="69" y="0.0" width="45" height="20"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="square" title="MathML" bezelStyle="shadowlessSquare" alignment="center" controlSize="mini" borderStyle="border" tag="1" inset="2" id="35" userLabel="MathML">
-                                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
-                                            <font key="font" metaFont="miniSystem"/>
-                                        </buttonCell>
-                                    </button>
-                                </subviews>
-                            </customView>
-                        </subviews>
-                    </customView>
-                </subviews>
-            </view>
-            <point key="canvasLocation" x="166.5" y="339"/>
-        </window>
-    </objects>
-    <resources>
-        <image name="button-close" width="34" height="34"/>
-    </resources>
-</document>
+<archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
+	<data>
+		<int key="IBDocument.SystemTarget">1040</int>
+		<string key="IBDocument.SystemVersion">13F1911</string>
+		<string key="IBDocument.InterfaceBuilderVersion">6254</string>
+		<string key="IBDocument.AppKitVersion">1265.21</string>
+		<string key="IBDocument.HIToolboxVersion">698.00</string>
+		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
+			<string key="NS.object.0">6254</string>
+		</object>
+		<array key="IBDocument.IntegratedClassDependencies">
+			<string>NSButton</string>
+			<string>NSButtonCell</string>
+			<string>NSCustomObject</string>
+			<string>NSCustomView</string>
+			<string>NSView</string>
+			<string>NSWindowTemplate</string>
+		</array>
+		<array key="IBDocument.PluginDependencies">
+			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+		</array>
+		<dictionary class="NSMutableDictionary" key="IBDocument.Metadata"/>
+		<array class="NSMutableArray" key="IBDocument.RootObjects" id="1000">
+			<object class="NSCustomObject" id="1001">
+				<string key="NSClassName">CHDragFilterWindowController</string>
+			</object>
+			<object class="NSCustomObject" id="1003">
+				<string key="NSClassName">FirstResponder</string>
+			</object>
+			<object class="NSCustomObject" id="1004">
+				<string key="NSClassName">NSApplication</string>
+			</object>
+			<object class="NSWindowTemplate" id="134736986">
+				<int key="NSWindowStyleMask">17</int>
+				<int key="NSWindowBacking">2</int>
+				<string key="NSWindowRect">{{406, 668}, {200, 48}}</string>
+				<int key="NSWTFlags">1685585920</int>
+				<string key="NSWindowTitle">CHDragFilterWindow</string>
+				<string key="NSWindowClass">CHDragFilterWindow</string>
+				<nil key="NSViewClass"/>
+				<nil key="NSUserInterfaceItemIdentifier"/>
+				<string key="NSWindowContentMaxSize">{160, 48}</string>
+				<string key="NSWindowContentMinSize">{200, 48}</string>
+				<object class="NSView" key="NSWindowView" id="667807711">
+					<reference key="NSNextResponder"/>
+					<int key="NSvFlags">256</int>
+					<array class="NSMutableArray" key="NSSubviews">
+						<object class="NSCustomView" id="968645357">
+							<reference key="NSNextResponder" ref="667807711"/>
+							<int key="NSvFlags">274</int>
+							<array class="NSMutableArray" key="NSSubviews">
+								<object class="NSCustomView" id="1071339896">
+									<reference key="NSNextResponder" ref="968645357"/>
+									<int key="NSvFlags">269</int>
+									<array class="NSMutableArray" key="NSSubviews">
+										<object class="NSButton" id="391299609">
+											<reference key="NSNextResponder" ref="1071339896"/>
+											<int key="NSvFlags">268</int>
+											<string key="NSFrame">{{69, 0}, {45, 20}}</string>
+											<reference key="NSSuperview" ref="1071339896"/>
+											<reference key="NSWindow"/>
+											<int key="NSTag">5</int>
+											<bool key="NSEnabled">YES</bool>
+											<object class="NSButtonCell" key="NSCell" id="679020023">
+												<int key="NSCellFlags">67108864</int>
+												<int key="NSCellFlags2">134479872</int>
+												<string key="NSContents">MathML</string>
+												<object class="NSFont" key="NSSupport" id="22">
+													<bool key="IBIsSystemFont">YES</bool>
+													<double key="NSSize">9</double>
+													<int key="NSfFlags">3614</int>
+												</object>
+												<reference key="NSControlView" ref="391299609"/>
+												<int key="NSTag">1</int>
+												<int key="NSButtonFlags">914636800</int>
+												<int key="NSButtonFlags2">6</int>
+												<string key="NSAlternateContents"/>
+												<string key="NSKeyEquivalent"/>
+												<int key="NSPeriodicDelay">400</int>
+												<int key="NSPeriodicInterval">75</int>
+											</object>
+											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+										</object>
+										<object class="NSButton" id="413278106">
+											<reference key="NSNextResponder" ref="1071339896"/>
+											<int key="NSvFlags">268</int>
+											<string key="NSFrame">{{42, 0}, {28, 20}}</string>
+											<reference key="NSSuperview" ref="1071339896"/>
+											<reference key="NSWindow"/>
+											<reference key="NSNextKeyView" ref="391299609"/>
+											<int key="NSTag">1</int>
+											<bool key="NSEnabled">YES</bool>
+											<object class="NSButtonCell" key="NSCell" id="595214">
+												<int key="NSCellFlags">67108864</int>
+												<int key="NSCellFlags2">134479872</int>
+												<string key="NSContents">SVG</string>
+												<reference key="NSSupport" ref="22"/>
+												<reference key="NSControlView" ref="413278106"/>
+												<int key="NSTag">1</int>
+												<int key="NSButtonFlags">914636800</int>
+												<int key="NSButtonFlags2">6</int>
+												<string key="NSAlternateContents"/>
+												<string key="NSKeyEquivalent"/>
+												<int key="NSPeriodicDelay">400</int>
+												<int key="NSPeriodicInterval">75</int>
+											</object>
+											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+										</object>
+										<object class="NSButton" id="61655349">
+											<reference key="NSNextResponder" ref="1071339896"/>
+											<int key="NSvFlags">268</int>
+											<string key="NSFrameSize">{43, 20}</string>
+											<reference key="NSSuperview" ref="1071339896"/>
+											<reference key="NSWindow"/>
+											<reference key="NSNextKeyView" ref="413278106"/>
+											<int key="NSTag">2</int>
+											<bool key="NSEnabled">YES</bool>
+											<object class="NSButtonCell" key="NSCell" id="63768587">
+												<int key="NSCellFlags">67108864</int>
+												<int key="NSCellFlags2">134479872</int>
+												<string key="NSContents">PDF</string>
+												<reference key="NSSupport" ref="22"/>
+												<reference key="NSControlView" ref="61655349"/>
+												<int key="NSTag">2</int>
+												<int key="NSButtonFlags">914636800</int>
+												<int key="NSButtonFlags2">6</int>
+												<string key="NSAlternateContents"/>
+												<string key="NSKeyEquivalent"/>
+												<int key="NSPeriodicDelay">400</int>
+												<int key="NSPeriodicInterval">75</int>
+											</object>
+											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+										</object>
+									</array>
+									<string key="NSFrame">{{52, 19}, {114, 20}}</string>
+									<reference key="NSSuperview" ref="968645357"/>
+									<reference key="NSWindow"/>
+									<reference key="NSNextKeyView" ref="61655349"/>
+									<string key="NSClassName">NSView</string>
+								</object>
+								<object class="NSButton" id="1071001322">
+									<reference key="NSNextResponder" ref="968645357"/>
+									<int key="NSvFlags">268</int>
+									<string key="NSFrame">{{9, 8}, {34, 43}}</string>
+									<reference key="NSSuperview" ref="968645357"/>
+									<reference key="NSWindow"/>
+									<reference key="NSNextKeyView" ref="1071339896"/>
+									<int key="NSTag">-1</int>
+									<bool key="NSEnabled">YES</bool>
+									<object class="NSButtonCell" key="NSCell" id="328461424">
+										<int key="NSCellFlags">67108864</int>
+										<int key="NSCellFlags2">134479872</int>
+										<string key="NSContents"/>
+										<reference key="NSSupport" ref="22"/>
+										<reference key="NSControlView" ref="1071001322"/>
+										<int key="NSButtonFlags">-2042347520</int>
+										<int key="NSButtonFlags2">6</int>
+										<object class="NSCustomResource" key="NSNormalImage">
+											<string key="NSClassName">NSImage</string>
+											<string key="NSResourceName">button-close</string>
+										</object>
+										<string key="NSAlternateContents"/>
+										<string key="NSKeyEquivalent"/>
+										<int key="NSPeriodicDelay">400</int>
+										<int key="NSPeriodicInterval">75</int>
+									</object>
+									<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+								</object>
+							</array>
+							<string key="NSFrameSize">{200, 48}</string>
+							<reference key="NSSuperview" ref="667807711"/>
+							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView" ref="1071001322"/>
+							<string key="NSClassName">CHDragFilterView</string>
+						</object>
+					</array>
+					<string key="NSFrameSize">{200, 48}</string>
+					<reference key="NSSuperview"/>
+					<reference key="NSWindow"/>
+					<reference key="NSNextKeyView" ref="968645357"/>
+				</object>
+				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
+				<string key="NSMinSize">{246, 64}</string>
+				<string key="NSMaxSize">{246, 64}</string>
+				<bool key="NSWindowIsRestorable">YES</bool>
+			</object>
+		</array>
+		<object class="IBObjectContainer" key="IBDocument.Objects">
+			<array key="connectionRecords">
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">window</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="134736986"/>
+					</object>
+					<int key="connectionID">5</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">dragFilterView</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="968645357"/>
+					</object>
+					<int key="connectionID">22</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">dragFilterButtonsView</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="1071339896"/>
+					</object>
+					<int key="connectionID">23</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">closeButton</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="1071001322"/>
+					</object>
+					<int key="connectionID">29</int>
+				</object>
+			</array>
+			<object class="IBMutableOrderedSet" key="objectRecords">
+				<array key="orderedObjects">
+					<object class="IBObjectRecord">
+						<int key="objectID">0</int>
+						<array key="object" id="0"/>
+						<reference key="children" ref="1000"/>
+						<nil key="parent"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">-2</int>
+						<reference key="object" ref="1001"/>
+						<reference key="parent" ref="0"/>
+						<string key="objectName">File's Owner</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">-1</int>
+						<reference key="object" ref="1003"/>
+						<reference key="parent" ref="0"/>
+						<string key="objectName">First Responder</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">-3</int>
+						<reference key="object" ref="1004"/>
+						<reference key="parent" ref="0"/>
+						<string key="objectName">Application</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">3</int>
+						<reference key="object" ref="134736986"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="667807711"/>
+						</array>
+						<reference key="parent" ref="0"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">4</int>
+						<reference key="object" ref="667807711"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="968645357"/>
+						</array>
+						<reference key="parent" ref="134736986"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6</int>
+						<reference key="object" ref="968645357"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="1071001322"/>
+							<reference ref="1071339896"/>
+						</array>
+						<reference key="parent" ref="667807711"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">7</int>
+						<reference key="object" ref="1071339896"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="61655349"/>
+							<reference ref="413278106"/>
+							<reference ref="391299609"/>
+						</array>
+						<reference key="parent" ref="968645357"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">15</int>
+						<reference key="object" ref="61655349"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="63768587"/>
+						</array>
+						<reference key="parent" ref="1071339896"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">16</int>
+						<reference key="object" ref="63768587"/>
+						<reference key="parent" ref="61655349"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">27</int>
+						<reference key="object" ref="1071001322"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="328461424"/>
+						</array>
+						<reference key="parent" ref="968645357"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">28</int>
+						<reference key="object" ref="328461424"/>
+						<reference key="parent" ref="1071001322"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">30</int>
+						<reference key="object" ref="413278106"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="595214"/>
+						</array>
+						<reference key="parent" ref="1071339896"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">31</int>
+						<reference key="object" ref="595214"/>
+						<reference key="parent" ref="413278106"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">34</int>
+						<reference key="object" ref="391299609"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="679020023"/>
+						</array>
+						<reference key="parent" ref="1071339896"/>
+						<string key="objectName">MathML</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">35</int>
+						<reference key="object" ref="679020023"/>
+						<reference key="parent" ref="391299609"/>
+						<string key="objectName">MathML</string>
+					</object>
+				</array>
+			</object>
+			<dictionary class="NSMutableDictionary" key="flattenedProperties">
+				<string key="-1.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="-3.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="15.CustomClassName">CHDragThroughButton</string>
+				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="16.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="27.CustomClassName">CHDragThroughButton</string>
+				<string key="27.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="28.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="3.IBPersistedLastKnownCanvasPosition">{166.5, 339}</string>
+				<string key="3.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="3.IBWindowTemplateEditedContentRect">{{163, 785}, {396, 48}}</string>
+				<boolean value="NO" key="3.NSWindowTemplate.visibleAtLaunch"/>
+				<string key="30.CustomClassName">CHDragThroughButton</string>
+				<string key="30.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="31.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="34.CustomClassName">CHDragThroughButton</string>
+				<string key="34.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="35.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<reference key="6.IBNSViewMetadataGestureRecognizers" ref="0"/>
+				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<reference key="7.IBNSViewMetadataGestureRecognizers" ref="0"/>
+				<string key="7.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+			</dictionary>
+			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
+			<nil key="activeLocalization"/>
+			<dictionary class="NSMutableDictionary" key="localizations"/>
+			<nil key="sourceID"/>
+			<int key="maxID">35</int>
+		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">CHDragFilterView</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">../Chalk/CHDragFilterView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">CHDragFilterWindow</string>
+					<string key="superclassName">NSPanel</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">../Chalk/CHDragFilterWindow.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">CHDragFilterWindowController</string>
+					<string key="superclassName">NSWindowController</string>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="closeButton">CHDragThroughButton</string>
+						<string key="dragFilterButtonsView">NSView</string>
+						<string key="dragFilterView">CHDragFilterView</string>
+						<string key="dragFilterViewLabel">NSTextField</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="closeButton">
+							<string key="name">closeButton</string>
+							<string key="candidateClassName">CHDragThroughButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="dragFilterButtonsView">
+							<string key="name">dragFilterButtonsView</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="dragFilterView">
+							<string key="name">dragFilterView</string>
+							<string key="candidateClassName">CHDragFilterView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="dragFilterViewLabel">
+							<string key="name">dragFilterViewLabel</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">../Chalk/CHDragFilterWindowController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">CHDragThroughButton</string>
+					<string key="superclassName">NSButton</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">../Chalk/CHDragThroughButton.h</string>
+					</object>
+				</object>
+			</array>
+			<array class="NSMutableArray" key="referencedPartialClassDescriptionsV3.2+">
+				<object class="IBPartialClassDescription">
+					<string key="className">NSActionCell</string>
+					<string key="superclassName">NSCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSActionCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSApplication</string>
+					<string key="superclassName">NSResponder</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSApplication.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSButton</string>
+					<string key="superclassName">NSControl</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSButton.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSButtonCell</string>
+					<string key="superclassName">NSActionCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSButtonCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSCell</string>
+					<string key="superclassName">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSControl</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSControl.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSFormatter</string>
+					<string key="superclassName">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">Foundation.framework/Headers/NSFormatter.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSMenu</string>
+					<string key="superclassName">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSMenu.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSPanel</string>
+					<string key="superclassName">NSWindow</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSPanel.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSResponder</string>
+					<string key="superclassName">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSResponder.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSTextField</string>
+					<string key="superclassName">NSControl</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSTextField.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSView</string>
+					<string key="superclassName">NSResponder</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSWindow</string>
+					<string key="superclassName">NSResponder</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSWindow.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSWindowController</string>
+					<string key="superclassName">NSResponder</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">showWindow:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">showWindow:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">showWindow:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSWindowController.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
+		<int key="IBDocument.localizationMode">0</int>
+		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
+		<bool key="IBDocument.previouslyAttemptedUpgradeToXcode5">NO</bool>
+		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
+			<integer value="1040" key="NS.object.0"/>
+		</object>
+		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.InterfaceBuilder3</string>
+			<integer value="4600" key="NS.object.0"/>
+		</object>
+		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
+		<int key="IBDocument.defaultPropertyAccessControl">3</int>
+		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="NS.key.0">button-close</string>
+			<string key="NS.object.0">{34, 34}</string>
+		</object>
+	</data>
+</archive>

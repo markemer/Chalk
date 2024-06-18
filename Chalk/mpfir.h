@@ -167,6 +167,9 @@ int     mpfir_cbrt       (mpfir_ptr, mpfir_srcptr);
 /* every element of the second interval */
 int     mpfir_abs        (mpfir_ptr, mpfir_srcptr);
 
+int     mpfir_floor      (mpfir_ptr, mpfir_srcptr);
+int     mpfir_ceil       (mpfir_ptr, mpfir_srcptr);
+
 /* various operations */
 int     mpfir_mul_2exp   (mpfir_ptr, mpfir_srcptr, unsigned long);
 int     mpfir_mul_2ui    (mpfir_ptr, mpfir_srcptr, unsigned long);

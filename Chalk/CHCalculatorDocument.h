@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 12/02/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -31,7 +31,8 @@
                                     <CHChalkContextHistoryDelegate, CHDigitsInspectorControlDelegate, CHWebViewDelegate,
                                     NSControlTextEditingDelegate,
                                     NSTableViewDataSource, NSTableViewDelegate,
-                                    NSTextFieldDelegate, NSToolbarDelegate,
+                                    NSTextFieldDelegate, NSTextViewDelegate,
+                                    NSToolbarDelegate,
                                     NSWindowDelegate>
 {
   IBOutlet NSView*              windowContentView;
@@ -76,6 +77,8 @@
   IBOutlet NSToolbarItem*       inspectorRightToolbarItem;
   IBOutlet NSToolbarItem*       inspectorBottomToolbarItem;
   NSMutableArray*                  availableThemes;
+  NSString*                        defaultLightTheme;
+  NSString*                        defaultDarkTheme;
   NSString*                        currentTheme;
   CHDigitsInspectorControl*        digitsInspectorControl;
   CHChalkIdentifierManager*        chalkIdentifierManager;
@@ -97,6 +100,7 @@
   CHComputationEntryEntity*        scheduledComputationEntry;
   CHSVGRenderer*                   svgRenderer;
   NSUInteger                       isUpdatingPreferences;
+  BOOL                             inputTextFieldIsDeleting;
 }
 
 @property(nonnull,nonatomic,readonly,assign) CHInspectorView* inspectorRightView;
@@ -126,10 +130,13 @@
 -(IBAction) saveGUIState:(id _Nullable)sender saveDocument:(BOOL)saveDocument;
 -(IBAction) changeColor:(id _Nullable)sender;
 -(IBAction) feedPasteboard:(id _Nullable)sender;
+-(IBAction) fontBigger:(id)sender;
+-(IBAction) fontSmaller:(id)sender;
 
 -(void) webviewDidLoad:(CHWebView* _Nonnull)webview;
 -(void) jsDidLoad:(CHWebView* _Nonnull)webview;
 
+-(BOOL) addConstantUserVariableItems:(NSArray* _Nullable)items;
 -(void) removeUserVariableItems:(NSArray* _Nullable)items;
 -(void) addUserVariableItems:(NSArray* _Nullable)items;
 -(void) removeUserFunctionItems:(NSArray* _Nullable)items;

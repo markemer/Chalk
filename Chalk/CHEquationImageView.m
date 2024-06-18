@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 12/02/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 #import "CHEquationImageView.h"
 
@@ -366,7 +366,7 @@ NSString* CHImageDidChangeNotification = @"CHImageDidChangeNotification";
     PasteboardCreate((CFStringRef)pasteboard.name, &cfPBoardRef);
     PasteboardCopyPasteLocation(cfPBoardRef, &cfDropPath);
     NSURL* dropPathURL = (NSURL*)cfDropPath;
-    NSString* dropPath = [NSString stringWithUTF8String:dropPathURL.filePathURL.fileSystemRepresentation];
+    NSString* dropPath = !dropPathURL ? nil : [NSString stringWithUTF8String:dropPathURL.filePathURL.fileSystemRepresentation];
     [dropPathURL autorelease];
     if (cfPBoardRef)
       CFRelease(cfPBoardRef);
@@ -392,8 +392,8 @@ NSString* CHImageDidChangeNotification = @"CHImageDidChangeNotification";
     }//end switch(exportFormat)
     NSString* filePrefix = @"chalk";
     NSFileManager* fileManager = [NSFileManager defaultManager];
-    NSString* filePath = [fileManager getUnusedFilePathFromPrefix:filePrefix extension:extension folder:dropPath startSuffix:0];
-    if (![fileManager fileExistsAtPath:filePath])
+    NSString* filePath = !dropPath ? nil : [fileManager getUnusedFilePathFromPrefix:filePrefix extension:extension folder:dropPath startSuffix:0];
+    if (filePath && ![fileManager fileExistsAtPath:filePath])
       [fileManager createFileAtPath:filePath contents:data attributes:nil];
   }//end if ([type isEqualToString:(NSString*)kPasteboardTypeFileURLPromise])
   else

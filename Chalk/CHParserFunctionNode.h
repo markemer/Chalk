@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 13/02/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHParserNode.h"
@@ -30,6 +30,8 @@
 +(CHChalkValue*) combineAbs2:(NSArray*)operands token:(CHChalkToken*)token context:(CHChalkContext*)context;
 +(CHChalkValue*) combineAngle:(NSArray*)operands token:(CHChalkToken*)token context:(CHChalkContext*)context;
 +(CHChalkValue*) combineAngles:(NSArray*)operands token:(CHChalkToken*)token context:(CHChalkContext*)context;
++(CHChalkValue*) combineFloor:(NSArray*)operands token:(CHChalkToken*)token context:(CHChalkContext*)context;
++(CHChalkValue*) combineCeil:(NSArray*)operands token:(CHChalkToken*)token context:(CHChalkContext*)context;
 +(CHChalkValue*) combineInv:(NSArray*)operands token:(CHChalkToken*)token context:(CHChalkContext*)context;
 +(CHChalkValue*) combineSqrt:(NSArray*)operands token:(CHChalkToken*)token context:(CHChalkContext*)context;
 +(CHChalkValue*) combineCbrt:(NSArray*)operands token:(CHChalkToken*)token context:(CHChalkContext*)context;

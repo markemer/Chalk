@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 15/02/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #ifndef __CHCHALKUTILS_H__
@@ -24,6 +24,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+extern NSString* CHPasteboardTypeConstantDescriptions;
 
 extern const NSInteger GMP_BASE_MIN;
 extern const NSInteger GMP_BASE_MAX;
@@ -241,7 +243,6 @@ BOOL chalkGmpValueGetOneDigitUpRounding(mpfr_srcptr x, int  base, char* outChar,
 BOOL chalkGmpValueMove(chalk_gmp_value_t* dst, chalk_gmp_value_t* src, CHGmpPool* pool);
 BOOL chalkGmpValueAbs(chalk_gmp_value_t* value, CHGmpPool* pool);
 int  chalkGmpValueCmp(const chalk_gmp_value_t* op1, const chalk_gmp_value_t* op2, CHGmpPool* pool);
-int  chalkGmpValueCmpAbs(const chalk_gmp_value_t* op1, const chalk_gmp_value_t* op2, CHGmpPool* pool);
 BOOL chalkGmpValueIsZero(const chalk_gmp_value_t* value, chalk_compute_flags_t flags);
 BOOL chalkGmpValueIsOne(const chalk_gmp_value_t* value, BOOL* isOneIgnoringSign, chalk_compute_flags_t flags);
 BOOL chalkGmpValueIsNan(const chalk_gmp_value_t* value);

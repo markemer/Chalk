@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 08/11/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHChalkIdentifierFunction.h"
@@ -81,6 +81,36 @@
   return instance;
 }
 //end anglesIdentifier
+
++(instancetype) floorIdentifier
+{
+  static CHChalkIdentifierFunction* instance = nil;
+  if (!instance)
+  {
+    @synchronized(self)
+    {
+      if (!instance)
+        instance = [[[self class] alloc] initWithName:@"floor" caseSensitive:NO tokens:@[@"floor"] symbol:@"floor" symbolAsText:@"floor" symbolAsTeX:@"\\lfloor{%@}\\rfloor" argsPossibleCount:NSMakeRange(1, 1)];
+    }//end @synchronized(self)
+  }//end if (!instance)
+  return instance;
+}
+//end floorIdentifier
+
++(instancetype) ceilIdentifier
+{
+  static CHChalkIdentifierFunction* instance = nil;
+  if (!instance)
+  {
+    @synchronized(self)
+    {
+      if (!instance)
+        instance = [[[self class] alloc] initWithName:@"ceil" caseSensitive:NO tokens:@[@"ceil"] symbol:@"ceil" symbolAsText:@"ceil" symbolAsTeX:@"\\lceil{%@}\\rceil" argsPossibleCount:NSMakeRange(1, 1)];
+    }//end @synchronized(self)
+  }//end if (!instance)
+  return instance;
+}
+//end ceilIdentifier
 
 +(instancetype) invIdentifier
 {
@@ -300,7 +330,7 @@
     @synchronized(self)
     {
       if (!instance)
-        instance = [[[self class] alloc] initWithName:@"atan2" caseSensitive:NO tokens:@[@"atan2", @"arctan2"] symbol:@"atan2" symbolAsText:@"atan2" symbolAsTeX:@"\\arctan2\\left({%@}\\right)" argsPossibleCount:NSMakeRange(2, 1)];
+        instance = [[[self class] alloc] initWithName:@"atan2" caseSensitive:NO tokens:@[@"atan2", @"arctan2"] symbol:@"atan2" symbolAsText:@"atan2" symbolAsTeX:@"\\arctan\\!2\\left({%@,%@}\\right)" argsPossibleCount:NSMakeRange(2, 1)];
     }//end @synchronized(self)
   }//end if (!instance)
   return instance;

@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 27/02/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #ifndef Chalk_CHUtils_h
@@ -20,6 +20,12 @@ extern long DebugLogLevel;
 #if defined(__cplusplus)
 extern "C" {
 #endif
+
+int saveJmp(void);
+void signalHandler(int sig);
+#define TRY_SAFE(A) do{if (saveJmp() == 0){A;}}while(0)
+
+extern NSString* NSAppearanceDidChangeNotification;
   
 NS_INLINE BOOL isMacOS10_5OrAbove(void) {return (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_4);}
 NS_INLINE BOOL isMacOS10_6OrAbove(void) {return (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5);}
@@ -32,6 +38,7 @@ NS_INLINE BOOL isMacOS10_12OrAbove(void) {return (floor(NSAppKitVersionNumber) >
 NS_INLINE BOOL isMacOS10_13OrAbove(void) {return (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_12);}
 NS_INLINE BOOL isMacOS10_14OrAbove(void) {return (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_13);}
 NS_INLINE BOOL isMacOS10_15OrAbove(void) {return (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_14);}
+NS_INLINE BOOL isMacOS11OrAbove(void)    {return (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_15);}
 
 NS_INLINE CGFloat    CGFloatClip(CGFloat inf, CGFloat x, CGFloat sup) {return (x<inf) ? inf : (sup<x) ? sup : x;}
 NS_INLINE NSInteger  NSIntegerClip(NSInteger inf, NSInteger x, NSInteger sup) {return (x<inf) ? inf : (sup<x) ? sup : x;}

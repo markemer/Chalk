@@ -35,38 +35,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "AC1AE769-D27C-415F-BBDE-4F02206E235B"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Chalk/CHCalculatorDocument.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1733"
-            endingLineNumber = "1733"
-            landmarkName = "-computeComputationEntry:isNew:didEndWithParser:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F31C368A-2777-4003-BF47-C69900299F62"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Chalk/CHChalkValueParser.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "407"
-            endingLineNumber = "407"
-            landmarkName = "-analyzeWithContext:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "B4F3D85D-B97B-484C-9AA3-0C208419063F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -74,8 +42,8 @@
             filePath = "Chalk/CHChalkValueParser.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1081"
-            endingLineNumber = "1081"
+            startingLineNumber = "1091"
+            endingLineNumber = "1091"
             landmarkName = "-chalkValueWithContext:"
             landmarkType = "7">
          </BreakpointContent>
@@ -90,8 +58,8 @@
             filePath = "Chalk/CHChalkValueParser.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "956"
-            endingLineNumber = "956"
+            startingLineNumber = "966"
+            endingLineNumber = "966"
             landmarkName = "-chalkValueWithContext:"
             landmarkType = "7">
          </BreakpointContent>
@@ -122,8 +90,8 @@
             filePath = "Chalk/CHChalkUtils.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4334"
-            endingLineNumber = "4334"
+            startingLineNumber = "4350"
+            endingLineNumber = "4350"
             landmarkName = "convertFromRawToValueFR(dst, src, dstBitInterpretation, chalkContext)"
             landmarkType = "9">
          </BreakpointContent>
@@ -138,8 +106,8 @@
             filePath = "Chalk/CHChalkUtils.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4419"
-            endingLineNumber = "4419"
+            startingLineNumber = "4435"
+            endingLineNumber = "4435"
             landmarkName = "convertFromRawToValueFR(dst, src, dstBitInterpretation, chalkContext)"
             landmarkType = "9">
          </BreakpointContent>
@@ -154,8 +122,8 @@
             filePath = "Chalk/CHChalkUtils.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4491"
-            endingLineNumber = "4491"
+            startingLineNumber = "4507"
+            endingLineNumber = "4507"
             landmarkName = "convertFromRawToValueFR(dst, src, dstBitInterpretation, chalkContext)"
             landmarkType = "9">
          </BreakpointContent>
@@ -170,8 +138,8 @@
             filePath = "Chalk/CHChalkUtils.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4257"
-            endingLineNumber = "4257"
+            startingLineNumber = "4273"
+            endingLineNumber = "4273"
             landmarkName = "convertFromRawToValueFR(dst, src, dstBitInterpretation, chalkContext)"
             landmarkType = "9">
          </BreakpointContent>
@@ -186,8 +154,8 @@
             filePath = "Chalk/CHChalkUtils.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4311"
-            endingLineNumber = "4311"
+            startingLineNumber = "4327"
+            endingLineNumber = "4327"
             landmarkName = "convertFromRawToValueFR(dst, src, dstBitInterpretation, chalkContext)"
             landmarkType = "9">
          </BreakpointContent>
@@ -211,22 +179,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "1D7CA8CA-0417-4727-B33F-DA1E76C23487"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Chalk/CHCalculatorDocument.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2179"
-            endingLineNumber = "2179"
-            landmarkName = "-updateDocumentControlsForComputationConfiguration:presentationConfiguration:chalkValue:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "99199856-3114-4330-BBE2-6C6893543B36"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -243,22 +195,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "CD4183DD-D85F-4E61-B134-4F619C497459"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Chalk/CHTableView.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "252"
-            endingLineNumber = "252"
-            landmarkName = "-tableView:writeRowsWithIndexes:toPasteboard:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "56DB196A-6E91-450F-8853-5DD9A6108633"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -266,8 +202,8 @@
             filePath = "Chalk/CHTableView.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "268"
-            endingLineNumber = "268"
+            startingLineNumber = "311"
+            endingLineNumber = "311"
             landmarkName = "-tableView:validateDrop:proposedRow:proposedDropOperation:"
             landmarkType = "7">
          </BreakpointContent>
@@ -275,15 +211,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F4C25C1C-147A-48FA-85CB-7020C473A7CC"
+            uuid = "8A356676-614C-4342-B2B1-A5BC2A164FDB"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Chalk/CHTableView.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "287"
-            endingLineNumber = "287"
+            startingLineNumber = "330"
+            endingLineNumber = "330"
             landmarkName = "-tableView:acceptDrop:row:dropOperation:"
             landmarkType = "7">
          </BreakpointContent>
@@ -291,33 +227,193 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "31FDB052-A382-46DF-94D1-61C1007051C6"
+            uuid = "3FD50A2A-7378-442E-9994-D4732F6FA157"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Chalk/CHTableView.m"
+            filePath = "Chalk/CHParser.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "224"
-            endingLineNumber = "224"
-            landmarkName = "-copy:"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
+            landmarkName = "-parseTo:fromData:context:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "819CC4B5-2C4B-4A35-AA34-F405DC50B726"
+            uuid = "942515CF-8D36-40D6-A15E-BDF24657B634"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Chalk/CHTableView.m"
+            filePath = "Chalk/CHParser.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "232"
-            endingLineNumber = "232"
-            landmarkName = "-paste:"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
+            landmarkName = "-parseTo:fromFile:context:"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A12DCA0E-96E0-4756-A36F-8B0FF1DE865D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Chalk/CHParser.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "212"
+            endingLineNumber = "212"
+            landmarkName = "-parseTo:fromFileDescriptor:context:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A918B9D8-EB18-471F-B68F-94DECBF523C0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Chalk/CHParser.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "237"
+            endingLineNumber = "237"
+            landmarkName = "-parseTo:from:withContext:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "979F61B4-9E04-4153-80B8-BEFF6838D730"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Chalk/CHChalkValueMatrix.mm"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "617"
+            endingLineNumber = "617"
+            landmarkName = "-valueAtSubscript:context:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E0B4F896-CCAF-4E2F-A762-DF85F121EE6F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Chalk/CHParserFunctionNode.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2804"
+            endingLineNumber = "2804"
+            landmarkName = "+combineSinDeg:token:context:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "393F0E51-B234-4793-8A11-CA3491B5ADC7"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Chalk/CHChalkIdentifierFunction.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1665"
+            endingLineNumber = "1665"
+            landmarkName = "-encodeWithCoder:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "30C31C56-3101-4CE1-A5EE-26B21E2D8D9B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Chalk/CHUtils.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "166"
+            endingLineNumber = "166"
+            landmarkName = "dispatch_apply_gmp(iterations, queue)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6DAA1D2D-5CF2-4915-9A5F-6433A06BD300"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Chalk/CHUtils.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "182"
+            endingLineNumber = "182"
+            landmarkName = "dispatch_applyWithOptions_gmp(iterations, queue, options)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D689A66F-C375-44DF-B2DE-0AB63EBDE028"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Chalk/CHUtils.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "235"
+            endingLineNumber = "235"
+            landmarkName = "dispatch_group_async_gmp(group, queue, block)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "61C7B7EE-3FC4-447C-8263-6BFFCA5818AF"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Chalk/CHUtils.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "251"
+            endingLineNumber = "251"
+            landmarkName = "dispatch_range_async_gmp(range, queue)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "614DC584-1559-4691-8F96-99E852BCC4B6"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Chalk/CHChalkUtils.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "4159"
+            endingLineNumber = "4159"
+            landmarkName = "convertFromRawToValueFR(dst, src, dstBitInterpretation, chalkContext)"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

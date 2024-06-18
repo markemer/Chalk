@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 17/12/2015.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -37,7 +37,8 @@ extern NSString* CHUserVariableItemHasCircularDependencyKey;
   CHChalkValue* evaluatedValue;
 }
 
-@property(readonly)        BOOL isProtected;
+@property(nonatomic,readonly) BOOL isWriteProtected;
+@property(nonatomic,readonly) BOOL isDeleteProtected;
 
 @property(readonly,retain) CHChalkIdentifier* identifier;//CHChalkIdentifierDependent
 @property(nonatomic)       BOOL isDynamic;//CHChalkIdentifierDependent

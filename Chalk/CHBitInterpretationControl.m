@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 28/04/2016.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHBitInterpretationControl.h"
@@ -11,6 +11,7 @@
 #import "CHComputationConfiguration.h"
 #import "CHNumberFormatter.h"
 #import "CHPreferencesController.h"
+#import "CHUtils.h"
 #import "NSViewExtended.h"
 
 NSString* CHBitInterpretationBinding = @"bitInterpretation";
@@ -63,6 +64,7 @@ static NSString* CHBitInterpretationMinorPartSelected = @"minorPartSelected";
   self->_minorPartColorWellButton.delegate = self;
   [self updateGuiForPreferences];
   [self adaptToValueType];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appearanceDidChange:) name:NSAppearanceDidChangeNotification object:nil];
 }
 //end awakeFromNib
 
@@ -76,6 +78,61 @@ static NSString* CHBitInterpretationMinorPartSelected = @"minorPartSelected";
   [super dealloc];
 }
 //end dealloc
+
+-(void) appearanceDidChange:(NSNotification*)notification
+{
+  CHPreferencesController* preferencesController = [CHPreferencesController sharedPreferencesController];
+  self.signColor = preferencesController.bitInterpretationSignColor;
+  self.exponentColor = preferencesController.bitInterpretationExponentColor;
+  self.significandColor = preferencesController.bitInterpretationSignificandColor;
+  [self updateControls];
+}
+//end appearanceDidChange:
+
+-(void) setSignColor:(NSColor*)value
+{
+  if (value != self->signColor)
+  {
+    if (!value || ![value isEqualTo:self->signColor])
+    {
+      [self willChangeValueForKey:CHBitInterpretationSignColorBinding];
+      [self->signColor release];
+      self->signColor = [value copy];
+      [self didChangeValueForKey:CHBitInterpretationSignColorBinding];
+    }//end if (!value || ![value isEqualTo:self->signColor])
+  }//end if (value != self->signColor)
+}
+//end setSignColor:
+
+-(void) setExponentColor:(NSColor*)value
+{
+  if (value != self->exponentColor)
+  {
+    if (!value || ![value isEqualTo:self->exponentColor])
+    {
+      [self willChangeValueForKey:CHBitInterpretationExponentColorBinding];
+      [self->exponentColor release];
+      self->exponentColor = [value copy];
+      [self didChangeValueForKey:CHBitInterpretationExponentColorBinding];
+    }//end if (!value || ![value isEqualTo:self->exponentColor])
+  }//end if (value != self->signColor)
+}
+//end setExponentColor:
+
+-(void) setSignificandColor:(NSColor*)value
+{
+  if (value != self->significandColor)
+  {
+    if (!value || ![value isEqualTo:self->significandColor])
+    {
+      [self willChangeValueForKey:CHBitInterpretationSignificandColorBinding];
+      [self->significandColor release];
+      self->significandColor = [value copy];
+      [self didChangeValueForKey:CHBitInterpretationSignificandColorBinding];
+    }//end if (!value || ![value isEqualTo:self->significandColor])
+  }//end if (value != self->significandColor)
+}
+//end setSignificandColor:
 
 -(chalk_number_part_minor_type_t) minorPartSelected
 {
@@ -441,6 +498,8 @@ static NSString* CHBitInterpretationMinorPartSelected = @"minorPartSelected";
   else if (tag == CHALK_NUMBER_PART_MINOR_EXPONENT)
     self->_minorPartColorWell.color = self->exponentColor;
   else if (tag == CHALK_NUMBER_PART_MINOR_SIGNIFICAND)
+    self->_minorPartColorWell.color = self->significandColor;
+  else//
     self->_minorPartColorWell.color = self->significandColor;
 
   self->_bitsCountTextField.enabled =

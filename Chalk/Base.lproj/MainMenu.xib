@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -400,9 +400,30 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Format" id="375">
                         <items>
-                            <menuItem title="Show Fonts" keyEquivalent="t" id="388">
+                            <menuItem title="Font" identifier="font" id="RBC-kS-1wq">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Font" id="ZpZ-Fb-CpF">
+                                    <items>
+                                        <menuItem title="Show Fonts" keyEquivalent="t" id="388">
+                                            <connections>
+                                                <action selector="orderFrontFontPanel:" target="419" id="423"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="FGs-pM-IcN"/>
+                                        <menuItem title="Bigger" keyEquivalent="+" id="rww-qN-GjW">
+                                            <connections>
+                                                <action selector="fontBigger:" target="Dsq-AI-L6Z" id="IBg-GI-QwT"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Smaller" keyEquivalent="-" id="kSO-dy-Bht">
+                                            <connections>
+                                                <action selector="fontSmaller:" target="Dsq-AI-L6Z" id="lHp-WD-vwH"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
                                 <connections>
-                                    <action selector="orderFrontFontPanel:" target="419" id="423"/>
+                                    <action selector="noAction:" target="Dsq-AI-L6Z" id="a1t-GK-U5V"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Show Colors" keyEquivalent="C" id="400">
@@ -435,6 +456,13 @@ CA
                             <menuItem title="Delete all items" keyEquivalent="k" id="Sk1-wK-jJ9">
                                 <connections>
                                     <action selector="calculatorRemoveAllItems:" target="-1" id="iaM-zZ-x7e"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="xjF-UV-HpR"/>
+                            <menuItem title="Show constants" id="7fQ-OU-LPJ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="toggleConstantsManager:" target="Dsq-AI-L6Z" id="VIx-1R-tAM"/>
                                 </connections>
                             </menuItem>
                         </items>

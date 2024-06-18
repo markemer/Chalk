@@ -35,14 +35,28 @@
 		930766E11C38144F00059D1C /* CHChalkItemDependencyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 930766E01C38144F00059D1C /* CHChalkItemDependencyManager.m */; };
 		930766E41C3C569B00059D1C /* NSMutableSetExtended.m in Sources */ = {isa = PBXBuildFile; fileRef = 930766E31C3C569B00059D1C /* NSMutableSetExtended.m */; };
 		93085B0F1BFE866A003D5E46 /* CHTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 93085B0E1BFE866A003D5E46 /* CHTableView.m */; };
+		930B8B8426189D740000BA61 /* CHConstantsProviderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 930B8B8326189D740000BA61 /* CHConstantsProviderManager.m */; };
+		930B8B8D26191B690000BA61 /* CHConstantsDescriptionsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 930B8B8C26191B680000BA61 /* CHConstantsDescriptionsTableView.m */; };
 		930D7F4C1A0EC5FB00DD59CC /* CHChalkIdentifierFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 930D7F4B1A0EC5FB00DD59CC /* CHChalkIdentifierFunction.m */; };
 		930D7F4F1A0F6D2F00DD59CC /* CHChalkValueQuaternion.m in Sources */ = {isa = PBXBuildFile; fileRef = 930D7F4E1A0F6D2F00DD59CC /* CHChalkValueQuaternion.m */; };
 		930D7F521A0FD85300DD59CC /* CHChalkValueNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 930D7F511A0FD85300DD59CC /* CHChalkValueNumber.m */; };
 		930D7F551A100C2200DD59CC /* CHChalkValueMatrix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 930D7F541A100C2200DD59CC /* CHChalkValueMatrix.mm */; };
 		931112C91DBFF853000E5C2E /* CHTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 931112C81DBFF853000E5C2E /* CHTextFieldCell.m */; };
+		931478B125FE131B001772AF /* constants.plist in Resources */ = {isa = PBXBuildFile; fileRef = 931478B025FE131B001772AF /* constants.plist */; };
+		931478BB26079537001772AF /* CHConstantsProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 931478BA26079537001772AF /* CHConstantsProvider.m */; };
+		931478C126079749001772AF /* CHConstantsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 931478BF26079749001772AF /* CHConstantsWindowController.m */; };
+		931478C6260798B2001772AF /* CHConstantsWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 931478C5260798B2001772AF /* CHConstantsWindowController.xib */; };
+		931478CF26079D13001772AF /* CHConstantDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 931478CE26079D13001772AF /* CHConstantDescription.m */; };
+		931478D62607A05C001772AF /* CHUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 931478D52607A05C001772AF /* CHUnit.m */; };
+		931478DF2607A0C0001772AF /* CHUnitElementDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 931478DE2607A0C0001772AF /* CHUnitElementDescription.m */; };
+		931478E52607A11B001772AF /* CHUnitManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 931478E42607A11B001772AF /* CHUnitManager.m */; };
+		931478EB2607A26F001772AF /* CHUnitDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 931478EA2607A26F001772AF /* CHUnitDescription.m */; };
 		93184DCA1A164FA6009C99FF /* CHChalkValueList.m in Sources */ = {isa = PBXBuildFile; fileRef = 93184DC91A164FA6009C99FF /* CHChalkValueList.m */; };
 		93184DCD1A166C1C009C99FF /* CHChalkValueScalar.m in Sources */ = {isa = PBXBuildFile; fileRef = 93184DCC1A166C1C009C99FF /* CHChalkValueScalar.m */; };
 		93194AA71B0A79E10006FFC3 /* CHChalkIdentifierManagerWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 93194AA61B0A79E10006FFC3 /* CHChalkIdentifierManagerWrapper.m */; };
+		931A46412607F2D5001E84DB /* CHUnitElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 931A463F2607F2D5001E84DB /* CHUnitElement.m */; };
+		931A465F2610BFBE001E84DB /* CHConstantDescriptionPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 931A465E2610BFBE001E84DB /* CHConstantDescriptionPresenter.m */; };
+		931A46652610D9F7001E84DB /* CHConstantSymbolManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 931A46642610D9F7001E84DB /* CHConstantSymbolManager.m */; };
 		931F00291A14E0AF00A0F23F /* CHParserValueNumberIntervalNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 931F00281A14E0AF00A0F23F /* CHParserValueNumberIntervalNode.m */; };
 		931F002C1A150BDF00A0F23F /* CHParserMatrixRowNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 931F002B1A150BDF00A0F23F /* CHParserMatrixRowNode.m */; };
 		931F002F1A150BEC00A0F23F /* CHParserMatrixNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 931F002E1A150BEC00A0F23F /* CHParserMatrixNode.m */; };
@@ -445,6 +459,10 @@
 		930766E31C3C569B00059D1C /* NSMutableSetExtended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSMutableSetExtended.m; sourceTree = "<group>"; };
 		93085B0D1BFE866A003D5E46 /* CHTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHTableView.h; sourceTree = "<group>"; };
 		93085B0E1BFE866A003D5E46 /* CHTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHTableView.m; sourceTree = "<group>"; };
+		930B8B8226189D740000BA61 /* CHConstantsProviderManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CHConstantsProviderManager.h; sourceTree = "<group>"; };
+		930B8B8326189D740000BA61 /* CHConstantsProviderManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CHConstantsProviderManager.m; sourceTree = "<group>"; };
+		930B8B8B26191B680000BA61 /* CHConstantsDescriptionsTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CHConstantsDescriptionsTableView.h; sourceTree = "<group>"; };
+		930B8B8C26191B680000BA61 /* CHConstantsDescriptionsTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CHConstantsDescriptionsTableView.m; sourceTree = "<group>"; };
 		930D7F4A1A0EC5FB00DD59CC /* CHChalkIdentifierFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHChalkIdentifierFunction.h; sourceTree = "<group>"; };
 		930D7F4B1A0EC5FB00DD59CC /* CHChalkIdentifierFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHChalkIdentifierFunction.m; sourceTree = "<group>"; };
 		930D7F4D1A0F6D2F00DD59CC /* CHChalkValueQuaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHChalkValueQuaternion.h; sourceTree = "<group>"; };
@@ -455,12 +473,34 @@
 		930D7F541A100C2200DD59CC /* CHChalkValueMatrix.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CHChalkValueMatrix.mm; sourceTree = "<group>"; };
 		931112C71DBFF853000E5C2E /* CHTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHTextFieldCell.h; sourceTree = "<group>"; };
 		931112C81DBFF853000E5C2E /* CHTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHTextFieldCell.m; sourceTree = "<group>"; };
+		931478B025FE131B001772AF /* constants.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = constants.plist; path = Resources/Data/constants.plist; sourceTree = "<group>"; };
+		931478B926079537001772AF /* CHConstantsProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CHConstantsProvider.h; sourceTree = "<group>"; };
+		931478BA26079537001772AF /* CHConstantsProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CHConstantsProvider.m; sourceTree = "<group>"; };
+		931478BF26079749001772AF /* CHConstantsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHConstantsWindowController.m; sourceTree = "<group>"; };
+		931478C026079749001772AF /* CHConstantsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHConstantsWindowController.h; sourceTree = "<group>"; };
+		931478C5260798B2001772AF /* CHConstantsWindowController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CHConstantsWindowController.xib; sourceTree = "<group>"; };
+		931478CD26079D13001772AF /* CHConstantDescription.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CHConstantDescription.h; sourceTree = "<group>"; };
+		931478CE26079D13001772AF /* CHConstantDescription.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CHConstantDescription.m; sourceTree = "<group>"; };
+		931478D42607A05C001772AF /* CHUnit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CHUnit.h; sourceTree = "<group>"; };
+		931478D52607A05C001772AF /* CHUnit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CHUnit.m; sourceTree = "<group>"; };
+		931478DD2607A0C0001772AF /* CHUnitElementDescription.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CHUnitElementDescription.h; sourceTree = "<group>"; };
+		931478DE2607A0C0001772AF /* CHUnitElementDescription.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CHUnitElementDescription.m; sourceTree = "<group>"; };
+		931478E32607A11B001772AF /* CHUnitManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CHUnitManager.h; sourceTree = "<group>"; };
+		931478E42607A11B001772AF /* CHUnitManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CHUnitManager.m; sourceTree = "<group>"; };
+		931478E92607A26F001772AF /* CHUnitDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHUnitDescription.h; sourceTree = "<group>"; };
+		931478EA2607A26F001772AF /* CHUnitDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHUnitDescription.m; sourceTree = "<group>"; };
 		93184DC81A164FA6009C99FF /* CHChalkValueList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHChalkValueList.h; sourceTree = "<group>"; };
 		93184DC91A164FA6009C99FF /* CHChalkValueList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHChalkValueList.m; sourceTree = "<group>"; };
 		93184DCB1A166C1C009C99FF /* CHChalkValueScalar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHChalkValueScalar.h; sourceTree = "<group>"; };
 		93184DCC1A166C1C009C99FF /* CHChalkValueScalar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHChalkValueScalar.m; sourceTree = "<group>"; };
 		93194AA51B0A79E10006FFC3 /* CHChalkIdentifierManagerWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHChalkIdentifierManagerWrapper.h; sourceTree = "<group>"; };
 		93194AA61B0A79E10006FFC3 /* CHChalkIdentifierManagerWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHChalkIdentifierManagerWrapper.m; sourceTree = "<group>"; };
+		931A463F2607F2D5001E84DB /* CHUnitElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHUnitElement.m; sourceTree = "<group>"; };
+		931A46402607F2D5001E84DB /* CHUnitElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHUnitElement.h; sourceTree = "<group>"; };
+		931A465D2610BFBE001E84DB /* CHConstantDescriptionPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CHConstantDescriptionPresenter.h; sourceTree = "<group>"; };
+		931A465E2610BFBE001E84DB /* CHConstantDescriptionPresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CHConstantDescriptionPresenter.m; sourceTree = "<group>"; };
+		931A46632610D9F7001E84DB /* CHConstantSymbolManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CHConstantSymbolManager.h; sourceTree = "<group>"; };
+		931A46642610D9F7001E84DB /* CHConstantSymbolManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CHConstantSymbolManager.m; sourceTree = "<group>"; };
 		931F00271A14E0AF00A0F23F /* CHParserValueNumberIntervalNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHParserValueNumberIntervalNode.h; sourceTree = "<group>"; };
 		931F00281A14E0AF00A0F23F /* CHParserValueNumberIntervalNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHParserValueNumberIntervalNode.m; sourceTree = "<group>"; };
 		931F002A1A150BDF00A0F23F /* CHParserMatrixRowNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHParserMatrixRowNode.h; sourceTree = "<group>"; };
@@ -1062,6 +1102,45 @@
 				93C019331C229956003B3022 /* CHUserVariableItem.m */,
 			);
 			name = "User variables";
+			sourceTree = "<group>";
+		};
+		931478B526079519001772AF /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				931478CD26079D13001772AF /* CHConstantDescription.h */,
+				931478CE26079D13001772AF /* CHConstantDescription.m */,
+				931A465D2610BFBE001E84DB /* CHConstantDescriptionPresenter.h */,
+				931A465E2610BFBE001E84DB /* CHConstantDescriptionPresenter.m */,
+				931A46632610D9F7001E84DB /* CHConstantSymbolManager.h */,
+				931A46642610D9F7001E84DB /* CHConstantSymbolManager.m */,
+				931478B926079537001772AF /* CHConstantsProvider.h */,
+				931478BA26079537001772AF /* CHConstantsProvider.m */,
+				930B8B8226189D740000BA61 /* CHConstantsProviderManager.h */,
+				930B8B8326189D740000BA61 /* CHConstantsProviderManager.m */,
+				931478C026079749001772AF /* CHConstantsWindowController.h */,
+				931478BF26079749001772AF /* CHConstantsWindowController.m */,
+				931478C5260798B2001772AF /* CHConstantsWindowController.xib */,
+				930B8B8B26191B680000BA61 /* CHConstantsDescriptionsTableView.h */,
+				930B8B8C26191B680000BA61 /* CHConstantsDescriptionsTableView.m */,
+			);
+			name = Constants;
+			sourceTree = "<group>";
+		};
+		931478D32607A04B001772AF /* Units */ = {
+			isa = PBXGroup;
+			children = (
+				931478D42607A05C001772AF /* CHUnit.h */,
+				931478D52607A05C001772AF /* CHUnit.m */,
+				931478E92607A26F001772AF /* CHUnitDescription.h */,
+				931478EA2607A26F001772AF /* CHUnitDescription.m */,
+				931A46402607F2D5001E84DB /* CHUnitElement.h */,
+				931A463F2607F2D5001E84DB /* CHUnitElement.m */,
+				931478DD2607A0C0001772AF /* CHUnitElementDescription.h */,
+				931478DE2607A0C0001772AF /* CHUnitElementDescription.m */,
+				931478E32607A11B001772AF /* CHUnitManager.h */,
+				931478E42607A11B001772AF /* CHUnitManager.m */,
+			);
+			name = Units;
 			sourceTree = "<group>";
 		};
 		9321421D18ACDF4C00B834CC /* Parsing */ = {
@@ -1722,6 +1801,7 @@
 				93217A381A45C9B1000FD1F4 /* knownMersennePrimesPowersOfTwo.plist */,
 				93217A3A1A46CA3F000FD1F4 /* knownMillerRabinPrimalityASubsets.plist */,
 				93217A331A44CD70000FD1F4 /* primes.mpz.bz2 */,
+				931478B025FE131B001772AF /* constants.plist */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -1824,9 +1904,11 @@
 		93CC84A71C1CC251009BD401 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				931478B526079519001772AF /* Constants */,
 				93479DAE1DB6D10E0014BD2B /* Parsing */,
 				93F2D7391C615082005CD2D9 /* Computation */,
 				936636C91C9F5AC900578638 /* Presentation */,
+				931478D32607A04B001772AF /* Units */,
 				932345A61FE52CD200EDB56D /* User functions */,
 				930766DE1C38141500059D1C /* User variables */,
 				93F865371A0C282300564A6C /* CHChalkIdentifierManager.h */,
@@ -2061,6 +2143,7 @@
 				ORGANIZATIONNAME = "Pierre Chatelier";
 				TargetAttributes = {
 					93A4005B18ABA380000710B0 = {
+						DevelopmentTeam = 7SFX84GNR7;
 						ProvisioningStyle = Automatic;
 					};
 					93A4007F18ABA380000710B0 = {
@@ -2140,6 +2223,7 @@
 				936AB2BE1EB4964900D0ED8D /* reverse.png in Resources */,
 				93F2D7141C5AC4C0005CD2D9 /* inspector-left-on@2x.png in Resources */,
 				93B71CC01EA7F5580027D0B2 /* cursor-target.png in Resources */,
+				931478C6260798B2001772AF /* CHConstantsWindowController.xib in Resources */,
 				93B71CBE1EA7F5580027D0B2 /* cursor-move.png in Resources */,
 				93CC849D1C1AE36E009BD401 /* CHGraphDocument.xib in Resources */,
 				93D317FE1E7EE0D0000A8E8C /* Chalk in Resources */,
@@ -2192,6 +2276,7 @@
 				93F2D7151C5AC4C0005CD2D9 /* inspector-right-off.png in Resources */,
 				93BE533A1A02FA0200144B82 /* erange@2x.png in Resources */,
 				93A0A96518C36C4E00C6D470 /* chalk_dsa_pub.pem in Resources */,
+				931478B125FE131B001772AF /* constants.plist in Resources */,
 				93B71CD71EA80F900027D0B2 /* left-most@2x.png in Resources */,
 				93F2D7131C5AC4C0005CD2D9 /* inspector-left-on.png in Resources */,
 				93CC849C1C1AE36A009BD401 /* CHCalculatorDocument.xib in Resources */,
@@ -2293,12 +2378,15 @@
 				9359172218B01D8D00E325C6 /* CHChalkToken.m in Sources */,
 				935933B518AD0DBD004A6E69 /* CHParserValueNumberRealNode.m in Sources */,
 				932345AB1FE52D2D00EDB56D /* CHUserFunctionEntity.m in Sources */,
+				931A465F2610BFBE001E84DB /* CHConstantDescriptionPresenter.m in Sources */,
+				931478BB26079537001772AF /* CHConstantsProvider.m in Sources */,
 				93F2D7211C5C2B62005CD2D9 /* CHChalkErrorURLContent.m in Sources */,
 				9395445D1EBA3404001FA7DE /* IJSVGLayerTree.m in Sources */,
 				935933AF18AD0D8C004A6E69 /* CHParserIdentifierNode.m in Sources */,
 				93B5ABCE1E94531F001C6174 /* CHParserValueNumberPerFractionNode.m in Sources */,
 				93184DCD1A166C1C009C99FF /* CHChalkValueScalar.m in Sources */,
 				939544501EBA3404001FA7DE /* IJSVGDef.m in Sources */,
+				931478D62607A05C001772AF /* CHUnit.m in Sources */,
 				939544651EBA3404001FA7DE /* IJSVGRadialGradient.m in Sources */,
 				932EAD6F1EBB22580038ECFD /* NSMenuExtended.m in Sources */,
 				93F9D5A01A5B437E00E6DE02 /* CHWebViewScrollView.m in Sources */,
@@ -2331,6 +2419,7 @@
 				93B996E71ECDF0F60014E653 /* CHColorWell.m in Sources */,
 				939544681EBA3404001FA7DE /* IJSVGStyle.m in Sources */,
 				9359171918AF9E9C00E325C6 /* NSStringExtended.m in Sources */,
+				931478C126079749001772AF /* CHConstantsWindowController.m in Sources */,
 				93A0A94118C2928C00C6D470 /* CHParser.m in Sources */,
 				93E97E7C1DC7FE48001AE244 /* CHColorWellButton.m in Sources */,
 				93CC83981CA5E29D003C1371 /* CHDigitsGroupView.m in Sources */,
@@ -2342,6 +2431,7 @@
 				932EAD731EBB25FD0038ECFD /* CHEquationDocument.m in Sources */,
 				9395446E1EBA3404001FA7DE /* IJSVGTransaction.m in Sources */,
 				93F8C83A18BA400100C1B3B3 /* CHChalkValueParser.m in Sources */,
+				931478CF26079D13001772AF /* CHConstantDescription.m in Sources */,
 				93D318011E81C2B6000A8E8C /* NSObjectTreeNode.m in Sources */,
 				93CC839B1CA5E304003C1371 /* CHDigitsGroupNavigatorView.m in Sources */,
 				939544531EBA3404001FA7DE /* IJSVGFontConverter.m in Sources */,
@@ -2365,6 +2455,7 @@
 				9395446B1EBA3404001FA7DE /* IJSVGStyleSheetSelector.m in Sources */,
 				93C0193A1C24D573003B3022 /* CHChalkIdentifierVariable.m in Sources */,
 				935933C018AD1A02004A6E69 /* NSArrayExtended.m in Sources */,
+				930B8B8426189D740000BA61 /* CHConstantsProviderManager.m in Sources */,
 				93F2D7291C5C30BB005CD2D9 /* CHChalkValueURLInput.m in Sources */,
 				939544621EBA3404001FA7DE /* IJSVGPath.m in Sources */,
 				93F389621EBB39A8006BAE67 /* CHButtonPalette.m in Sources */,
@@ -2373,6 +2464,7 @@
 				93C3C2AD18AD68B600A0E71F /* CHParserAssignationNode.m in Sources */,
 				9321422718ACDFD900B834CC /* CHParserOperatorNode.m in Sources */,
 				93F2D71E1C5C1191005CD2D9 /* CHParserValueStringNode.m in Sources */,
+				931A46412607F2D5001E84DB /* CHUnitElement.m in Sources */,
 				93A7A20F1A486A9B005B6891 /* CHAKSUtils.mm in Sources */,
 				9395444A1EBA3404001FA7DE /* IJSVGCommandHorizontalLine.m in Sources */,
 				93479DB11DB6D1270014BD2B /* CHParseConfiguration.m in Sources */,
@@ -2384,6 +2476,7 @@
 				93A4007318ABA380000710B0 /* CHCalculatorDocument.m in Sources */,
 				93D8DF791E43E20B0076582B /* NSManagedObjectContextExtended.m in Sources */,
 				93F3E59B1A0E0822006A4F04 /* CHChalkOperator.m in Sources */,
+				931478E52607A11B001772AF /* CHUnitManager.m in Sources */,
 				93FD3A921AFCF52A00A3184C /* CHGraphDocument.m in Sources */,
 				939544541EBA3404001FA7DE /* IJSVGForeignObject.m in Sources */,
 				93D318051E81C403000A8E8C /* CHQuickReferenceWindowController.m in Sources */,
@@ -2403,7 +2496,9 @@
 				936A2A1D1ED032F6007B601A /* NSWindowExtended.m in Sources */,
 				935432B619F9970F00164BE3 /* NSMutableDataExtended.m in Sources */,
 				93BC6BE01CF1FA75004ED24F /* NSPopUpButtonExtended.m in Sources */,
+				931478DF2607A0C0001772AF /* CHUnitElementDescription.m in Sources */,
 				93B5ABD11E956F66001C6174 /* CHChalkValueNumberFraction.m in Sources */,
+				930B8B8D26191B690000BA61 /* CHConstantsDescriptionsTableView.m in Sources */,
 				9375F75023CBBA8100EB1C7C /* CHValueHolderEntity.m in Sources */,
 				93924A801E7890A00095FBB6 /* CHPersistentDocument.m in Sources */,
 				935933B218AD0DA6004A6E69 /* CHParserValueNumberIntegerNode.m in Sources */,
@@ -2442,6 +2537,7 @@
 				939544671EBA3404001FA7DE /* IJSVGStrokeLayer.m in Sources */,
 				932343A81B1F274300B0B745 /* CHGmpPool.mm in Sources */,
 				93B53A601DBABC6B00046B53 /* CHKeyedUnarchiveFromDataTransformer.m in Sources */,
+				931A46652610D9F7001E84DB /* CHConstantSymbolManager.m in Sources */,
 				931F00291A14E0AF00A0F23F /* CHParserValueNumberIntervalNode.m in Sources */,
 				93F2D7071C581C3F005CD2D9 /* CHParserAssignationDynamicNode.m in Sources */,
 				9395446A1EBA3404001FA7DE /* IJSVGStyleSheetRule.m in Sources */,
@@ -2462,6 +2558,7 @@
 				9395444E1EBA3404001FA7DE /* IJSVGCommandSmoothCurve.m in Sources */,
 				939544471EBA3404001FA7DE /* IJSVGCommandClose.m in Sources */,
 				93D023BA1C25FF200052DD68 /* CHGraphAxisControl.m in Sources */,
+				931478EB2607A26F001772AF /* CHUnitDescription.m in Sources */,
 				93C019371C24D530003B3022 /* CHChalkIdentifierConstant.m in Sources */,
 				93A0A96C18C36DAD00C6D470 /* CHBoolTransformer.m in Sources */,
 				93CC84AA1C1CC279009BD401 /* CHComputedValueEntity.m in Sources */,
@@ -2716,8 +2813,8 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.6.8;
-				DEVELOPMENT_TEAM = UQ775J849D;
+				CURRENT_PROJECT_VERSION = 1.7.5;
+				DEVELOPMENT_TEAM = 7SFX84GNR7;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2735,13 +2832,12 @@
 					"$(PROJECT_DIR)/Libraries",
 					"$(SDKROOT)/usr/lib/system",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.1;
-				MARKETING_VERSION = 1.6.8;
+				MARKETING_VERSION = 1.7.5;
 				OTHER_LDFLAGS = (
 					"-lbz2",
 					"-headerpad_max_install_names",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.emer.Chalk;
+				PRODUCT_BUNDLE_IDENTIFIER = "fr.chachatelier.pierre.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = app;
@@ -2757,8 +2853,8 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.6.8;
-				DEVELOPMENT_TEAM = UQ775J849D;
+				CURRENT_PROJECT_VERSION = 1.7.5;
+				DEVELOPMENT_TEAM = 7SFX84GNR7;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2776,13 +2872,12 @@
 					"$(PROJECT_DIR)/Libraries",
 					"$(SDKROOT)/usr/lib/system",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.1;
-				MARKETING_VERSION = 1.6.8;
+				MARKETING_VERSION = 1.7.5;
 				OTHER_LDFLAGS = (
 					"-lbz2",
 					"-headerpad_max_install_names",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.emer.Chalk;
+				PRODUCT_BUNDLE_IDENTIFIER = "fr.chachatelier.pierre.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = app;

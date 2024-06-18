@@ -3,10 +3,12 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 25/10/2016.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHTextFieldCell.h"
+
+#import "NSObjectExtended.h"
 
 @implementation CHTextFieldCell
 
@@ -54,5 +56,19 @@
   return newRect;
 }
 //end drawingRectForBounds:
+
+-(void) removeAllItems
+{
+  //used when replacing a NSComboBoxCell
+  [self setAttributedStringValue:nil];
+}
+//end removeAllItems
+
+-(void) addItemWithObjectValue:(id)object
+{
+  //used when replacing a NSComboBoxCell
+  [self setAttributedStringValue:[object dynamicCastToClass:[NSAttributedString class]]];
+}
+//end addItemWithObjectValue:
 
 @end

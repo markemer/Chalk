@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 13/02/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHParserAssignationNode.h"
@@ -46,46 +46,73 @@
     CHParserOperatorNode* dstOperatorSubscript = ([dstOperator op] != CHALK_OPERATOR_SUBSCRIPT) ? nil : dstOperator;
     if (dstFunction)
     {
-      CHChalkIdentifierManager* identifierManager = context.identifierManager;
-      NSString* identifierToken = dstFunction.token.value;
-      BOOL isReservedIdentifier = [identifierManager isDefaultIdentifierToken:identifierToken];
-      if (isReservedIdentifier)
-        [self addError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorIdentifierReserved range:child1.token.range] context:context];
-      else//if (!isReservedIdentifier)
+      CHChalkIdentifier* identifier = [dstFunction identifierWithContext:context];
+      if (identifier == [context.identifierManager identifierForName:@"outfile" createClass:Nil])
       {
-        CHChalkIdentifierFunction* chalkIdentifierFunction = [[identifierManager identifierForToken:identifierToken createClass:[CHChalkIdentifierFunction class]] dynamicCastToClass:[CHChalkIdentifierFunction class]];
-        if (chalkIdentifierFunction)
+        [dstFunction performEvaluationWithContext:context lazy:lazy];
+        CHChalkValueURLOutput* chalkValueURLOutput =
+          [dstFunction.evaluatedValue dynamicCastToClass:[CHChalkValueURLOutput class]];
+        if (chalkValueURLOutput)
         {
-          CHParserNode* uniqueLeftFunctionChild = (dstFunction.children.count == 1) ?
-            [[dstFunction.children objectAtIndex:0] dynamicCastToClass:[CHParserNode class]] :
-            nil;
-          CHParserEnumerationNode* functionArgumentsEnumeration = [uniqueLeftFunctionChild dynamicCastToClass:[CHParserEnumerationNode class]];
-          NSMutableArray* argumentNames = [NSMutableArray arrayWithCapacity:functionArgumentsEnumeration.children.count];
-          BOOL isValidFunctionDeclaration = YES;
-          for(CHParserNode* argNode in functionArgumentsEnumeration.children)
+          [child2 performEvaluationWithContext:context lazy:lazy];
+          if (!context.errorContext.hasError)
           {
-            CHParserIdentifierNode* argAsIdentifierNode = [argNode dynamicCastToClass:[CHParserIdentifierNode class]];
-            NSString* argName = argAsIdentifierNode.token.value;
-            BOOL isValidIdentifier = ![NSString isNilOrEmpty:argName];
-            if (!isValidIdentifier)
-              [self addError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorParseError range:argNode.token.range] context:context];
-            isValidFunctionDeclaration &= isValidIdentifier;
-            if (isValidIdentifier)
-              [argumentNames addObject:argName];
-          }//end for each argNode
-          NSMutableString* string = [NSMutableString string];
-          CHStreamWrapper* streamWrapper = [[CHStreamWrapper alloc] init];
-          streamWrapper.stringStream = string;
-          BOOL oldOutputRawToken = context.outputRawToken;
-          context.outputRawToken = YES;
-          [child2 writeBodyToStream:streamWrapper context:context presentationConfiguration:context.presentationConfiguration];
-          context.outputRawToken = oldOutputRawToken;
-          [streamWrapper release];
-          chalkIdentifierFunction.argsPossibleCount = NSMakeRange(argumentNames.count, 1);
-          chalkIdentifierFunction.argumentNames = argumentNames;
-          chalkIdentifierFunction.definition = string;
-        }//end if (chalkIdentifierFunction)
-      }//end if (!isReservedIdentifier)
+            CHStreamWrapper* stream = [[CHStreamWrapper alloc] init];
+            NSMutableString* string = [[NSMutableString alloc] init];
+            stream.stringStream = string;
+            [child2.evaluatedValue writeBodyToStream:stream context:context presentationConfiguration:context.presentationConfiguration];
+            NSData* data = [string dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+            [chalkValueURLOutput write:data append:NO context:context];
+            [string release];
+            [stream release];
+            self.evaluatedValue = child1.evaluatedValue;
+            self->evaluationComputeFlags = self.evaluatedValue.evaluationComputeFlags;
+          }//end if (!context.errorContext.hasError)
+        }//end if (chalkValueURLOutput)
+      }//end if (identifier == [context.identifierManager identifierForName:@"outfile" createClass:Nil])
+      else//if (identifier != [context.identifierManager identifierForName:@"outfile" createClass:Nil])
+      {
+        CHChalkIdentifierManager* identifierManager = context.identifierManager;
+        NSString* identifierToken = dstFunction.token.value;
+        BOOL isReservedIdentifier = [identifierManager isDefaultIdentifierToken:identifierToken];
+        if (isReservedIdentifier)
+          [self addError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorIdentifierReserved range:child1.token.range] context:context];
+        else//if (!isReservedIdentifier)
+        {
+          CHChalkIdentifierFunction* chalkIdentifierFunction = [[identifierManager identifierForToken:identifierToken createClass:[CHChalkIdentifierFunction class]] dynamicCastToClass:[CHChalkIdentifierFunction class]];
+          if (chalkIdentifierFunction)
+          {
+            CHParserNode* uniqueLeftFunctionChild = (dstFunction.children.count == 1) ?
+              [[dstFunction.children objectAtIndex:0] dynamicCastToClass:[CHParserNode class]] :
+              nil;
+            CHParserEnumerationNode* functionArgumentsEnumeration = [uniqueLeftFunctionChild dynamicCastToClass:[CHParserEnumerationNode class]];
+            NSMutableArray* argumentNames = [NSMutableArray arrayWithCapacity:functionArgumentsEnumeration.children.count];
+            BOOL isValidFunctionDeclaration = YES;
+            for(CHParserNode* argNode in functionArgumentsEnumeration.children)
+            {
+              CHParserIdentifierNode* argAsIdentifierNode = [argNode dynamicCastToClass:[CHParserIdentifierNode class]];
+              NSString* argName = argAsIdentifierNode.token.value;
+              BOOL isValidIdentifier = ![NSString isNilOrEmpty:argName];
+              if (!isValidIdentifier)
+                [self addError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorParseError range:argNode.token.range] context:context];
+              isValidFunctionDeclaration &= isValidIdentifier;
+              if (isValidIdentifier)
+                [argumentNames addObject:argName];
+            }//end for each argNode
+            NSMutableString* string = [NSMutableString string];
+            CHStreamWrapper* streamWrapper = [[CHStreamWrapper alloc] init];
+            streamWrapper.stringStream = string;
+            BOOL oldOutputRawToken = context.outputRawToken;
+            context.outputRawToken = YES;
+            [child2 writeBodyToStream:streamWrapper context:context presentationConfiguration:context.presentationConfiguration];
+            context.outputRawToken = oldOutputRawToken;
+            [streamWrapper release];
+            chalkIdentifierFunction.argsPossibleCount = NSMakeRange(argumentNames.count, 1);
+            chalkIdentifierFunction.argumentNames = argumentNames;
+            chalkIdentifierFunction.definition = string;
+          }//end if (chalkIdentifierFunction)
+        }//end if (!isReservedIdentifier)
+      }//end if (identifier != [context.identifierManager identifierForName:@"outfile" createClass:Nil])
     }//end if (dstFunction)
     else if (dstIdentifier)
     {
@@ -169,33 +196,6 @@
         }//end if (subscriptableValue)
       }//end if (identifierNode && subscript)
     }//end if (dstOperatorSubscript)
-    else if (dstFunction)
-    {
-      CHChalkIdentifier* identifier = [dstFunction identifierWithContext:context];
-      if (identifier == [context.identifierManager identifierForName:@"outfile" createClass:Nil])
-      {
-        [dstFunction performEvaluationWithContext:context lazy:lazy];
-        CHChalkValueURLOutput* chalkValueURLOutput =
-          [dstFunction.evaluatedValue dynamicCastToClass:[CHChalkValueURLOutput class]];
-        if (chalkValueURLOutput)
-        {
-          [child2 performEvaluationWithContext:context lazy:lazy];
-          if (!context.errorContext.hasError)
-          {
-            CHStreamWrapper* stream = [[CHStreamWrapper alloc] init];
-            NSMutableString* string = [[NSMutableString alloc] init];
-            stream.stringStream = string;
-            [child2.evaluatedValue writeBodyToStream:stream context:context presentationConfiguration:nil];
-            NSData* data = [string dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-            [chalkValueURLOutput write:data append:NO context:context];
-            [string release];
-            [stream release];
-            self.evaluatedValue = child1.evaluatedValue;
-            self->evaluationComputeFlags = self.evaluatedValue.evaluationComputeFlags;
-          }//end if (!context.errorContext.hasError)
-        }//end if (chalkValueURLOutput)
-      }//end if (identifier == [context.identifierManager identifierForName:@"outfile" createClass:Nil])
-    }//end if (dstFunction)
     [context.errorContext.error setContextGenerator:self replace:NO];
   }//end if (!lazy || !self.evaluatedValue)
 }

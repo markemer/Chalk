@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 08/11/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -24,6 +24,8 @@
 +(instancetype) absIdentifier;
 +(instancetype) angleIdentifier;
 +(instancetype) anglesIdentifier;
++(instancetype) floorIdentifier;
++(instancetype) ceilIdentifier;
 +(instancetype) invIdentifier;
 +(instancetype) powIdentifier;
 +(instancetype) sqrtIdentifier;

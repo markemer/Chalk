@@ -7,8 +7,14 @@
 
 "Page Setup..." = "Page Setup…";
 "Print..." = "Print…";
+"Font" = "Font";
+"Bigger" = "Bigger";
+"Smaller" = "Smaller";
 "Hide Toolbar" = "Hide Toolbar";
 "Show Toolbar" = "Show Toolbar";
+"Constants manager" = "Constants manager";
+"Show constants manager" = "Show constants manager";
+"Hide constants manager" = "Hide constants manager";
 "Show compute inspector" = "Show compute inspector";
 "Hide compute inspector" = "Hide compute inspector";
 "Show variables inspector" = "Show variables inspector";
@@ -19,6 +25,8 @@
 "Hide axes inspector" = "Hide axes inspector";
 "Chalk help" = "Chalk help";
 "Chalk quick help" = "Chalk quick help";
+
+"Add selection to current calculator document" = "Add selection to current calculator document";
 
 "Theme" = "Theme";
 
@@ -239,6 +247,7 @@
 "Prepare next input" = "Prepare next input";
 "Empty" = "Empty";
 "Previous input" = "Previous input";
+"output(1) on first operator" = "output(1) on first operator";
 
 "Parse mode :" = "Parse mode :";
 "Color for sign bits" = "Color for sign bits";
@@ -257,5 +266,12 @@
 "decrement by 1" = "decrement by 1";
 
 "Categories" = "Categories";
+
+"Load" = "Load";
+"Uncertainty" = "Uncertainty";
+"Units" = "Units";
+"Symbol" = "Symbol";
+"author" = "author";
+"version" = "version";
 
 "You could take a pen and a paper. You are just lazy today." = "You could take a pen and a paper. You are just lazy today.";

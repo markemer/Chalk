@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 03/05/17.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHSVGRenderer.h"
@@ -21,13 +21,70 @@ static void myPDFApplierFunction(const char *key, CGPDFObjectRef value, void *in
 }
 //end myPDFApplierFunction
 
+@interface CHSVGRendererQueueItem : NSObject {
+  NSString* string;
+  NSColor* foregroundColor;
+  chalk_export_format_t format;
+  NSData* metadata;
+  BOOL feedPasteboard;
+}
+
+@property(nonatomic,copy) NSString* string;
+@property(nonatomic,copy) NSColor* foregroundColor;
+@property(nonatomic)      chalk_export_format_t format;
+@property(nonatomic,copy) NSData* metadata;
+@property(nonatomic)      BOOL feedPasteboard;
+
++(instancetype) queueItemWithString:(NSString*)string foregroundColor:(NSColor*)foregroundColor format:(chalk_export_format_t)format metadata:(NSData*)metadata feedPasteboard:(BOOL)feedPasteboard;
+-(instancetype) initWithString:(NSString*)string foregroundColor:(NSColor*)foregroundColor format:(chalk_export_format_t)format metadata:(NSData*)metadata feedPasteboard:(BOOL)feedPasteboard;
+@end//CHSVGRendererQueueItem
+
+@implementation CHSVGRendererQueueItem
+
+@synthesize string;
+@synthesize foregroundColor;
+@synthesize format;
+@synthesize metadata;
+@synthesize feedPasteboard;
+
++(instancetype) queueItemWithString:(NSString*)string foregroundColor:(NSColor*)foregroundColor format:(chalk_export_format_t)format metadata:(NSData*)metadata feedPasteboard:(BOOL)feedPasteboard
+{
+  return [[[[self class] alloc] initWithString:string foregroundColor:foregroundColor format:format metadata:metadata feedPasteboard:feedPasteboard] autorelease];
+}
+//end queueItemWithString:foregroundColor:format:metadata:feedPasteboard:
+
+-(instancetype) initWithString:(NSString*)aString foregroundColor:(NSColor*)aForegroundColor format:(chalk_export_format_t)aFormat metadata:(NSData*)aMetadata feedPasteboard:(BOOL)aFeedPasteboard
+{
+  if (!((self = [super init])))
+    return self;
+  self.string = aString;
+  self.foregroundColor = aForegroundColor;
+  self.format = aFormat;
+  self.metadata = aMetadata;
+  self.feedPasteboard = aFeedPasteboard;
+  return self;
+}
+//end queueItemWithString:foregroundColor:format:metadata:feedPasteboard:
+
+-(void) dealloc
+{
+  self.string = nil;
+  self.foregroundColor = nil;
+  self.metadata = nil;
+  [super dealloc];
+}
+//end dealloc
+
+@end//CHSVGRendererQueueItem
+
 @interface CHSVGRenderer ()
 
 -(void) jsConsoleLog:(NSString*)message;
 -(void) mathjaxDidFinishLoading;
--(void) mathjaxDidEndTypesetting:(NSString*)svgOutput;
+-(void) mathjaxDidEndTypesetting:(NSString*)svgOutput extraInformation:(id)extraInformation;
 -(void) mathjaxReportedError:(NSString*)svgOutput;
--(NSData*) pdfDataFromSVGString:(NSString*)svgString metadata:(NSData*)metadata;
+-(NSData*) pdfDataFromSVGString:(NSString*)svgString scale:(CGFloat)scale metadata:(NSData*)metadata;
+-(void) processRenderQueue;
 
 @end
 
@@ -38,6 +95,8 @@ static void myPDFApplierFunction(const char *key, CGPDFObjectRef value, void *in
 @synthesize lastResultString;
 @synthesize lastSvgString;
 @synthesize lastPDFData;
+@synthesize lastRenderedInformation;
+@synthesize renderScale;
 
 +(void) initialize
 {
@@ -50,7 +109,7 @@ static void myPDFApplierFunction(const char *key, CGPDFObjectRef value, void *in
   BOOL included =
     (sel == @selector(jsConsoleLog:)) ||
     (sel == @selector(mathjaxDidFinishLoading)) ||
-    (sel == @selector(mathjaxDidEndTypesetting:)) ||
+    (sel == @selector(mathjaxDidEndTypesetting:extraInformation:)) ||
     (sel == @selector(mathjaxReportedError:));
   result = !included;
   return result;
@@ -67,6 +126,7 @@ static void myPDFApplierFunction(const char *key, CGPDFObjectRef value, void *in
 {
   DebugLog(1, @"mathjaxDidFinishLoading");
   self->isMathjaxLoaded = YES;
+  [self processRenderQueue];
 }
 //end mathjaxDidFinishLoading
 
@@ -82,11 +142,11 @@ static void myPDFApplierFunction(const char *key, CGPDFObjectRef value, void *in
 }
 //end mathjaxReportedError
 
--(void) mathjaxDidEndTypesetting:(NSString*)string
+-(void) mathjaxDidEndTypesetting:(NSString*)string extraInformation:(id)extraInformation
 {
   @synchronized(self)
   {
-    DebugLog(1, @"mathjaxDidEndTypesetting: %@", string);
+    DebugLog(2, @"mathjaxDidEndTypesetting:%@ extraInformation:%@", string, extraInformation);
     NSError* error = nil;
     NSArray* components = [string componentsMatchedByRegex:@"\\<svg ?.*>.*\\<\\/svg\\>" options:RKLDotAll|RKLMultiline|RKLCaseless range:string.range capture:0 error:&error];
     if (error)
@@ -101,7 +161,54 @@ static void myPDFApplierFunction(const char *key, CGPDFObjectRef value, void *in
     self->lastSvgString = [svgString copy];
     [self->lastPDFData release];
     self->lastPDFData =
-      (self->nextFormat == CHALK_EXPORT_FORMAT_PDF) ? [[self pdfDataFromSVGString:svgString metadata:self->lastMetadata] retain] : nil;
+      (self->nextFormat == CHALK_EXPORT_FORMAT_PDF) ? [[self pdfDataFromSVGString:svgString scale:self->renderScale metadata:self->lastMetadata] retain] : nil;
+
+    error = nil;
+    NSXMLDocument* xmlDocument = [[[NSXMLDocument alloc] initWithXMLString:string options:NSXMLNodeOptionsNone error:&error] autorelease];
+    if (error)
+      DebugLog(1, @"error = <%@>", error);
+    error = nil;
+    NSXMLNode* svgNode = [[xmlDocument nodesForXPath:@"//*:svg" error:&error] firstObject];
+    if (error)
+      DebugLog(1, @"error = <%@>", error);
+    error = nil;
+
+    NSMutableDictionary* renderedInformation = [NSMutableDictionary dictionary];
+    NSString* renderedAttributeString = nil;
+    NSNumber* renderedAttributeValue = nil;
+    NSString* numericPrefix = nil;
+    
+    renderedAttributeString = [[[svgNode nodesForXPath:@"@width" error:&error] firstObject] stringValue];
+    if (error)
+      DebugLog(1, @"error = <%@>", error);
+    error = nil;
+    numericPrefix = [[renderedAttributeString captureComponentsMatchedByRegex:@"[0-9\\.]+"] firstObject];
+    renderedAttributeValue = [NSString isNilOrEmpty:numericPrefix] ? nil : @([numericPrefix doubleValue]);
+    if (renderedAttributeValue)
+      [renderedInformation setObject:renderedAttributeValue forKey:@"width"];
+
+    renderedAttributeString = [[[svgNode nodesForXPath:@"@height" error:&error] firstObject] stringValue];
+    if (error)
+      DebugLog(1, @"error = <%@>", error);
+    numericPrefix = [[renderedAttributeString captureComponentsMatchedByRegex:@"[0-9\\.]+"] firstObject];
+    renderedAttributeValue = [NSString isNilOrEmpty:numericPrefix] ? nil : @([numericPrefix doubleValue]);
+    if (renderedAttributeValue)
+      [renderedInformation setObject:renderedAttributeValue forKey:@"height"];
+
+    error = nil;
+    renderedAttributeString = [[[svgNode nodesForXPath:@"@style" error:&error] firstObject] stringValue];
+    if (error)
+      DebugLog(1, @"error = <%@>", error);
+    error = nil;
+    numericPrefix = [[renderedAttributeString componentsMatchedByRegex:@"vertical-align\\s*:\\s*([\\-0-9\\.]+)" options:RKLDotAll|RKLCaseless range:renderedAttributeString.range capture:1 error:&error] firstObject];
+    if (error)
+      DebugLog(1, @"error = <%@>", error);
+    renderedAttributeValue = [NSString isNilOrEmpty:numericPrefix] ? nil : @([numericPrefix doubleValue]);
+    if (renderedAttributeValue)
+      [renderedInformation setObject:renderedAttributeValue forKey:@"baseline"];
+
+    [self->lastRenderedInformation release];
+    self->lastRenderedInformation = [renderedInformation copy];
 
     if (self->nextFeedPasteboard)
     {
@@ -126,13 +233,16 @@ static void myPDFApplierFunction(const char *key, CGPDFObjectRef value, void *in
     }//end if (self->nextFeedPasteboard)
     [self.delegate svgRenderer:self didEndRender:self->nextFormat];
   }//end @synchronized(self)
+  [self processRenderQueue];
 }
-//end mathjaxDidEndTypesetting:
+//end mathjaxDidEndTypesetting:extraInformation:
 
 -(id) init
 {
   if (!((self = [super init])))
     return nil;
+  self->renderScale = 1./10;
+  self->renderQueue = [[NSMutableArray alloc] init];
   self->_webView = [[CHWebView alloc] initWithFrame:NSZeroRect createSubViews:YES];
   [self->_webView setExternalObject:self forJSKey:@"rendererDocument"];
   self->_webView.webDelegate = self;
@@ -161,11 +271,13 @@ static void myPDFApplierFunction(const char *key, CGPDFObjectRef value, void *in
 
 -(void) dealloc
 {
+  [self->renderQueue release];
   [self->lastMetadata release];
   [self->lastResultString release];
   [self->lastErrorString release];
   [self->lastSvgString release];
   [self->lastPDFData release];
+  [self->lastRenderedInformation release];
   [self->_webView setExternalObject:nil forJSKey:@"rendererDocument"];
   self->_webView.webDelegate = nil;
   [self->_webView release];
@@ -180,7 +292,7 @@ static void myPDFApplierFunction(const char *key, CGPDFObjectRef value, void *in
   {
     result = self->lastPDFData;
     if (!result)
-      result = [self pdfDataFromSVGString:self->lastSvgString metadata:self->lastMetadata];
+      result = [self pdfDataFromSVGString:self->lastSvgString scale:self->renderScale metadata:self->lastMetadata];
      result = [[result copy] autorelease];
   }//end @synchronized(self)
   return result;
@@ -206,7 +318,7 @@ static void myPDFApplierFunction(const char *key, CGPDFObjectRef value, void *in
 }
 //end jsDidLoad:
 
--(NSData*) pdfDataFromSVGString:(NSString*)svgString metadata:(NSData*)metadata
+-(NSData*) pdfDataFromSVGString:(NSString*)svgString scale:(CGFloat)scale metadata:(NSData*)metadata
 {
   NSData* result = nil;
   if (svgString)
@@ -217,7 +329,6 @@ static void myPDFApplierFunction(const char *key, CGPDFObjectRef value, void *in
       DebugLog(0, @"svg to pdf error : %@", error);
     NSRect viewRect = ijSVG.viewBox;
     CGSize proposedViewSize = ijSVG.viewBox.size;
-    CGFloat scale = 1./10;
     proposedViewSize.width *= scale;
     proposedViewSize.height *= scale;
     NSMutableData* pdfData = [NSMutableData data];
@@ -267,7 +378,7 @@ static void myPDFApplierFunction(const char *key, CGPDFObjectRef value, void *in
   }//end if (svgString)
   return result;
 }
-//end pdfDataFromSVGString:metadata:
+//end pdfDataFromSVGString:scale:metadata:
 
 +(NSData*) metadataFromInputString:(NSString*)inputString foregroundColor:(NSColor*)foregroundColor
 {
@@ -329,26 +440,45 @@ static void myPDFApplierFunction(const char *key, CGPDFObjectRef value, void *in
 
 -(void) render:(NSString*)string foregroundColor:(NSColor*)foregroundColor format:(chalk_export_format_t)format metadata:(NSData*)metadata feedPasteboard:(BOOL)feedPasteboard
 {
-  if (!self->isMathjaxLoaded)
+  CHSVGRendererQueueItem* queueItem = [CHSVGRendererQueueItem queueItemWithString:string foregroundColor:foregroundColor format:format metadata:metadata feedPasteboard:feedPasteboard];
+  if (queueItem)
   {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 100000000), dispatch_get_main_queue(), ^{
-      [self render:[[string copy] autorelease] foregroundColor:foregroundColor format:format metadata:[[metadata copy] autorelease] feedPasteboard:feedPasteboard];
-    });
-  }//end if (!self->isMathjaxLoaded)
-  else//if (self->isMathjaxLoaded)
+    @synchronized(self->renderQueue)
+    {
+      [self->renderQueue addObject:queueItem];
+    }
+    if (self->isMathjaxLoaded)
+      [self processRenderQueue];
+  }//end if (queueItem)
+}
+//end render:foregroundColor:format:metadata:feedPasteboard:
+
+-(void) processRenderQueue
+{
+  CHSVGRendererQueueItem* queueItem = nil;
+  @synchronized(self->renderQueue)
+  {
+    if (self->renderQueue.count)
+    {
+      queueItem = [[[self->renderQueue firstObject] retain] autorelease];
+      [self->renderQueue removeObjectAtIndex:0];
+    }//end if (self->renderQueue.count)
+  }//end @synchronized(self->renderQueue)
+  if (queueItem)
   {
     @synchronized(self)
     {
       [self->lastMetadata release];
-      self->lastMetadata = [metadata copy];
+      self->lastMetadata = [queueItem.metadata copy];
       [self->lastErrorString release];
       self->lastErrorString = nil;
-      self->nextFeedPasteboard = feedPasteboard;
-      self->nextFormat = format;
+      self->nextFeedPasteboard = queueItem.feedPasteboard;
+      self->nextFormat = queueItem.format;
       if (self->nextFormat == CHALK_EXPORT_FORMAT_STRING)
-        [self mathjaxDidEndTypesetting:string];
+        [self mathjaxDidEndTypesetting:queueItem.string extraInformation:nil];
       else if (self->nextFormat != CHALK_EXPORT_FORMAT_UNDEFINED)
       {
+        NSColor* foregroundColor = queueItem.foregroundColor;
         BOOL ignoreColor = !foregroundColor ||
           [foregroundColor isEqualTo:[NSColor blackColor]] ||
           [foregroundColor isEqualTo:[NSColor clearColor]] ||
@@ -365,15 +495,15 @@ static void myPDFApplierFunction(const char *key, CGPDFObjectRef value, void *in
             (int)(unsigned char)(255*rgba[1]),
             (int)(unsigned char)(255*rgba[2])];
         NSString* mathjaxTeXString = (hexColorString.length != 0) ?
-          [NSString stringWithFormat:@"\\(\\color{%@}{%@}\\)", hexColorString, string] :
-          [NSString stringWithFormat:@"\\(%@\\)", string];
+          [NSString stringWithFormat:@"\\(\\color{%@}{%@}\\)", hexColorString, queueItem.string] :
+          [NSString stringWithFormat:@"\\(%@\\)", queueItem.string];
         NSArray* args = !mathjaxTeXString ? nil : @[mathjaxTeXString];
         [self->_webView evaluateJavaScriptFunction:@"render" withJSONArguments:args wait:NO];
       }//end if (self->nextFormat != CHALK_EXPORT_FORMAT_UNDEFINED)
     }//end @synchronized(self)
-  }//end if (self->isMathjaxLoaded)
+  }//end if (queueItem)
 }
-//end render:foregroundColor:format:
+//end processRenderQueue
 
 @end
 

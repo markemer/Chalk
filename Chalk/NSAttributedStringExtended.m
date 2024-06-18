@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 18/03/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "NSAttributedStringExtended.h"
@@ -21,5 +21,12 @@
   return !string ? nil : [[[[self class] alloc] initWithString:string attributes:nil] autorelease];
 }
 //end attributedStringWithString:
+
+-(NSRange) range
+{
+  NSRange result = NSMakeRange(0, self.length);
+  return result;
+}
+//end range
 
 @end

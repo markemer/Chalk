@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19E287" minimumToolsVersion="Xcode 4.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H524" minimumToolsVersion="Xcode 4.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="CHDocumentData" representedClassName="CHDocumentDataEntity" syncable="YES">
         <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
     </entity>
@@ -55,6 +55,7 @@
         <attribute name="inputRawString" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="UserVariable" representedClassName="CHUserVariableEntity" parentEntity="ValueHolder" syncable="YES">
+        <attribute name="identifierClassName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="identifierName" attributeType="String" syncable="YES"/>
         <attribute name="inputRawString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isDynamic" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
@@ -69,7 +70,7 @@
         <element name="ComputedValue" positionX="178" positionY="72" width="128" height="73"/>
         <element name="PresentationConfiguration" positionX="-253" positionY="200" width="128" height="178"/>
         <element name="UserFunction" positionX="162" positionY="-27" width="128" height="88"/>
-        <element name="UserVariable" positionX="162" positionY="-141" width="128" height="88"/>
+        <element name="UserVariable" positionX="162" positionY="-141" width="128" height="103"/>
         <element name="ValueHolder" positionX="-63" positionY="-126" width="128" height="58"/>
     </elements>
 </model>

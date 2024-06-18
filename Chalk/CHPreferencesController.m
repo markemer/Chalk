@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 15/07/13.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHPreferencesController.h"
@@ -40,8 +40,11 @@ NSString* CHBasePrefixesSuffixesKey                    = @"CHBasePrefixesSuffixe
 NSString* CHIntegerGroupSizeKey                        = @"CHIntegerGroupSize";
 NSString* CHParseModeKey                               = @"parseMode";
 NSString* CHBitInterpretationSignColorKey              = @"bitInterpretationSignColor";
+NSString* CHBitInterpretationSignColorDarkModeKey      = @"bitInterpretationSignColorDarkMode";
 NSString* CHBitInterpretationExponentColorKey          = @"bitInterpretationExponentColor";
+NSString* CHBitInterpretationExponentColorDarkModeKey  = @"bitInterpretationExponentColorDarkMode";
 NSString* CHBitInterpretationSignificandColorKey       = @"bitInterpretationSignificandColor";
+NSString* CHBitInterpretationSignificandColorDarkModeKey = @"bitInterpretationSignificandColorDarkMode";
 NSString* CHExportInputColorKey                        = @"exportInputColor";
 NSString* CHExportOutputColorKey                       = @"exportOutputColor";
 NSString* CHNextInputModeKey                           = @"nextInputMode";
@@ -149,8 +152,11 @@ static chalk_nextinput_mode_t CHNextInputMode_default = CHALK_NEXTINPUT_MODE_FUN
       CHIntegerGroupSizeKey:@(CHIntegerGroupSize_default),
       CHParseModeKey:@(CHParseMode_default),
       CHBitInterpretationSignColorKey:[[NSColor colorWithCalibratedRed:255/255. green:255/255. blue:196/255. alpha:1.] colorAsData],
+      CHBitInterpretationSignColorDarkModeKey:[[NSColor colorWithCalibratedRed:128/255. green:128/255. blue:98/255. alpha:1.] colorAsData],
       CHBitInterpretationExponentColorKey:[[NSColor colorWithCalibratedRed:196/255. green:255/255. blue:255/255. alpha:1.] colorAsData],
+      CHBitInterpretationExponentColorDarkModeKey:[[NSColor colorWithCalibratedRed:98/255. green:128/255. blue:128/255. alpha:1.] colorAsData],
       CHBitInterpretationSignificandColorKey:[[NSColor colorWithCalibratedRed:255/255. green:196/255. blue:255/255. alpha:1.] colorAsData],
+      CHBitInterpretationSignificandColorDarkModeKey:[[NSColor colorWithCalibratedRed:128/255. green:98/255. blue:128/255. alpha:1.] colorAsData],
       CHExportInputColorKey:[[NSColor blackColor] colorAsData],
       CHExportOutputColorKey:[[NSColor blackColor] colorAsData],
       CHNextInputModeKey:@(CHNextInputMode_default)
@@ -630,7 +636,8 @@ static chalk_nextinput_mode_t CHNextInputMode_default = CHALK_NEXTINPUT_MODE_FUN
 {
   NSColor* result = nil;
   NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-  result = [NSColor colorWithData:[[userDefaults dataForKey:CHBitInterpretationSignColorKey] dynamicCastToClass:[NSData class]]];
+  NSString* key = [NSApp isDarkMode] ? CHBitInterpretationSignColorDarkModeKey : CHBitInterpretationSignColorKey;
+  result = [NSColor colorWithData:[[userDefaults dataForKey:key] dynamicCastToClass:[NSData class]]];
   return result;
 }
 //end bitInterpretationSignColor
@@ -638,7 +645,8 @@ static chalk_nextinput_mode_t CHNextInputMode_default = CHALK_NEXTINPUT_MODE_FUN
 -(void) setBitInterpretationSignColor:(NSColor*)bitInterpretationSignColor
 {
   NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-  [userDefaults setObject:[bitInterpretationSignColor colorAsData] forKey:CHBitInterpretationSignColorKey];
+  NSString* key = [NSApp isDarkMode] ? CHBitInterpretationSignColorDarkModeKey : CHBitInterpretationSignColorKey;
+  [userDefaults setObject:[bitInterpretationSignColor colorAsData] forKey:key];
 }
 //end setBitInterpretationSignColor:
 
@@ -646,7 +654,8 @@ static chalk_nextinput_mode_t CHNextInputMode_default = CHALK_NEXTINPUT_MODE_FUN
 {
   NSColor* result = nil;
   NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-  result = [NSColor colorWithData:[[userDefaults dataForKey:CHBitInterpretationExponentColorKey] dynamicCastToClass:[NSData class]]];
+  NSString* key = [NSApp isDarkMode] ? CHBitInterpretationExponentColorDarkModeKey : CHBitInterpretationExponentColorKey;
+  result = [NSColor colorWithData:[[userDefaults dataForKey:key] dynamicCastToClass:[NSData class]]];
   return result;
 }
 //end bitInterpretationExponentColor
@@ -654,7 +663,8 @@ static chalk_nextinput_mode_t CHNextInputMode_default = CHALK_NEXTINPUT_MODE_FUN
 -(void) setBitInterpretationExponentColor:(NSColor*)bitInterpretationExponentColor
 {
   NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-  [userDefaults setObject:[bitInterpretationExponentColor colorAsData] forKey:CHBitInterpretationExponentColorKey];
+  NSString* key = [NSApp isDarkMode] ? CHBitInterpretationExponentColorDarkModeKey : CHBitInterpretationExponentColorKey;
+  [userDefaults setObject:[bitInterpretationExponentColor colorAsData] forKey:key];
 }
 //end setBitInterpretationExponentColor:
 
@@ -662,7 +672,8 @@ static chalk_nextinput_mode_t CHNextInputMode_default = CHALK_NEXTINPUT_MODE_FUN
 {
   NSColor* result = nil;
   NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-  result = [NSColor colorWithData:[[userDefaults dataForKey:CHBitInterpretationSignificandColorKey] dynamicCastToClass:[NSData class]]];
+  NSString* key = [NSApp isDarkMode] ? CHBitInterpretationSignificandColorDarkModeKey : CHBitInterpretationSignificandColorKey;
+  result = [NSColor colorWithData:[[userDefaults dataForKey:key] dynamicCastToClass:[NSData class]]];
   return result;
 }
 //end bitInterpretationSignificandColor
@@ -670,7 +681,8 @@ static chalk_nextinput_mode_t CHNextInputMode_default = CHALK_NEXTINPUT_MODE_FUN
 -(void) setBitInterpretationSignificandColor:(NSColor*)bitInterpretationSignificandColor
 {
   NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-  [userDefaults setObject:[bitInterpretationSignificandColor colorAsData] forKey:CHBitInterpretationSignificandColorKey];
+  NSString* key = [NSApp isDarkMode] ? CHBitInterpretationSignificandColorDarkModeKey : CHBitInterpretationSignificandColorKey;
+  [userDefaults setObject:[bitInterpretationSignificandColor colorAsData] forKey:key];
 }
 //end setBitInterpretationSignificandColor:
 
@@ -716,6 +728,7 @@ static chalk_nextinput_mode_t CHNextInputMode_default = CHALK_NEXTINPUT_MODE_FUN
     case CHALK_NEXTINPUT_MODE_BLANK:
     case CHALK_NEXTINPUT_MODE_PREVIOUS_INPUT:
     case CHALK_NEXTINPUT_MODE_FUNCTION_OUTPUT:
+    case CHALK_NEXTINPUT_MODE_FUNCTION_OUTPUT_SMART:
       result = (chalk_nextinput_mode_t)value;
       break;
     default:

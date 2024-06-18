@@ -7,8 +7,14 @@
 
 "Page Setup..." = "Ρύθμιση Σελίδας…";
 "Print..." = "Εκτύπωση…";
+"Font" = "Γραμματοσειρά";
+"Bigger" = "Mεγαλύτερο";
+"Smaller" = "Μικρότερο";
 "Hide Toolbar" = "Απόκρυψη Toolbar";
 "Show Toolbar" = "Εμφάνιση Toolbar";
+"Constants manager" = "Διαχειριστή σταθερών";
+"Show constants manager" = "Εμφάνιση του διαχειριστή σταθερών";
+"Hide constants manager" = "Απόκρυψη του διαχειριστή σταθερών";
 "Show compute inspector" = "Εμφάνιση επιθεωρητή υπολογισμών";
 "Hide compute inspector" = "Απόκρυψη επιθεωρητή υπολογισμών";
 "Show variables inspector" = "Εμφάνιση επιθεωρητή μεταβλητών";
@@ -19,6 +25,8 @@
 "Hide axes inspector" = "Απόκρυψη επιθεωρητή αξόνων";
 "Chalk help" = "Βοήθεια του Chalk";
 "Chalk quick help" = "Σύντομη βοήθεια για το Chalk";
+
+"Add selection to current calculator document" = "Προσθήκη επιλογής στο τρέχον έγγραφο της αριθμομηχανής";
 
 "Theme" = "Θέμα";
 
@@ -238,6 +246,7 @@
 "Prepare next input" = "Prepare next input";
 "Empty" = "Empty";
 "Previous input" = "Previous input";
+"output(1) on first operator" = "output(1) on first operator";
 
 "Parse mode :" = "Parse mode :";
 "Color for sign bits" = "Χρώμα προσημασμένων ψηφίων";
@@ -256,5 +265,12 @@
 "decrement by 1" = "κάθοδος κατά 1";
 
 "Categories" = "Κατηγορίες";
+
+"Load" = "Φορτίο";
+"Uncertainty" = "Αβεβαιότητα";
+"Units" = "Μονάδες";
+"Symbol" = "Σύμβολο";
+"author" = "συγγραφέας";
+"version" = "έκδοση";
 
 "You could take a pen and a paper. You are just lazy today." = "Μπορούσες να πάρεις χαρτί και μολύβι. Απλά τεμπελιάζεις σήμερα.";

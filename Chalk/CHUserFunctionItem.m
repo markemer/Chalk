@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 17/12/2015.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHUserFunctionItem.h"
@@ -138,5 +138,19 @@ NSString* CHUserFunctionItemArgumentNamesDependencyKey = @"argumentNames";
   return result;
 }
 //end name
+
+-(void) update:(CHChalkIdentifierFunction*)aIdentifier
+{
+  if (self->identifier == aIdentifier)
+  {
+    [self->argumentNames release];
+    self->argumentNames = [self->identifier.argumentNames copy];
+    [self->definition release];
+    self->definition = [self->identifier.definition copy];
+    self->userFunctionEntity.inputRawString = self->definition;
+    self->userFunctionEntity.argumentNames = [self->argumentNames componentsJoinedByString:@";"];
+  }//end if (self->identifier == aIdentifier)
+}
+//end update:
 
 @end

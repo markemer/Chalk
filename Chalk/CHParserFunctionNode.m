@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 13/02/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHParserFunctionNode.h"
@@ -185,7 +185,31 @@
         else if (!gmpValueTo)
           [self addError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorOperatorArgumentsError range:node3.token.range] context:context];
         else if (!gmpValueStep)
-          [self addError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorOperatorArgumentsError range:node3.token.range] context:context];
+          [self addError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorOperatorArgumentsError range:node4.token.range] context:context];
+        else if (chalkGmpValueIsNan(gmpValueFrom))
+        {
+          if (!context.computationConfiguration.propagateNaN)
+            [self addError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainNumeric reason:CHChalkErrorNumericInvalid range:node2.token.range] context:context];
+          self.evaluatedValue = [CHChalkValueNumberGmp nanWithContext:context];
+          mpfr_set_nanflag();
+          self->evaluationComputeFlags |= chalkGmpFlagsMake();
+        }//end if (chalkGmpValueIsNan(gmpValueFrom))
+        else if (chalkGmpValueIsNan(gmpValueTo))
+        {
+          if (!context.computationConfiguration.propagateNaN)
+            [self addError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainNumeric reason:CHChalkErrorNumericInvalid range:node2.token.range] context:context];
+          self.evaluatedValue = [CHChalkValueNumberGmp nanWithContext:context];
+          mpfr_set_nanflag();
+          self->evaluationComputeFlags |= chalkGmpFlagsMake();
+        }//end if (chalkGmpValueIsNan(gmpValueTo))
+        else if (chalkGmpValueIsNan(gmpValueStep))
+        {
+          if (!context.computationConfiguration.propagateNaN)
+            [self addError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainNumeric reason:CHChalkErrorNumericInvalid range:node2.token.range] context:context];
+          self.evaluatedValue = [CHChalkValueNumberGmp nanWithContext:context];
+          mpfr_set_nanflag();
+          self->evaluationComputeFlags |= chalkGmpFlagsMake();
+        }//end if (chalkGmpValueIsNan(gmpValueStep))
         else//if (gmpValueFrom && gmpValueTo && gmpValueStep)
         {
           if (chalkGmpValueCmp(gmpValueFrom, gmpValueTo, context.gmpPool) > 0)
@@ -670,6 +694,8 @@
         [functions setObject:[NSValue valueWithPointer:@selector(combineAbs:token:context:)] forKey:[CHChalkIdentifierFunction absIdentifier]];
         [functions setObject:[NSValue valueWithPointer:@selector(combineAngle:token:context:)] forKey:[CHChalkIdentifierFunction angleIdentifier]];
         [functions setObject:[NSValue valueWithPointer:@selector(combineAngles:token:context:)] forKey:[CHChalkIdentifierFunction anglesIdentifier]];
+        [functions setObject:[NSValue valueWithPointer:@selector(combineFloor:token:context:)] forKey:[CHChalkIdentifierFunction floorIdentifier]];
+        [functions setObject:[NSValue valueWithPointer:@selector(combineCeil:token:context:)] forKey:[CHChalkIdentifierFunction ceilIdentifier]];
         [functions setObject:[NSValue valueWithPointer:@selector(combineInv:token:context:)] forKey:[CHChalkIdentifierFunction invIdentifier]];
         [functions setObject:[NSValue valueWithPointer:@selector(combinePow:token:context:)] forKey:[CHChalkIdentifierFunction powIdentifier]];
         [functions setObject:[NSValue valueWithPointer:@selector(combineSqrt:token:context:)] forKey:[CHChalkIdentifierFunction sqrtIdentifier]];
@@ -1473,6 +1499,172 @@
   return [result autorelease];
 }
 //end combineAngles:token:context:
+
++(CHChalkValue*) combineFloor:(NSArray*)operands token:(CHChalkToken*)token context:(CHChalkContext*)context
+{
+  CHChalkValue* result = nil;
+  if (operands.count != 1)
+    [context.errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorOperatorArgumentsCountError range:token.range]
+                           replace:NO];
+  else//if (operands.count == 1)
+  {
+    @autoreleasepool {
+      CHChalkValue* operandValue = [[operands objectAtIndex:0] dynamicCastToClass:[CHChalkValue class]];
+      CHChalkValueNumberGmp* operandGmp = [operandValue dynamicCastToClass:[CHChalkValueNumberGmp class]];
+      CHChalkValueFormal* operandFormal = [operandValue dynamicCastToClass:[CHChalkValueFormal class]];
+      operandGmp = !operandFormal ? operandGmp : operandFormal.value;
+      CHChalkValueList* operandList = [operandValue dynamicCastToClass:[CHChalkValueList class]];
+      if (operandList)
+        result = [[self combineSEL:_cmd arguments:operands list:operandList index:0 token:token context:context] retain];
+      else if (operandGmp)
+      {
+        mpfr_clear_flags();
+        mpfr_prec_t prec = context.computationConfiguration.softFloatSignificandBits;
+        const chalk_gmp_value_t* operand = operandGmp.valueConstReference;
+        chalk_compute_flags_t computeFlags = 0;
+        chalk_gmp_value_t currentValue = {0};
+        chalkGmpValueSet(&currentValue, operand, context.gmpPool);
+        BOOL done = NO;
+        if (!done && (currentValue.type == CHALK_VALUE_TYPE_INTEGER))
+          done = YES;
+        if (!done && (currentValue.type == CHALK_VALUE_TYPE_FRACTION))
+        {
+          chalkGmpValueMakeInteger(&currentValue, context.gmpPool);
+          mpz_fdiv_q(currentValue.integer, mpq_numref(operand->fraction), mpq_denref(operand->fraction));
+          done = YES;
+        }//end if (!done && (currentValue.type == CHALK_VALUE_TYPE_FRACTION))
+        if (!done && (currentValue.type == CHALK_VALUE_TYPE_REAL_EXACT))
+        {
+          chalk_compute_flags_t oldFlags = chalkGmpFlagsSave(YES);
+          mpfr_floor(currentValue.realExact, currentValue.realExact);
+          done = !mpfr_inexflag_p();
+          if (done)
+            computeFlags |= chalkGmpFlagsMake();
+          else//if (!done)
+          {
+            chalkGmpValueSet(&currentValue, operand, context.gmpPool);
+            chalkGmpValueMakeRealApprox(&currentValue, prec, context.gmpPool);
+          }//end if (!done)
+          chalkGmpFlagsRestore(oldFlags);
+        }//end if (!done && (currentValue.type == CHALK_VALUE_TYPE_REAL_EXACT))
+        if (!done && (currentValue.type == CHALK_VALUE_TYPE_REAL_APPROX))
+        {
+          chalk_compute_flags_t oldFlags = chalkGmpFlagsSave(YES);
+          mpfir_floor(currentValue.realApprox, currentValue.realApprox);
+          computeFlags |= chalkGmpFlagsMake();
+          done = YES;
+          chalkGmpFlagsRestore(oldFlags);
+        }//end if (!done && (currentValue.type == CHALK_VALUE_TYPE_REAL_APPROX))
+        if (!done)
+          [context.errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorAllocation range:token.range]
+                                 replace:NO];
+        else
+        {
+          chalkGmpValueSimplify(&currentValue, context.computationConfiguration.softIntegerMaxBits, context.gmpPool);
+          CHChalkValue* value = !done ? nil :
+            [[CHChalkValueNumberGmp alloc] initWithToken:token value:&currentValue naturalBase:operandGmp.naturalBase context:context];
+          if (!value)
+            [context.errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorAllocation range:token.range]
+                                   replace:NO];
+          value.evaluationComputeFlags |= computeFlags | chalkGmpFlagsMake();
+          result = value;
+        }//end
+        chalkGmpValueClear(&currentValue, YES, context.gmpPool);
+      }//if (operandGmp)
+      else
+        [context.errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorOperatorArgumentsError range:token.range]
+                               replace:NO];
+      result.evaluationComputeFlags |=
+        operandValue.evaluationComputeFlags |
+        chalkGmpFlagsMake();
+    }//end @autoreleasepool
+  }//end if (operands.count == 1)
+  return [result autorelease];
+}
+//end combineFloor:token:context:
+
++(CHChalkValue*) combineCeil:(NSArray*)operands token:(CHChalkToken*)token context:(CHChalkContext*)context
+{
+  CHChalkValue* result = nil;
+  if (operands.count != 1)
+    [context.errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorOperatorArgumentsCountError range:token.range]
+                           replace:NO];
+  else//if (operands.count == 1)
+  {
+    @autoreleasepool {
+      CHChalkValue* operandValue = [[operands objectAtIndex:0] dynamicCastToClass:[CHChalkValue class]];
+      CHChalkValueNumberGmp* operandGmp = [operandValue dynamicCastToClass:[CHChalkValueNumberGmp class]];
+      CHChalkValueFormal* operandFormal = [operandValue dynamicCastToClass:[CHChalkValueFormal class]];
+      operandGmp = !operandFormal ? operandGmp : operandFormal.value;
+      CHChalkValueList* operandList = [operandValue dynamicCastToClass:[CHChalkValueList class]];
+      if (operandList)
+        result = [[self combineSEL:_cmd arguments:operands list:operandList index:0 token:token context:context] retain];
+      else if (operandGmp)
+      {
+        mpfr_clear_flags();
+        mpfr_prec_t prec = context.computationConfiguration.softFloatSignificandBits;
+        const chalk_gmp_value_t* operand = operandGmp.valueConstReference;
+        chalk_compute_flags_t computeFlags = 0;
+        chalk_gmp_value_t currentValue = {0};
+        chalkGmpValueSet(&currentValue, operand, context.gmpPool);
+        BOOL done = NO;
+        if (!done && (currentValue.type == CHALK_VALUE_TYPE_INTEGER))
+          done = YES;
+        if (!done && (currentValue.type == CHALK_VALUE_TYPE_FRACTION))
+        {
+          chalkGmpValueMakeInteger(&currentValue, context.gmpPool);
+          mpz_cdiv_q(currentValue.integer, mpq_numref(operand->fraction), mpq_denref(operand->fraction));
+          done = YES;
+        }//end if (!done && (currentValue.type == CHALK_VALUE_TYPE_FRACTION))
+        if (!done && (currentValue.type == CHALK_VALUE_TYPE_REAL_EXACT))
+        {
+          chalk_compute_flags_t oldFlags = chalkGmpFlagsSave(YES);
+          mpfr_ceil(currentValue.realExact, currentValue.realExact);
+          done = !mpfr_inexflag_p();
+          if (done)
+            computeFlags |= chalkGmpFlagsMake();
+          else//if (!done)
+          {
+            chalkGmpValueSet(&currentValue, operand, context.gmpPool);
+            chalkGmpValueMakeRealApprox(&currentValue, prec, context.gmpPool);
+          }//end if (!done)
+          chalkGmpFlagsRestore(oldFlags);
+        }//end if (!done && (currentValue.type == CHALK_VALUE_TYPE_REAL_EXACT))
+        if (!done && (currentValue.type == CHALK_VALUE_TYPE_REAL_APPROX))
+        {
+          chalk_compute_flags_t oldFlags = chalkGmpFlagsSave(YES);
+          mpfir_ceil(currentValue.realApprox, currentValue.realApprox);
+          computeFlags |= chalkGmpFlagsMake();
+          done = YES;
+          chalkGmpFlagsRestore(oldFlags);
+        }//end if (!done && (currentValue.type == CHALK_VALUE_TYPE_REAL_APPROX))
+        if (!done)
+          [context.errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorAllocation range:token.range]
+                                 replace:NO];
+        else
+        {
+          chalkGmpValueSimplify(&currentValue, context.computationConfiguration.softIntegerMaxBits, context.gmpPool);
+          CHChalkValue* value = !done ? nil :
+            [[CHChalkValueNumberGmp alloc] initWithToken:token value:&currentValue naturalBase:operandGmp.naturalBase context:context];
+          if (!value)
+            [context.errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorAllocation range:token.range]
+                                   replace:NO];
+          value.evaluationComputeFlags |= computeFlags | chalkGmpFlagsMake();
+          result = value;
+        }//end
+        chalkGmpValueClear(&currentValue, YES, context.gmpPool);
+      }//if (operandGmp)
+      else
+        [context.errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorOperatorArgumentsError range:token.range]
+                               replace:NO];
+      result.evaluationComputeFlags |=
+        operandValue.evaluationComputeFlags |
+        chalkGmpFlagsMake();
+    }//end @autoreleasepool
+  }//end if (operands.count == 1)
+  return [result autorelease];
+}
+//end combineCeil:token:context:
 
 +(CHChalkValue*) combineInv:(NSArray*)operands token:(CHChalkToken*)token context:(CHChalkContext*)context
 {
@@ -2310,8 +2502,9 @@
         mpfr_clear_flags();
         mpfr_prec_t prec = context.computationConfiguration.softFloatSignificandBits;
         const chalk_gmp_value_t* operand = operandGmp.valueConstReference;
-        BOOL isOperandStrictlyNegative = (chalkGmpValueSign(operand) < 0);
-        if (isOperandStrictlyNegative)
+        const BOOL isOperandNaN = chalkGmpValueIsNan(operand);
+        const BOOL isOperandStrictlyNegative = !isOperandNaN && (chalkGmpValueSign(operand) < 0);
+        if (isOperandNaN || isOperandStrictlyNegative)
         {
           if (!context.computationConfiguration.propagateNaN)
             [context.errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainNumeric reason:CHChalkErrorNumericInvalid range:token.range]
@@ -2321,8 +2514,8 @@
             [context.errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainNumeric reason:CHChalkErrorAllocation range:token.range]
                                    replace:NO];
           result = [nan retain];
-        }//end if (isOperandStrictlyNegative)
-        else//if (!isOperandStrictlyNegative)
+        }//end if (isOperandNaN || isOperandStrictlyNegative)
+        else//if (!isOperandNaN && !isOperandStrictlyNegative)
         {
           chalk_gmp_value_t currentValue = {0};
           chalk_compute_flags_t computeFlags = 0;
@@ -2370,7 +2563,7 @@
             result = [value retain];
           }//end if (done)
           chalkGmpValueClear(&currentValue, YES, context.gmpPool);
-        }//end if (!isOperandStrictlyNegative)
+        }//end if (!isOperandNaN && !isOperandStrictlyNegative)
       }//if (operandGmp)
       else
         [context.errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorOperatorArgumentsError range:token.range]
@@ -4531,12 +4724,15 @@
                 chalkGmpValueSet(&currentPowAbs, operand2GmpValue, context.gmpPool);
                 mpz_abs(currentPowAbs.integer, currentPowAbs.integer);
                 done = [CHParserFunctionNode powIntegers:mpq_denref(currentValue.fraction) op1:mpq_denref(currentValue.fraction) op2:currentPowAbs.integer operatorToken:token context:context];
+                if (!done)
+                  mpz_swap(mpq_numref(currentValue.fraction), mpq_denref(currentValue.fraction));
                 chalkGmpValueClear(&currentPowAbs, YES, context.gmpPool);
               }//end if (!chalkGmpValueIsZero(&currentValue, computeFlags))
             }//end if (mpz_sgn(operand2GmpValue->integer) < 0)
           }//end if (!done && !context.errorContext.hasError && (currentValue.type == CHALK_VALUE_TYPE_INTEGER) && (operand2GmpValue->type == CHALK_VALUE_TYPE_INTEGER))
           if (!done && !context.errorContext.hasError && (currentValue.type == CHALK_VALUE_TYPE_FRACTION) && (operand2GmpValue->type == CHALK_VALUE_TYPE_INTEGER))
           {
+            BOOL didSwapFraction = NO;
             mpz_srcptr currentPower = operand2GmpValue->integer;
             chalk_gmp_value_t currentPowAbs = {0};
             if (mpz_sgn(operand2GmpValue->integer) < 0)
@@ -4547,6 +4743,7 @@
               else//if (!chalkGmpValueIsZero(&currentValue, computeFlags))
               {
                 mpz_swap(mpq_numref(currentValue.fraction), mpq_denref(currentValue.fraction));
+                didSwapFraction = YES;
                 chalkGmpValueSet(&currentPowAbs, operand2GmpValue, context.gmpPool);
                 mpz_abs(currentPowAbs.integer, currentPowAbs.integer);
                 currentPower = currentPowAbs.integer;
@@ -4574,6 +4771,8 @@
                 mpqRepool(denq, context.gmpPool);
                 done = YES;
               }//end if (ok)
+              else if (didSwapFraction)
+                mpz_swap(mpq_numref(currentValue.fraction), mpq_denref(currentValue.fraction));
               mpzRepool(num, context.gmpPool);
               mpzRepool(den, context.gmpPool);
               chalkGmpValueSimplify(&currentValue, context.computationConfiguration.softIntegerMaxBits, context.gmpPool);
@@ -8467,8 +8666,15 @@
         }//end if (!overflowCertain)
         if (!overflowCertain)
         {
-          mpz_pow_ui(rop, op1, op2ui);
-          result = [CHChalkValueNumberGmp checkInteger:rop token:token setError:YES context:context];
+          TRY_SAFE(mpz_pow_ui(rop, op1, op2ui));
+          if (gmp_errno != 0)
+          {
+            gmp_errno = 0;
+            [context.errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainGmp reason:CHChalkErrorGmpOverflow range:token.range]
+                                   replace:NO];
+          }//end if (gmp_errno != 0)
+          else
+            result = [CHChalkValueNumberGmp checkInteger:rop token:token setError:YES context:context];
         }//end if (!overflowCertain)
         else if (context.computationConfiguration.computeMode == CHALK_COMPUTE_MODE_EXACT)
           [context.errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorIntegerOverflow range:token.range]

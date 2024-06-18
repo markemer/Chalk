@@ -7,8 +7,14 @@
 
 "Page Setup..." = "Format d'impression…";
 "Print..." = "Imprimer…";
+"Font" = "Police";
+"Bigger" = "Plus grand";
+"Smaller" = "Plus petit";
 "Hide Toolbar" = "Masquer la barre d'outils";
 "Show Toolbar" = "Afficher la barre d'outils";
+"Constants manager" = "Gestionnaire de constantes";
+"Show constants manager" = "Afficher le gestionnaire de constantes";
+"Hide constants manager" = "Masquer le gestionnaire de constantes";
 "Show compute inspector" = "Afficher l'inspecteur de calcul";
 "Hide compute inspector" = "Masquer l'inspecteur de calcul";
 "Show variables inspector" = "Afficher l'inspecteur de variables";
@@ -19,6 +25,8 @@
 "Hide axes inspector" = "Masquer l'inspecteur des axes";
 "Chalk help" = "Aide de Chalk";
 "Chalk quick help" = "Aide rapide de Chalk";
+
+"Add selection to current calculator document" = "Ajouter la sélection au document de calculette actuel";
 
 "Theme" = "Thème";
 
@@ -239,6 +247,7 @@
 "Prepare next input" = "Préparation de l'entrée suivante";
 "Empty" = "Vide";
 "Previous input" = "Entrée précédente";
+"output(1) on first operator" = "output(1) au premier opérateur";
 
 "Parse mode :" = "Mode d'interprétation :";
 "Color for sign bits" = "Couleur des bits de signe";
@@ -257,5 +266,12 @@
 "decrement by 1" = "décrémenter de 1";
 
 "Categories" = "Catégories";
+
+"Load" = "Charger";
+"Uncertainty" = "Incertitude";
+"Units" = "Unités";
+"Symbol" = "Symbole";
+"author" = "auteur";
+"version" = "version";
 
 "You could take a pen and a paper. You are just lazy today." = "Vous pourriez prendre un papier et un crayon. Vous êtes juste en train de faire votre grosse feignasse aujourd'hui.";

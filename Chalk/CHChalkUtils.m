@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 15/02/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #include "CHChalkUtils.h"
@@ -20,6 +20,9 @@
 
 const NSInteger GMP_BASE_MIN = 2;
 const NSInteger GMP_BASE_MAX = 36;
+
+const NSString* CHPasteboardTypeConstantDescriptions = @"fr.chachatelier.Chalk.constants.descriptions";
+
 const NSString* NSSTRING_PI = @"\u03C0";
 const NSString* NSSTRING_INFINITY = @"\u221E";
 const NSString* NSSTRING_ELLIPSIS = @"\u2026";
@@ -3986,6 +3989,7 @@ chalk_conversion_result_t convertFromRawToValueFR(mpfr_ptr dst, const chalk_raw_
                 
                 //exponent
                 BOOL isSpecialExponent = NO;
+                BOOL isZeroExponent = NO;
                 if (!result.error)
                 {
                   exponentMinorPartRange = NSIntersectionRange(exponentMinorPartRange, srcMaxRange);
@@ -3999,6 +4003,7 @@ chalk_conversion_result_t convertFromRawToValueFR(mpfr_ptr dst, const chalk_raw_
                   mp_bitcnt_t firstZeroBitIndex = !exponentMinorPartRange.length ? 0 : mpz_scan0(exponentZ, 0);
                   isSpecialExponent |= exponentMinorPartRange.length &&
                     (firstZeroBitIndex >= getExponentBitsCountForEncoding(srcNumberEncoding));
+                  isZeroExponent = !mpz_cmp_si(exponentZ, 0);
                   if (!isSpecialExponent)
                   {
                     mpz_t exponentBiasZ;
@@ -4017,7 +4022,11 @@ chalk_conversion_result_t convertFromRawToValueFR(mpfr_ptr dst, const chalk_raw_
                         result.error = CHALK_CONVERSION_ERROR_UNSUPPORTED_EXPONENT;
                       }//end if ((mpz_cmp_si(exponentZ, mpfr_get_emin())<0) || (mpz_cmp_si(exponentZ, mpfr_get_emax())>0))
                       else//if ((mpz_cmp_si(exponentZ, mpfr_get_emin())>=0) || (mpz_cmp_si(exponentZ, mpfr_get_emax())<=0))
+                      {
                         memcpy(&dst->_mpfr_exp, exponentZ->_mp_d, MIN(sizeof(mp_limb_t), sizeof(mpfr_exp_t)));
+                        if (mpz_sgn(exponentZ)<0)
+                          dst->_mpfr_exp = -dst->_mpfr_exp;
+                      }
                     }//end if (!result.error)
                   }//end if (!isSpecialExponent)
                   mpzRepool(exponentZ, chalkContext.gmpPool);
@@ -4039,17 +4048,22 @@ chalk_conversion_result_t convertFromRawToValueFR(mpfr_ptr dst, const chalk_raw_
                   mpfr_copyBits(dst, offset, mpz_limbs_read(src->bits), mpz_size(src->bits), significandMinorPartRange_safe, &error);
                   if (error)
                     result.error = CHALK_CONVERSION_ERROR_ALLOCATION;
-                  offset += significandMinorPartRange_safe.length;
-                  mp_limb_t dummyLimbs[1] = {1};
-                  mpfr_copyBits(dst, offset, dummyLimbs, sizeof(dummyLimbs)/sizeof(mp_limb_t), NSMakeRange(0, 1), &error);//MSB
-                  if (error)
-                    result.error = CHALK_CONVERSION_ERROR_ALLOCATION;
+                  if (!isZeroExponent)
+                  {
+                    offset += significandMinorPartRange_safe.length;
+                    mp_limb_t dummyLimbs[1] = {1};
+                    mpfr_copyBits(dst, offset, dummyLimbs, sizeof(dummyLimbs)/sizeof(mp_limb_t), NSMakeRange(0, 1), &error);//MSB
+                    if (error)
+                      result.error = CHALK_CONVERSION_ERROR_ALLOCATION;
+                  }
                   mpfr_prec_round(dst, prec, MPFR_RNDN);//mpfr_copyBits may have changed prec to ensure enough space
                 }//end if (!result.error)
                 
                 if (isZeroSignificand)
                 {
-                  if (isSpecialExponent)
+                  if (isZeroExponent)
+                    mpfr_set_si(dst, 0, MPFR_RNDN);
+                  else if (isSpecialExponent)
                   {
                     mpfr_set_inf(dst, (dst->_mpfr_sign<0) ? -1 : (dst->_mpfr_sign>0) ? 1 : 0);
                     mpfr_set_erangeflag();
@@ -4057,7 +4071,9 @@ chalk_conversion_result_t convertFromRawToValueFR(mpfr_ptr dst, const chalk_raw_
                 }//end if (isZeroSignificand)
                 else//if (!isZeroSignificand)
                 {
-                  if (isSpecialExponent)
+                  if (isZeroExponent)
+                    mpfr_set_si(dst, 0, MPFR_RNDN);
+                  else if (isSpecialExponent)
                   {
                     mpfr_set_nan(dst);
                     mpfr_set_nanflag();
@@ -4973,7 +4989,7 @@ int mpfi_pow_z(mpfi_ptr rop, mpfi_srcptr op1, mpz_srcptr op2)
         mpfi_t op1Inv;
         mpfi_init2(op1Inv, mpfi_get_prec(op1));
         mpfi_inv(op1Inv, op1);
-        result = mpfi_pow_z(op1Inv, op1, op2neg);
+        result = mpfi_pow_z(rop, op1Inv, op2neg);
         mpfi_clear(op1Inv);
         mpz_clear(op2neg);
       }//end if (sgn<0)
@@ -5607,41 +5623,6 @@ BOOL chalkGmpValueAbs(chalk_gmp_value_t* value, CHGmpPool* pool)
 }
 //end chalkGmpValueAbs()
 
-int chalkGmpValueCmpAbs(const chalk_gmp_value_t* op1, const chalk_gmp_value_t* op2, CHGmpPool* pool)
-{
-  int result = 0;
-  int sgn1 = chalkGmpValueSign(op1);
-  int sgn2 = chalkGmpValueSign(op2);
-  if ((sgn1<0) && (sgn2<0))
-    result = -chalkGmpValueCmp(op1, op2, pool);
-  else if ((sgn1>0) && (sgn2>0))
-    result = chalkGmpValueCmp(op1, op2, pool);
-  else//if (...)
-  {
-    const chalk_gmp_value_t* pOp1Abs = op1;
-    chalk_gmp_value_t op1Abs = {0};
-    if (sgn1<=0)
-    {
-      chalkGmpValueSet(&op1Abs, op1, pool);
-      chalkGmpValueAbs(&op1Abs, pool);
-      pOp1Abs = &op1Abs;
-    }//end if (sgn1<=0)
-    const chalk_gmp_value_t* pOp2Abs = op1;
-    chalk_gmp_value_t op2Abs = {0};
-    if (sgn2<=0)
-    {
-      chalkGmpValueSet(&op2Abs, op2, pool);
-      chalkGmpValueAbs(&op2Abs, pool);
-      pOp2Abs = &op2Abs;
-    }//end if (sgn2<=0)
-    result = chalkGmpValueCmp(pOp1Abs, pOp2Abs, pool);
-    chalkGmpValueClear(&op1Abs, YES, pool);
-    chalkGmpValueClear(&op2Abs, YES, pool);
-  }//end if (...)
-  return result;
-}
-//end chalkGmpValueCmpAbs()
-
 int chalkGmpValueCmp(const chalk_gmp_value_t* op1, const chalk_gmp_value_t* op2, CHGmpPool* pool)
 {
   int result = 0;
@@ -5728,13 +5709,15 @@ BOOL chalkGmpValueIsOne(const chalk_gmp_value_t* value, BOOL* isOneIgnoringSign,
     }//end if (value->type == CHALK_VALUE_TYPE_FRACTION)
     else if (value->type == CHALK_VALUE_TYPE_REAL_EXACT)
     {
-      result = !mpfr_cmp_si(value->realExact, 1);
+      result = !mpfr_nan_p(value->realExact) && !mpfr_cmp_si(value->realExact, 1);
       if (shouldCheckIgnoringSign)
         *isOneIgnoringSign = !result && !mpfr_cmp_si(value->realExact, -1);
     }//end if (value->type == CHALK_VALUE_TYPE_REAL_EXACT)
     else if (value->type == CHALK_VALUE_TYPE_REAL_APPROX)
     {
-      result = !(flags&CHALK_COMPUTE_FLAG_ERANGE) && !(flags&CHALK_COMPUTE_FLAG_UNDERFLOW) &&
+      result = !mpfir_nan_p(value->realApprox) &&
+        !(flags&CHALK_COMPUTE_FLAG_ERANGE) &&
+        !(flags&CHALK_COMPUTE_FLAG_UNDERFLOW) &&
         !mpfr_cmp_si(&value->realApprox->interval.left, 1) &&
         !mpfr_cmp_si(&value->realApprox->interval.right, 1);
       if (shouldCheckIgnoringSign)
@@ -6286,7 +6269,10 @@ mpfr_prec_t chalkGmpGetRequiredBitsCountForDigitsCountZ(mpz_srcptr nbDigits, int
   
 NSUInteger chalkGmpGetMaximumDigitsCountFromBitsCount(NSUInteger nbBits, int base)
 {
-  NSUInteger result = mpfr_get_str_ndigits(base, nbBits);
+  NSUInteger result = 0;
+  chalk_compute_flags_t _oldFlags = chalkGmpFlagsSave(YES);
+  result = mpfr_get_str_ndigits(base, nbBits);
+  chalkGmpFlagsRestore(_oldFlags);
   /*
   if (nbBits && (base > 1))
   {
@@ -6323,7 +6309,10 @@ NSUInteger chalkGmpGetMaximumDigitsCountFromBitsCount(NSUInteger nbBits, int bas
 
 NSUInteger chalkGmpGetMaximumExactDigitsCountFromBitsCount(NSUInteger nbBits, int base)
 {
-  NSUInteger result = mpfr_get_str_ndigits(base, nbBits);
+  NSUInteger result = 0;
+  chalk_compute_flags_t _oldFlags = chalkGmpFlagsSave(YES);
+  result = mpfr_get_str_ndigits(base, nbBits);
+  chalkGmpFlagsRestore(_oldFlags);
   /*if (base == 2)
     result = nbBits;
   else if (nbBits && (base > 1))
@@ -7692,14 +7681,15 @@ BOOL chalkGmpMpfrGetStrRaiseInexFlag(void)
     {
       if (!initialized)
       {
+        chalk_compute_flags_t oldFlags = chalkGmpFlagsSave(YES);
         mpfr_t f;
         mpfr_init_set_d(f, 0.125, MPFR_RNDN);
         mpfr_exp_t e = 0;
-        mpfr_clear_flags();
         static char buffer[4] = {0};
         mpfr_get_str(buffer, &e, 10, 2, f, MPFR_RNDN);
         result = (mpfr_inexflag_p() != 0);
         mpfr_clear(f);
+        chalkGmpFlagsRestore(oldFlags);
         initialized = YES;
       }//end if (!initialized)
     }//end @synchronized(@"")
@@ -7711,7 +7701,12 @@ BOOL chalkGmpMpfrGetStrRaiseInexFlag(void)
 int chalkGmpLog(mpfr_t dst, mpfr_srcptr src, int base, mpfr_rnd_t rnd)
 {
   int result = 0;
-  if (base == 2)
+  if (mpfr_nan_p(src))
+  {
+    mpfr_set_nan(dst);
+    mpfr_set_nanflag();
+  }//end if (mpfr_nan_p(src))
+  else if (base == 2)
     result = mpfr_log2(dst, src, rnd);
   else if (base == 10)
     result = mpfr_log10(dst, src, rnd);

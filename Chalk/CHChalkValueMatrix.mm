@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 09/11/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHChalkValueMatrix.h"
@@ -152,7 +152,8 @@ CHChalkValue* getMaxMagnitudeColElement(NSArray* values, NSUInteger rowsCount, N
             CHChalkValueNumberGmp* absValueGmp = [absValue dynamicCastToClass:[CHChalkValueNumberGmp class]];
             const chalk_gmp_value_t* absValueGmpValue = absValueGmp.valueConstReference;
             const chalk_gmp_value_t* localMaxElementGmpValue = localMaxElement.valueConstReference;
-            int cmp = !localMaxElementGmpValue ? 0 : chalkGmpValueCmp(localMaxElementGmpValue, absValueGmpValue, [CHGmpPool peek]);
+            int cmp = !localMaxElementGmpValue || chalkGmpValueIsNan(localMaxElementGmpValue) ? 0 :
+              chalkGmpValueCmp(localMaxElementGmpValue, absValueGmpValue, [CHGmpPool peek]);
             BOOL updateMax = (!localMaxElementGmpValue || (cmp<0) ||
                 ((cmp == 0) && (rowIndex<localMaxElementRowIndex)) ||
                 ((cmp == 0) && (rowIndex==localMaxElementRowIndex) && (colIndex<localMaxElementColIndex)));
@@ -170,7 +171,8 @@ CHChalkValue* getMaxMagnitudeColElement(NSArray* values, NSUInteger rowsCount, N
       {
         const chalk_gmp_value_t* localMaxElementGmpValue = localMaxElement.valueConstReference;
         const chalk_gmp_value_t* globalMaxElementGmpValue = globalMaxElement.valueConstReference;
-        int cmp = !globalMaxElementGmpValue ? 0 : chalkGmpValueCmp(globalMaxElementGmpValue, localMaxElementGmpValue, [CHGmpPool peek]);
+        int cmp = !globalMaxElementGmpValue || chalkGmpValueIsNan(globalMaxElementGmpValue) ? 0 :
+          chalkGmpValueCmp(globalMaxElementGmpValue, localMaxElementGmpValue, [CHGmpPool peek]);
         BOOL updateMax = (!globalMaxElementGmpValue || (cmp<0) ||
             ((cmp == 0) && (localMaxElementRowIndex<globalMaxElementRowIndex)) ||
             ((cmp == 0) && (localMaxElementRowIndex==globalMaxElementRowIndex) && (localMaxElementColIndex<globalMaxElementColIndex)));
@@ -240,7 +242,8 @@ CHChalkValue* getMaxMagnitudeElement(NSArray* values, const MatrixIndices* indic
             CHChalkValueNumberGmp* absValueGmp = [absValue dynamicCastToClass:[CHChalkValueNumberGmp class]];
             const chalk_gmp_value_t* absValueGmpValue = absValueGmp.valueConstReference;
             const chalk_gmp_value_t* localMaxElementGmpValue = localMaxElement.valueConstReference;
-            int cmp = !localMaxElementGmpValue ? 0 : chalkGmpValueCmp(localMaxElementGmpValue, absValueGmpValue, [CHGmpPool peek]);
+            int cmp = !localMaxElementGmpValue || chalkGmpValueIsNan(localMaxElementGmpValue) ? 0 :
+              chalkGmpValueCmp(localMaxElementGmpValue, absValueGmpValue, [CHGmpPool peek]);
             BOOL updateMax = (!localMaxElementGmpValue || (cmp<0) ||
                 ((cmp == 0) && (rowIndex<localMaxElementRowIndex)) ||
                 ((cmp == 0) && (rowIndex==localMaxElementRowIndex) && (colIndex<localMaxElementColIndex)));
@@ -258,7 +261,8 @@ CHChalkValue* getMaxMagnitudeElement(NSArray* values, const MatrixIndices* indic
       {
         const chalk_gmp_value_t* localMaxElementGmpValue = localMaxElement.valueConstReference;
         const chalk_gmp_value_t* globalMaxElementGmpValue = globalMaxElement.valueConstReference;
-        int cmp = !globalMaxElementGmpValue ? 0 : chalkGmpValueCmp(globalMaxElementGmpValue, localMaxElementGmpValue, [CHGmpPool peek]);
+        int cmp = !globalMaxElementGmpValue || chalkGmpValueIsNan(globalMaxElementGmpValue) ? 0 :
+          chalkGmpValueCmp(globalMaxElementGmpValue, localMaxElementGmpValue, [CHGmpPool peek]);
         BOOL updateMax = (!globalMaxElementGmpValue || (cmp<0) ||
             ((cmp == 0) && (localMaxElementRowIndex<globalMaxElementRowIndex)) ||
             ((cmp == 0) && (localMaxElementRowIndex==globalMaxElementRowIndex) && (localMaxElementColIndex<globalMaxElementColIndex)));

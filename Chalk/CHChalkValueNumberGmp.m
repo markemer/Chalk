@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 14/02/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHChalkValueNumberGmp.h"
@@ -688,11 +688,11 @@
       NSUInteger sgnShift = ((sgn<0) ? 1 : 0);
       [stream writeString:outputBasePrefix];
       @autoreleasepool {
-        [stream writeString:[string substringWithRange:NSMakeRange(sgnShift, nbDigits-power-sgnShift)]];
+        [stream writeString:[string substringWithRange:NSMakeRange(sgnShift, nbDigits-power)]];
       }//end @autoreleasepool
       [stream writeString:@"."];
       @autoreleasepool {
-        [stream writeString:[string substringFromIndex:nbDigits-power+sgnShift]];
+        [stream writeString:[string substringFromIndex:sgnShift+nbDigits-power]];
       }//end @autoreleasepool
       [stream writeString:outputBaseSuffix];
     }//end if (power<nbDigits)

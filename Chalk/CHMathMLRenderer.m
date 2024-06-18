@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 03/05/17.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHMathMLRenderer.h"
@@ -14,12 +14,69 @@
 #import "NSObjectExtended.h"
 #import "NSStringExtended.h"
 
+@interface CHMathMLRendererQueueItem : NSObject {
+  NSString* string;
+  NSColor* foregroundColor;
+  chalk_export_format_t format;
+  NSData* metadata;
+  BOOL feedPasteboard;
+}
+
+@property(nonatomic,copy) NSString* string;
+@property(nonatomic,copy) NSColor* foregroundColor;
+@property(nonatomic)      chalk_export_format_t format;
+@property(nonatomic,copy) NSData* metadata;
+@property(nonatomic)      BOOL feedPasteboard;
+
++(instancetype) queueItemWithString:(NSString*)string foregroundColor:(NSColor*)foregroundColor format:(chalk_export_format_t)format metadata:(NSData*)metadata feedPasteboard:(BOOL)feedPasteboard;
+-(instancetype) initWithString:(NSString*)string foregroundColor:(NSColor*)foregroundColor format:(chalk_export_format_t)format metadata:(NSData*)metadata feedPasteboard:(BOOL)feedPasteboard;
+@end//CHMathMLRendererQueueItem
+
+@implementation CHMathMLRendererQueueItem
+
+@synthesize string;
+@synthesize foregroundColor;
+@synthesize format;
+@synthesize metadata;
+@synthesize feedPasteboard;
+
++(instancetype) queueItemWithString:(NSString*)string foregroundColor:(NSColor*)foregroundColor format:(chalk_export_format_t)format metadata:(NSData*)metadata feedPasteboard:(BOOL)feedPasteboard
+{
+  return [[[[self class] alloc] initWithString:string foregroundColor:foregroundColor format:format metadata:metadata feedPasteboard:feedPasteboard] autorelease];
+}
+//end queueItemWithString:foregroundColor:format:metadata:feedPasteboard:
+
+-(instancetype) initWithString:(NSString*)aString foregroundColor:(NSColor*)aForegroundColor format:(chalk_export_format_t)aFormat metadata:(NSData*)aMetadata feedPasteboard:(BOOL)aFeedPasteboard
+{
+  if (!((self = [super init])))
+    return self;
+  self.string = aString;
+  self.foregroundColor = aForegroundColor;
+  self.format = aFormat;
+  self.metadata = aMetadata;
+  self.feedPasteboard = aFeedPasteboard;
+  return self;
+}
+//end queueItemWithString:foregroundColor:format:metadata:feedPasteboard:
+
+-(void) dealloc
+{
+  self.string = nil;
+  self.foregroundColor = nil;
+  self.metadata = nil;
+  [super dealloc];
+}
+//end dealloc
+
+@end//CHMathMLRendererQueueItem
+
 @interface CHMathMLRenderer ()
 
 -(void) jsConsoleLog:(NSString*)message;
 -(void) mathjaxDidFinishLoading;
--(void) mathjaxDidEndTypesetting:(NSString*)mathMLOutput;
+-(void) mathjaxDidEndTypesetting:(NSString*)mathMLOutput extraInformation:(id)extraInformation;
 -(void) mathjaxReportedError:(NSString*)mathMLOutput;
+-(void) processRenderQueue;
 
 @end
 
@@ -41,7 +98,7 @@
   BOOL included =
     (sel == @selector(jsConsoleLog:)) ||
     (sel == @selector(mathjaxDidFinishLoading)) ||
-    (sel == @selector(mathjaxDidEndTypesetting:)) ||
+    (sel == @selector(mathjaxDidEndTypesetting:extraInformation:)) ||
     (sel == @selector(mathjaxReportedError:));
   result = !included;
   return result;
@@ -58,6 +115,7 @@
 {
   DebugLog(1, @"mathjaxDidFinishLoading");
   self->isMathjaxLoaded = YES;
+  [self processRenderQueue];
 }
 //end mathjaxDidFinishLoading
 
@@ -73,11 +131,11 @@
 }
 //end mathjaxReportedError
 
--(void) mathjaxDidEndTypesetting:(NSString*)string
+-(void) mathjaxDidEndTypesetting:(NSString*)string extraInformation:(id)extraInformation
 {
   @synchronized(self)
   {
-    DebugLog(1, @"mathjaxDidEndTypesetting: %@", string);
+    DebugLog(1, @"mathjaxDidEndTypesetting:%@ extraInformation:%@", string, extraInformation);
     NSError* error = nil;
     NSArray* components = [string componentsMatchedByRegex:@"\\<math ?.*>.*\\<\\/math\\>" options:RKLDotAll|RKLMultiline|RKLCaseless range:string.range capture:0 error:&error];
     if (error)
@@ -110,13 +168,15 @@
     }//end if (self->nextFeedPasteboard)
     [self.delegate mathMLRenderer:self didEndRender:self->nextFormat];
   }//end @synchronized(self)
+  [self processRenderQueue];
 }
-//end mathjaxDidEndTypesetting:
+//end mathjaxDidEndTypesetting:extraInformation:
 
 -(id) init
 {
   if (!((self = [super init])))
     return nil;
+  self->renderQueue = [[NSMutableArray alloc] init];
   self->_webView = [[CHWebView alloc] initWithFrame:NSZeroRect createSubViews:YES];
   [self->_webView setExternalObject:self forJSKey:@"rendererDocument"];
   self->_webView.webDelegate = self;
@@ -145,6 +205,7 @@
 
 -(void) dealloc
 {
+  [self->renderQueue release];
   [self->lastMetadata release];
   [self->lastResultString release];
   [self->lastErrorString release];
@@ -196,26 +257,45 @@
 
 -(void) render:(NSString*)string foregroundColor:(NSColor*)foregroundColor format:(chalk_export_format_t)format metadata:(NSData*)metadata feedPasteboard:(BOOL)feedPasteboard
 {
-  if (!self->isMathjaxLoaded)
+  CHMathMLRendererQueueItem* queueItem = [CHMathMLRendererQueueItem queueItemWithString:string foregroundColor:foregroundColor format:format metadata:metadata feedPasteboard:feedPasteboard];
+  if (queueItem)
   {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 100000000), dispatch_get_main_queue(), ^{
-      [self render:[[string copy] autorelease] foregroundColor:foregroundColor format:format metadata:[[metadata copy] autorelease] feedPasteboard:feedPasteboard];
-    });
-  }//end if (!self->isMathjaxLoaded)
-  else//if (self->isMathjaxLoaded)
+    @synchronized(self->renderQueue)
+    {
+      [self->renderQueue addObject:queueItem];
+    }
+    if (self->isMathjaxLoaded)
+      [self processRenderQueue];
+  }//end if (queueItem)
+}
+//end render:foregroundColor:format:metadata:feedPasteboard:
+
+-(void) processRenderQueue
+{
+  CHMathMLRendererQueueItem* queueItem = nil;
+  @synchronized(self->renderQueue)
+  {
+    if (self->renderQueue.count)
+    {
+      queueItem = [[[self->renderQueue firstObject] retain] autorelease];
+      [self->renderQueue removeObjectAtIndex:0];
+    }//end if (self->renderQueue.count)
+  }//end @synchronized(self->renderQueue)
+  if (queueItem)
   {
     @synchronized(self)
     {
       [self->lastMetadata release];
-      self->lastMetadata = [metadata copy];
+      self->lastMetadata = [queueItem.metadata copy];
       [self->lastErrorString release];
       self->lastErrorString = nil;
-      self->nextFeedPasteboard = feedPasteboard;
-      self->nextFormat = format;
+      self->nextFeedPasteboard = queueItem.feedPasteboard;
+      self->nextFormat = queueItem.format;
       if (self->nextFormat == CHALK_EXPORT_FORMAT_STRING)
-        [self mathjaxDidEndTypesetting:string];
+        [self mathjaxDidEndTypesetting:queueItem.string extraInformation:nil];
       else if (self->nextFormat != CHALK_EXPORT_FORMAT_UNDEFINED)
       {
+        NSColor* foregroundColor = queueItem.foregroundColor;
         BOOL ignoreColor = !foregroundColor ||
           [foregroundColor isEqualTo:[NSColor blackColor]] ||
           [foregroundColor isEqualTo:[NSColor clearColor]] ||
@@ -232,8 +312,8 @@
             (int)(unsigned char)(255*rgba[1]),
             (int)(unsigned char)(255*rgba[2])];
         NSString* mathjaxTeXString = (hexColorString.length != 0) ?
-          [NSString stringWithFormat:@"\\(\\color{%@}{%@}\\)", hexColorString, string] :
-          [NSString stringWithFormat:@"\\(%@\\)", string];
+          [NSString stringWithFormat:@"\\(\\color{%@}{%@}\\)", hexColorString, queueItem.string] :
+          [NSString stringWithFormat:@"\\(%@\\)", queueItem.string];
         NSArray* args = !mathjaxTeXString ? nil : @[mathjaxTeXString];
         [self->_webView evaluateJavaScriptFunction:@"render" withJSONArguments:args wait:NO];
       }//end if (self->nextFormat != CHALK_EXPORT_FORMAT_UNDEFINED)

@@ -89,7 +89,7 @@ function render(inputTeXString)
     catch(err){
       debugLog('typeset error : '+error.message()+'\nstack:'+error.stack);
     }
-    callExternal(['mathjaxDidEndTypesetting_', $(divEntryInput).html()]);
+    callExternal(['mathjaxDidEndTypesetting_extraInformation_', $(divEntryInput).html(), null]);
   }//end if (divEntryInput != null)
 }
 //end render()

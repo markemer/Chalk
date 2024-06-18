@@ -900,7 +900,7 @@ function _updateEntry(uid, inputRawHTMLString, inputInterpretedHTMLString, input
       if (!isNullOrEmpty(inputInterpretedTeXString))
       {
         inputMath.innerHTML = '\\('+inputInterpretedTeXString+'\\)';
-        window.MathJax.typeset([inputMath]);
+        window.MathJax.typeset(inputMath);
         divEntryInputRawHTML.style.display = 'none';
         divEntryInputInterpretedHTML.style.display = 'none';
         divEntryInputInterpretedTeX.style.display = 'block';
@@ -909,7 +909,7 @@ function _updateEntry(uid, inputRawHTMLString, inputInterpretedHTMLString, input
       if (!isNullOrEmpty(outputTeXString))
       {
         outputMath.innerHTML = '\\('+outputTeXString+'\\)';
-        window.MathJax.typeset([outputMath]);
+        window.MathJax.typeset(outputMath);
         if (!isSimpleString(outputHTMLString))
         {
           divEntryOutputHTML.style.display = 'none';
@@ -920,7 +920,7 @@ function _updateEntry(uid, inputRawHTMLString, inputInterpretedHTMLString, input
       if (!isNullOrEmpty(output2TeXString))
       {
         output2Math.innerHTML = '\\('+output2TeXString+'\\)';
-        window.MathJax.typeset([output2Math]);
+        window.MathJax.typeset(output2Math);
         if (!isSimpleString(output2HTMLString))
         {
           divEntryOutput2HTML.style.display = 'none';

@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 25/03/2016.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHDigitsGroupView.h"
@@ -272,9 +272,9 @@
       }//end if (digitMinorPart1 & minorPart)
     }//end for each minorPart
     if (!backColors1.count)
-      [backColors1 addObject:[NSColor whiteColor]];
+      [backColors1 addObject:[NSColor controlBackgroundColor]];
     if (!backColors2.count)
-      [backColors2 addObject:[NSColor whiteColor]];
+      [backColors2 addObject:[NSColor controlBackgroundColor]];
     digitView.backColors1 = backColors1;
     digitView.backColors2 = backColors2;
 
@@ -310,6 +310,7 @@
       mpz_clear(outputDigitBits);
     }//end if (bitsPerDigit > 1)
     CGFloat fontSize = [NSFont systemFontSizeForControlSize:NSSmallControlSize];
+    digitView.textColor = [NSColor controlTextColor];
     digitView.stringValue = [digitString uppercaseString];
     digitView.font =
       isDigitModified ? [NSFont boldSystemFontOfSize:fontSize] :

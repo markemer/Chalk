@@ -3,7 +3,7 @@
 //  ChalkTests
 //
 //  Created by Pierre Chatelier on 12/02/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>

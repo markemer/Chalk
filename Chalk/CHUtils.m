@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 27/02/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHUtils.h"
@@ -29,6 +29,8 @@ void _Log(NSString* s)
     fflush(fp);
   }//end if (fp)
 }
+
+NSString* NSAppearanceDidChangeNotification = @"NSAppearanceDidChangeNotification";
 
 NSRange NSRangeZero = {0};
 
@@ -101,6 +103,27 @@ char* strtoupper(char* bytes, size_t length)
 }
 //end strtoupper()
 
+__thread BOOL signal_env_saved = NO;
+__thread jmp_buf signal_env;
+
+int saveJmp(void) {int res = setjmp(signal_env); signal_env_saved=YES; return res;}
+void resumeJmp(void) {if (signal_env_saved) {signal_env_saved=NO; longjmp(signal_env, 1);}}
+
+void signalHandler(int sig)
+{
+  DebugLogStatic(0, @"signalHandler(%@), gmp_errno=%@", @(sig), @(gmp_errno));
+  BOOL shouldIgnore = (sig == SIGABRT) && (gmp_errno != 0);
+  if (shouldIgnore)
+    resumeJmp();
+}
+//end signalHandler()
+
+void signal_install(void)
+{
+  signal(SIGABRT, signalHandler);
+}
+//end signal_install()
+
 DISPATCH_EXPORT DISPATCH_NONNULL_ALL DISPATCH_NOTHROW
 void dispatch_with_main_option(dispatch_main_option_t option, DISPATCH_NOESCAPE dispatch_block_t block)
 {
@@ -124,6 +147,7 @@ void dispatch_async_gmp(dispatch_queue_t queue, dispatch_block_t block)
   dispatch_async(queue, ^{
     mpfr_set_emin(emin_min);
     mpfr_set_emax(emax_max);
+    signal_install();
     block();
   });
 }
@@ -138,6 +162,7 @@ void dispatch_apply_gmp(size_t iterations, dispatch_queue_t DISPATCH_APPLY_QUEUE
   block_apply_t blockAdapted = ^(size_t i){
     mpfr_set_emin(emin_min);
     mpfr_set_emax(emax_max);
+    signal_install();
     block(i);
   };
   dispatch_apply(iterations, queue, blockAdapted);
@@ -153,6 +178,7 @@ void dispatch_applyWithOptions_gmp(size_t iterations, dispatch_queue_t queue, di
   block_apply_t blockAdapted = ^(size_t i){
     mpfr_set_emin(emin_min);
     mpfr_set_emax(emax_max);
+    signal_install();
     block(i);
   };
   if ((options & DISPATCH_OPTION_SYNCHRONOUS) == 0)
@@ -205,6 +231,7 @@ void dispatch_group_async_gmp(dispatch_group_t group, dispatch_queue_t queue, di
   dispatch_block_t blockAdapted = ^{
     mpfr_set_emin(emin_min);
     mpfr_set_emax(emax_max);
+    signal_install();
     block();
   };
   dispatch_group_async(group, queue, blockAdapted);
@@ -220,6 +247,7 @@ void dispatch_range_async_gmp(NSRange range, dispatch_queue_t queue, void (^bloc
   block_range_t blockAdapted = ^(size_t idx, BOOL* stop){
     mpfr_set_emin(emin_min);
     mpfr_set_emax(emax_max);
+    signal_install();
     block(idx, stop);
   };
   if (!range.length){

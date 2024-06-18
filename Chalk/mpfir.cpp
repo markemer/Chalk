@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 11/06/2015.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #include "mpfir.h"
@@ -681,6 +681,46 @@ int mpfir_sqr(mpfir_ptr rop, mpfir_srcptr op)
   return result;
 }
 //end mpfir_sqr()
+
+int mpfir_floor(mpfir_ptr rop, mpfir_srcptr op)
+{
+  int result = 0;
+  mpfr_flags_t oldFlags = mpfr_flags_save();
+  mpfr_clear_flags();
+  mpfr_floor(&rop->interval.left, &rop->interval.left);
+  bool isLeftExact = !mpfr_inexflag_p();
+  mpfr_clear_flags();
+  mpfr_floor(&rop->interval.right, &rop->interval.right);
+  bool isRightExact = !mpfr_inexflag_p();
+  mpfr_clear_flags();
+  mpfr_floor(&rop->estimation, &op->estimation);
+  mpfr_flags_restore(oldFlags, MPFR_FLAGS_ALL);
+  result =
+    (!isLeftExact ? MPFI_FLAGS_LEFT_ENDPOINT_INEXACT : 0) |
+    (!isRightExact ? MPFI_FLAGS_RIGHT_ENDPOINT_INEXACT : 0);
+  return result;
+}
+//end mpfir_floor()
+
+int mpfir_ceil(mpfir_ptr rop, mpfir_srcptr op)
+{
+  int result = 0;
+  mpfr_flags_t oldFlags = mpfr_flags_save();
+  mpfr_clear_flags();
+  mpfr_ceil(&rop->interval.left, &rop->interval.left);
+  bool isLeftExact = !mpfr_inexflag_p();
+  mpfr_clear_flags();
+  mpfr_ceil(&rop->interval.right, &rop->interval.right);
+  bool isRightExact = !mpfr_inexflag_p();
+  mpfr_clear_flags();
+  mpfr_ceil(&rop->estimation, &op->estimation);
+  mpfr_flags_restore(oldFlags, MPFR_FLAGS_ALL);
+  result =
+    (!isLeftExact ? MPFI_FLAGS_LEFT_ENDPOINT_INEXACT : 0) |
+    (!isRightExact ? MPFI_FLAGS_RIGHT_ENDPOINT_INEXACT : 0);
+  return result;
+}
+//end mpfir_ceil()
 
 int mpfir_inv(mpfir_ptr rop, mpfir_srcptr op)
 {

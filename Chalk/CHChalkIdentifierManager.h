@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 06/11/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -33,10 +33,12 @@
 -(instancetype) copyWithZone:(NSZone*)zone;
 
 -(NSString*) unusedIdentifierNameWithTokenOption:(BOOL)tokenOption;
+-(NSString*) unusedIdentifierNameWithName:(NSString*)name;
 -(BOOL) addIdentifier:(CHChalkIdentifier*)identifier replace:(BOOL)replace preventTokenConflict:(BOOL)preventTokenConflict;
 -(BOOL) removeIdentifier:(CHChalkIdentifier*)identifier;
 -(void) removeAllExceptDefaults:(BOOL)exceptDefault;
 -(BOOL) hasIdentifier:(CHChalkIdentifier*)identifier;
+-(BOOL) hasIdentifierName:(NSString*)name;
 -(CHChalkIdentifier*) identifierForName:(NSString*)name createClass:(Class)createClass;
 -(CHChalkIdentifier*) identifierForToken:(NSString*)token createClass:(Class)createClass;
 -(BOOL) isDefaultIdentifier:(CHChalkIdentifier*)identifier;
@@ -56,5 +58,7 @@
 -(BOOL) removeValueForIdentifier:(CHChalkIdentifier*)identifier;
 -(BOOL) removeValueForIdentifierName:(NSString*)name;
 -(BOOL) removeValueForIdentifierToken:(NSString*)token;
+
+-(NSArray<NSString*>*) constantsIdentifiersNamesMatchingPrefix:(NSString*)prefix;
 
 @end

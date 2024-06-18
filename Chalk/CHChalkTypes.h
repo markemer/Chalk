@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 15/02/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #ifndef __CHCHALKTYPES_H__
@@ -34,6 +34,7 @@ typedef NS_ENUM(NSUInteger, chalk_nextinput_mode_t) {
   CHALK_NEXTINPUT_MODE_BLANK,
   CHALK_NEXTINPUT_MODE_PREVIOUS_INPUT,
   CHALK_NEXTINPUT_MODE_FUNCTION_OUTPUT,
+  CHALK_NEXTINPUT_MODE_FUNCTION_OUTPUT_SMART,
 };
 //end chalk_nextinput_mode_t
 

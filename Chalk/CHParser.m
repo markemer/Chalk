@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 01/03/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHParser.h"
@@ -62,7 +62,10 @@ void tokenizerEmit_rpn(int tokenId, const unsigned char* input, size_t length, N
   {
     context.lastTokenRange = range;
     NSString* tokenValue = [[[NSString alloc] initWithBytes:input length:length encoding:NSUTF8StringEncoding] autorelease];
-    CHChalkToken* token = [CHChalkToken chalkTokenWithValue:tokenValue range:range];
+    NSString* tokenValueTrimmed = [tokenValue stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSRange tokenValueTrimmedSubRange = [tokenValue rangeOfString:tokenValueTrimmed];
+    NSRange tokenValueTrimmedRange = NSRangeShift(range, tokenValueTrimmedSubRange.location);
+    CHChalkToken* token = [CHChalkToken chalkTokenWithValue:tokenValueTrimmed range:tokenValueTrimmedRange];
     Parse_rpn(internalParser, tokenId, token, context);
   }//end if (!shouldStop)
 }

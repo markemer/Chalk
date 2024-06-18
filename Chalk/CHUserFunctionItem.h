@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 17/12/2015.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -41,5 +41,6 @@ extern NSString* CHUserFunctionItemArgumentNamesKey;
 
 -(void) reset;
 -(void) removeFromManagedObjectContext;
+-(void) update:(CHChalkIdentifierFunction*)identifier;
 
 @end

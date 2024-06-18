@@ -3,13 +3,16 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 12/02/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
 
 #import "CHUtils.h"
 #import "CHChalkUtils.h"
+
+#include <gmp.h>
+#include <signal.h>
 
 int main(int argc, const char * argv[])
 {
@@ -40,20 +43,6 @@ int main(int argc, const char * argv[])
   if (DebugLogLevel >= 1){
     NSLog(@"Launching with DebugLogLevel = %ld", DebugLogLevel);
   }
-  
-  /*mpfr_prec_t prec = 128;
-  mpfr_t af;
-  mpfr_t bf;
-  mpfr_init2(af, prec);
-  mpfr_init2(bf, prec);
-  mpfr_set_inf(af, -1);
-  mpfr_set_d(bf,  2, MPFR_RNDN);
-  
-  arb_t a;
-  arb_init(a);
-  arb_set_interval_mpfr(a, af, bf, prec);
-  arb_get_interval_mpfr(af, bf, a);
-  printf("[%f;%f]\n", mpfr_get_d(af, MPFR_RNDN), mpfr_get_d(bf, MPFR_RNDN));*/
   
   DebugLogStatic(1, @"gmp %s", gmp_version);
   DebugLogStatic(1, @"mpfr %s", mpfr_get_version());

@@ -1,0 +1,132 @@
+@import url('calculator.css');
+
+#body {
+    color: #F7F7F7;
+    background-color: #262626;
+}
+
+#entries {
+}
+
+#entries div {
+}
+
+.entry {
+    background-color: #2e2e2e;
+    border-style: solid;
+    border-width: 1px;
+    border-color: darkgray;
+    border-radius: 8px;
+    box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.3);
+}
+
+.entry_selected {
+    border-width: 3px;
+    border-color: -apple-system-control-accent;
+}
+
+.entry_input {
+}
+
+.entry_output {
+}
+
+.entry_output2 {
+}
+
+.entry_input_switch {
+}
+
+.entry_output_switch {
+}
+
+.entry_output2_switch {
+}
+
+.entry_header {
+    background: linear-gradient(180deg, #808080, #808080 50%, #707070 50%, #707070);
+    border-bottom: 1px solid gray;
+    box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.1);
+}
+
+.entry_selected .entry_header {
+    background: none;
+    background-color: -apple-system-control-accent;
+}
+
+.entry_number {
+    background-color: #111111;
+}
+
+.entry_flags {
+}
+
+.entry_close {
+}
+
+.entry_annotation_reveal {
+}
+
+.entry_annotation {
+  background:linear-gradient(0deg, #FFFF66, #FFFFAA);
+  box-shadow:0px 2px 2px 1px rgba(0, 0, 0, 0.1);
+  border-bottom:1px solid gray;
+}
+
+.entry_annotation textarea::placeholder {
+    color: #606060;
+}
+
+div.hruler {
+    color:lightgray;
+}
+div.hruler:before, div.hruler:after {
+    background-color:darkgray;
+}
+div.hruler:before {
+}
+div.hruler:after {
+}
+
+.warningFlag {
+  background-color:rgb(192,192,192);
+  border-color:lightgray;
+}
+
+.hasTooltip {
+  border:1px dotted rgb(255,0,0);
+}
+
+.errorFlag {
+  background-color:rgba(253, 177, 179, 25);
+}
+
+img.file-read {
+}
+
+img.file-write {
+}
+
+
+::-webkit-scrollbar {
+}
+::-webkit-scrollbar-button {
+}
+::-webkit-scrollbar-thumb {
+  background:lightgray;
+  border:0px none #ff0000;
+}
+::-webkit-scrollbar-thumb:hover {
+  background:darkgray;
+}
+::-webkit-scrollbar-thumb:active {
+  background:lightgray;
+}
+::-webkit-scrollbar-track {
+}
+::-webkit-scrollbar-track:hover {
+}
+::-webkit-scrollbar-track:active {
+}
+::-webkit-scrollbar-corner {
+}

@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 13/12/2015.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import <WebKit/WebKit.h>
@@ -26,6 +26,7 @@
 @property(nullable,retain,nonatomic) WebView* webView;
 @property(nullable,copy,nonatomic) NSURL* URL;
 @property(nonatomic, assign, nullable, nonatomic) id<CHWebViewDelegate> webDelegate;
+@property CGFloat fontSize;
 
 -(nullable instancetype) initWithFrame:(NSRect)frameRect createSubViews:(BOOL)createSubViews;
 

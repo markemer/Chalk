@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 17/12/2015.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHUserVariableItem.h"
@@ -32,7 +32,8 @@ NSString* CHUserVariableItemHasCircularDependencyKey = @"hasCircularDependency";
 @implementation CHUserVariableItem
 
 
-@dynamic    isProtected;
+@dynamic    isWriteProtected;
+@dynamic    isDeleteProtected;
 @synthesize identifier;
 @synthesize isDynamic;
 @synthesize input;
@@ -69,7 +70,12 @@ NSString* CHUserVariableItemHasCircularDependencyKey = @"hasCircularDependency";
   self->userVariableEntity = [aUserVariableEntity retain];
   self->isDynamic = self->userVariableEntity.isDynamic;
   self->chalkContext = [aChalkContext retain];
-  self->identifier = [[self->chalkContext.identifierManager identifierForName:userVariableEntity.identifierName createClass:[CHChalkIdentifierVariable class]] retain];
+  NSString* identifierClassName = self->userVariableEntity.identifierClassName;
+  Class identifierClass = NSClassFromString(identifierClassName);
+  Class requestedClass = [CHChalkIdentifier class];
+  Class defaultClass = [CHChalkIdentifierVariable class];
+  Class safeIdentifierClass = ![identifierClass isSubclassOfClass:requestedClass] ? defaultClass : identifierClass;
+  self->identifier = [[self->chalkContext.identifierManager identifierForName:userVariableEntity.identifierName createClass:safeIdentifierClass] retain];
   self->chalkParser = [[CHParser alloc] init];
   self->input = [self->userVariableEntity.inputRawString copy];
   self->evaluatedValue = [self->userVariableEntity.chalkValue1 retain];
@@ -92,7 +98,11 @@ NSString* CHUserVariableItemHasCircularDependencyKey = @"hasCircularDependency";
     self->userVariableEntity =
       [[CHUserVariableEntity alloc] initWithEntity:[NSEntityDescription entityForName:[CHUserVariableEntity entityName] inManagedObjectContext:managedObjectContext]
         insertIntoManagedObjectContext:managedObjectContext];
+    self->userVariableEntity.inputRawString = self->input;
+    NSString* identifierClassName = [self->identifier className];
+    self->userVariableEntity.identifierClassName = identifierClassName;
     self->userVariableEntity.identifierName = self->identifier.name;
+    self->userVariableEntity.chalkValue1 = self->evaluatedValue;
   }//end if (managedObjectContext)
   return self;
 }
@@ -247,12 +257,22 @@ NSString* CHUserVariableItemHasCircularDependencyKey = @"hasCircularDependency";
 }
 //end parserContext:didEncounterRootNode:
 
--(BOOL) isProtected
+-(BOOL) isWriteProtected
 {
-  BOOL result = self->identifier && ![self->identifier isKindOfClass:[CHChalkIdentifierVariable class]];
+  BOOL result = self->identifier &&
+    ![self->identifier isKindOfClass:[CHChalkIdentifierVariable class]];
   return result;
 }
-//end isProtected
+//end isWriteProtected
+
+-(BOOL) isDeleteProtected
+{
+  BOOL result = self->identifier &&
+    ![self->identifier isKindOfClass:[CHChalkIdentifierVariable class]] &&
+    ![self->identifier isKindOfClass:[CHChalkIdentifierConstant class]];
+  return result;
+}
+//end isDeleteProtected
 
 -(NSString*) name
 {

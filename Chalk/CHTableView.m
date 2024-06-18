@@ -9,14 +9,17 @@
 
 #import "CHTableView.h"
 
+#import "CHChalkUtils.h"
 #import "NSArrayControllerExtended.h"
 #import "NSObjectExtended.h"
 
 @interface CHTableView ()
+
 @property(readonly,assign) NSIndexSet* draggedRowIndexes;
 @property(readonly,copy)   NSString*   pboardType;
 -(void) textDidEndEditing:(NSNotification *)aNotification;
 -(void) rebind;
+-(BOOL) tableView:(NSTableView*)tableView performDragOperationFromPboard:(NSPasteboard*)pasteboard;
 @end
 
 @implementation CHTableView
@@ -144,30 +147,34 @@
 
 -(BOOL) validateMenuItem:(NSMenuItem*)sender
 {
-  BOOL ok = YES;
+  BOOL result = YES;
   if (sender.action == @selector(undo:))
   {
-    ok = [self.undoManager canUndo];
+    result = [self.undoManager canUndo];
     NSString* title = [self.undoManager undoMenuItemTitle];
     if (title)
       [sender setTitleWithMnemonic:title];
   }//end if (sender.action == @selector(undo:))
   else if (sender.action== @selector(redo:))
   {
-    ok = [self.undoManager canRedo];
+    result = [self.undoManager canRedo];
     NSString* title = [self.undoManager redoMenuItemTitle];
     if (title)
       [sender setTitleWithMnemonic:title];
   }//end if (sender.action == @selector(redo:))
   else if (sender.action == @selector(copy:))
-    ok = NO;//self.allowPboardCopy && (self.selectedRowIndexes.count > 0);
+    result = NO;//self.allowPboardCopy && (self.selectedRowIndexes.count > 0);
   else if (sender.action == @selector(paste:))
   {
     NSPasteboard* pboard = [NSPasteboard generalPasteboard];
-    NSArray* items = !self.allowPboardPaste ? nil : [[pboard propertyListForType:self.pboardType] dynamicCastToClass:[NSArray class]];
-    ok = NO;//self.allowPboardPaste && (items.count > 0);
+    id plist = [pboard propertyListForType:CHPasteboardTypeConstantDescriptions];
+    NSDictionary* singleItem = [plist dynamicCastToClass:[NSDictionary class]];
+    NSArray* multipleItems = [plist dynamicCastToClass:[NSArray class]];
+    if (!multipleItems && singleItem)
+      multipleItems = @[singleItem];
+    result = (multipleItems.count > 0);
   }//end if (sender.action == @selector(paste:))
-  return ok;
+  return result;
 }
 //end validateMenuItem:
 
@@ -234,6 +241,8 @@
     NSPasteboard* pboard = [NSPasteboard generalPasteboard];
     [self tableView:self writeRowsWithIndexes:self.selectedRowIndexes toPasteboard:pboard];
   }//end if (self.allowPboardCopy)
+  else
+    [self tableView:self performDragOperationFromPboard:[NSPasteboard generalPasteboard]];
 }
 //end paste:
 
@@ -245,6 +254,40 @@
   return [NSString stringWithFormat:@"%@%p", NSStringFromClass(self.class), self];
 }
 //end pboardType
+
+-(NSDragOperation) draggingEntered:(id<NSDraggingInfo>)sender
+{
+  NSDragOperation result = NSDragOperationCopy;
+  return result;
+}
+//end draggingEntered:
+
+-(NSDragOperation) draggingUpdated:(id<NSDraggingInfo>)sender
+{
+  NSDragOperation result = NSDragOperationCopy;
+  return result;
+}
+//end draggingUpdated:
+
+-(BOOL) wantsPeriodicDraggingUpdates
+{
+  return NO;
+}
+//end prepareForDragOperation:
+
+-(BOOL) prepareForDragOperation:(id<NSDraggingInfo>)sender
+{
+  BOOL result = YES;
+  return result;
+}
+//end prepareForDragOperation:
+
+-(BOOL) performDragOperation:(id<NSDraggingInfo>)sender
+{
+  BOOL result = [self tableView:self performDragOperationFromPboard:sender.draggingPasteboard];
+  return result;
+}
+//end performDragOperation:
 
 -(BOOL) tableView:(NSTableView *)aTableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard *)pboard
 {
@@ -294,5 +337,15 @@
   return result;
 }
 //end tableView:acceptDrop:row:dropOperation:
+
+-(BOOL) tableView:(NSTableView*)tableView performDragOperationFromPboard:(NSPasteboard*)pasteboard
+{
+  BOOL result = NO;
+  id plist = [pasteboard propertyListForType:CHPasteboardTypeConstantDescriptions];
+  if (plist && [self.dataSource respondsToSelector:@selector(tableView:performDragOperationFromPboard:)])
+    result = [(id)self.dataSource tableView:self performDragOperationFromPboard:pasteboard];
+  return result;
+}
+//end tableView:performDragOperationFromPboard:
 
 @end

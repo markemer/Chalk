@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 01/04/2016.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHDigitView.h"
@@ -58,7 +58,7 @@
   CTRunRef ctRun = !ctRuns || !CFArrayGetCount(ctRuns) ? 0 : CFArrayGetValueAtIndex(ctRuns, 0);
   CFRange range = CTRunGetStringRange(ctRun);
   CGContextSetRGBFillColor(cgContext, 0, 0, 0, 1);
-  CGContextSetRGBStrokeColor(cgContext, 0, 1, 0, 1);
+  CGContextSetRGBStrokeColor(cgContext, 0, 0, 0, 1);
   CGContextSetTextMatrix(cgContext, CGAffineTransformMakeScale(1, -1));
   CGRect runBounds = CTRunGetImageBounds(ctRun, cgContext, range);
   CGContextSetTextPosition(cgContext,
@@ -92,8 +92,12 @@
   if (!((self = [super initWithFrame:frameRect])))
     return nil;
   self.alignment = NSCenterTextAlignment;
-  self.backColors1 = @[[NSColor colorWithCalibratedRed:255/255. green:196/255. blue:196/255. alpha:1.]];
-  self.backColors2 = @[[NSColor colorWithCalibratedRed:196/255. green:196/255. blue:255/255. alpha:1.]];
+  self.backColors1 = [self isDarkMode] ?
+    @[[NSColor colorWithCalibratedRed:255/255. green:0/255. blue:0/255. alpha:1.]] :
+    @[[NSColor colorWithCalibratedRed:255/255. green:196/255. blue:196/255. alpha:1.]];
+  self.backColors2 = [self isDarkMode] ?
+    @[[NSColor colorWithCalibratedRed:0/255. green:255/255. blue:0/255. alpha:1.]] :
+    @[[NSColor colorWithCalibratedRed:196/255. green:196/255. blue:255/255. alpha:1.]];
   return self;
 }
 //end initWithFrame:

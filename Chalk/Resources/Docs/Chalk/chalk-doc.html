@@ -680,7 +680,9 @@ Similarly, a raw value can be converted back to a native Chalk format.
     <li><span class="expression">abs(value)</span> : absolute value (or magnitude). For complexes or quaternions, it returns the amplitude (as expected).</li></li>
     <li><span class="expression">binomial(n,m)</span> : return the binomial <span class="expression">(n,m)</span>.</li>
     <li><span class="expression">cbrt(value)</span> : return the cubic root of a value.</li>
+    <li><span class="expression">ceil(value)</span> : return the integer rounding of a value towards +∞.</li>
     <li><span class="expression">fibonacci(n)</span> : return the <span class="expression">n<sup>th</sup></span> fibonacci number.</li>
+    <li><span class="expression">floor(value)</span> : return the integer rounding of a value towards -∞.</li>
     <li><span class="expression">Gamma(x)</span> : return the Gamma function result of <span class="expression">x</span>.</li>
     <li><span class="expression">gcd(n,m)</span> : return the greatest common divisor of <span class="expression">n</span> and <span class="expression">m</span>.</li>
     <li><span class="expression">integral(expression, identifier, inf, sup, step)</span> : integral approximation, by cumulating values of <span class="expression">expression</span> by setting <span class="expression">identifier</span> from <span class="expression">inf</span> to <span class="expression">sup</span> by steps of <span class="expression">step</span>.</li>
@@ -688,6 +690,7 @@ Similarly, a raw value can be converted back to a native Chalk format.
     <li><span class="expression">lcm(n,m)</span> : return the lowest common multiple of <span class="expression">n</span> and <span class="expression">m</span>.</li>
     <li><span class="expression">ln(value)</span> : return the natural logarithm (base <span class="expression">e</span>) of a value.</li>
     <li><span class="expression">log10(value)</span> : return the 10-based logarithm of a value.</li>
+    <li><span class="expression">mod(n,m)</span> : return the remainder of <span class="expression">n</span> modulo <span class="expression">m</span>.</li>
     <li><span class="expression">pow(x, y)</span> : return <span class="expression">x<sup>y</sup></span>, where y can be negative, non-integer or complex.</li>
     <li><span class="expression">product(expression, identifier, inf, sup)</span> : product serie, multiplying successive values of <span class="expression">expression</span> by setting <span class="expression">identifier</span> from <span class="expression">inf</span> to <span class="expression">sup</span>, where <span class="expression">inf</span> and <span class="expression">sup</span> are integers.</li>
     <li><span class="expression">root(value, n)</span> : return the <span class="expression">n<sup>th</sup></span> root of a value.</li>
@@ -1115,6 +1118,57 @@ Unlike with the <a href="#calculator">Calculator</a>, the assignment operator ca
 <p style="clear:both">&nbsp;</p>
 
 <h1><a name="history">History</a></h1>
+<p style="font-weight:bold">29<sup>th</sup> October 2023 : v1.7.5</p>
+<ul>
+  <li>fixed rendering of arctan2.</li>
+</ul>
+<p style="font-weight:bold">17<sup>th</sup> October 2023 : v1.7.4</p>
+<ul>
+  <li>try to catch some GMP exceptions to avoid GMP aborting Chalk;</li>
+  <li>fixed bugs in bit inspector.</li>
+</ul>
+<p style="font-weight:bold">14<sup>th</sup> October 2023 : v1.7.3</p>
+<ul>
+  <li>fixed some GUI updates;</li>
+  <li>updated third-party libraries.</li>
+</ul>
+<p style="font-weight:bold">20<sup>th</sup> May 2023 : v1.7.2</p>
+<ul>
+  <li>added floor() and ceil();</li>
+  <li>added theme for dark mode;</li>
+  <li>minor polishing;</li>
+  <li>documentation updates;</li>
+  <li>updated third-party libraries.</li>
+</ul>
+<p style="font-weight:bold">19<sup>th</sup> April 2022 : v1.7.1</p>
+<ul>
+  <li>fixed a case where correct results could be displayed incorrectly;</li>
+  <li>fixed some windows styles.</li>
+</ul>
+<p style="font-weight:bold">26<sup>th</sup> March 2022 : v1.7.0</p>
+<ul>
+  <li>Fixed missing space trimming when using identifiers;</li>
+  <li>fixed highlighting location of some errors;</li>
+  <li>added new &quot;prepare next input&quot; option;</li>
+  <li>added constant manager;</li>
+  <li>added ability to change font size in the calculator rendering area.</li>
+</ul>
+<p style="font-weight:bold">17 <sup>th</sup> May 2021 : v1.6.11</p>
+<ul>
+  <li>fixed wrong computation with intervals and negative integer exponents because of a typo;</li>
+  <li>fixed some NaN propagations.</li>
+</ul>
+<p style="font-weight:bold">2<sup>nd</sup> May 2021 : v1.6.10</p>
+<ul>
+  <li>fixes for MacOS Dark mode;</li>
+  <li>updated third-party libraries that broke 10.9 compatibility.</li>
+</ul>
+<p style="font-weight:bold">23<sup>rd</sup> April 2021 : v1.6.9</p>
+<ul>
+  <li>Fixed some small regressions in the allowed syntaxes;</li>
+  <li>an improper &quot;inexact&quot; flag could remain after the first use of some MPFR function;</li>
+  <li>updated third-party libraries.</li>
+</ul>
 <p style="font-weight:bold">13<sup>th</sup> March 2021 : v1.6.8</p>
 <ul>
   <li>fixed crash due to bad linking to a shared library.</li>

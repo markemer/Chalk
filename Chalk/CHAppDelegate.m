@@ -3,12 +3,13 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 22/04/13.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHAppDelegate.h"
 
 #import "CHCalculatorDocument.h"
+#import "CHConstantsWindowController.h"
 #import "CHDragFilterWindowController.h"
 #import "CHEquationDocument.h"
 #import "CHGraphDocument.h"
@@ -27,6 +28,7 @@
 
 @implementation CHAppDelegate
 
+@dynamic    constantsWindowController;
 @dynamic    preferencesWindowController;
 @dynamic    quickReferenceWindowController;
 @synthesize sparkleUpdater;
@@ -51,6 +53,7 @@
 -(void) dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [self->constantsWindowController release];
   [self->dragFilterWindowController release];
   [self->preferencesWindowController release];
   [self->quickReferenceWindowController release];
@@ -69,6 +72,8 @@
 -(void) applicationDidFinishLaunching:(NSNotification*)notification
 {
   DebugLog(1, @"applicationDidFinishLaunching");
+  if ([NSApp respondsToSelector:NSSelectorFromString(@"effectiveAppearance")])
+    [NSApp addObserver:self forKeyPath:@"effectiveAppearance" options:NSKeyValueObservingOptionNew context:0];
 }
 //end applicationDidFinishLaunching:
 
@@ -87,6 +92,8 @@
     CHCalculatorDocument* document = [obj dynamicCastToClass:[CHCalculatorDocument class]];
     [document saveGUIState:nil saveDocument:YES];
   }];
+  if ([NSApp respondsToSelector:NSSelectorFromString(@"effectiveAppearance")])
+    [NSApp removeObserver:self forKeyPath:@"effectiveAppearance"];
 }
 //end applicationWillTerminate:
 
@@ -141,6 +148,24 @@
     menuItem.title = NSLocalizedString(@"Print...", @"");
     result = [calculatorDocument validateMenuItem:menuItem] || [graphDocument validateMenuItem:menuItem];
   }//end if (menuItem.action == @selector(printDocument:))
+  else if ([menuItem.identifier isEqualToString:@"font"])
+    menuItem.title = NSLocalizedString(@"Font", @"");
+  else if (menuItem.action == @selector(fontBigger:))
+  {
+    menuItem.title = NSLocalizedString(@"Bigger", @"");
+    result = [calculatorDocument validateMenuItem:menuItem];
+  }//end if (menuItem.action == @selector(fontBigger:))
+  else if (menuItem.action == @selector(fontSmaller:))
+  {
+    menuItem.title = NSLocalizedString(@"Smaller", @"");
+    result = [calculatorDocument validateMenuItem:menuItem];
+  }//end if (menuItem.action == @selector(fontBigger:))
+  else if (menuItem.action == @selector(toggleConstantsManager:))
+  {
+    menuItem.title = self->constantsWindowController && self->constantsWindowController.window.isVisible ?
+      NSLocalizedString(@"Hide constants manager", @"") :
+      NSLocalizedString(@"Show constants manager", @"");
+  }//end if (menuItem.action == @selector(toggleConstantsManager:))
   else if (menuItem.action == @selector(toggleInspectorCompute:))
   {
     menuItem.hidden = !calculatorDocument;
@@ -192,6 +217,11 @@
 }
 //end validateMenuItem:
 
+-(IBAction) noAction:(id)sender
+{
+}
+//end noAction:
+
 -(IBAction) makeDonation:(id)sender//display info panel
 {
   NSString* urlString = NSLocalizedString(@"https://pierre.chachatelier.fr/chalk/chalk-donations.php", @"");
@@ -219,6 +249,17 @@
   [self.preferencesWindowController selectPreferencesPaneWithItemIdentifier:itemIdentifier options:options];
 }
 //end showPreferencesPaneWithItemIdentifier:
+
+-(IBAction) toggleConstantsManager:(id)sender
+{
+  BOOL firstCreation = !self->constantsWindowController;
+  NSWindow* window = self.constantsWindowController.window;
+  if (firstCreation || !window.isVisible)
+    [window makeKeyAndOrderFront:self];
+  else
+    [window close];
+}
+//end toggleConstantsManager:
 
 -(IBAction) openWebSite:(id)sender
 {
@@ -470,6 +511,14 @@
 }
 //end preferencesWindowController
 
+-(CHConstantsWindowController*) constantsWindowController
+{
+  if (!self->constantsWindowController)
+    self->constantsWindowController = [[CHConstantsWindowController alloc] init];
+  return self->constantsWindowController;
+}
+//end constantsWindowController
+
 -(IBAction) calculatorRemoveCurrentItem:(id)sender
 {
   NSDocumentController* documentController = [NSDocumentController sharedDocumentController];
@@ -493,5 +542,39 @@
   [calculatorDocument removeAllEntries:sender];
 }
 //end calculatorRemoveAllItems:
+
+-(CHCalculatorDocument*) currentCalculatorDocument
+{
+  __block CHCalculatorDocument* result = nil;
+  [[NSApp orderedDocuments] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    CHCalculatorDocument* calculatorDocument = [obj dynamicCastToClass:[CHCalculatorDocument class]];
+    if (calculatorDocument && calculatorDocument.windowForSheet.isVisible)
+      result = calculatorDocument;
+    *stop = (result != nil);
+  }];
+  return result;
+}
+//end currentCalculatorDocument
+
+-(IBAction) fontBigger:(id)sender
+{
+  [[self currentCalculatorDocument] fontBigger:sender];
+}
+//end fontBigger:
+
+-(IBAction) fontSmaller:(id)sender
+{
+  [[self currentCalculatorDocument] fontSmaller:sender];
+}
+//end fontSmaller:
+
+#pragma mark observer
+
+-(void) observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
+{
+  if ((object == NSApp) && [keyPath isEqualToString:@"effectiveAppearance"])
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSAppearanceDidChangeNotification object:self];
+}
+//end observeValueForKeyPath:ofObject:change:context:
 
 @end

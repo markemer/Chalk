@@ -101,7 +101,7 @@
   top:0px;
   left:0px;
   right:0px;
-  height:20px;
+  height:max(20px, calc(1em + 4px));
   padding-left:5px;
   padding-right:5px;
   background:linear-gradient(180deg, #E9E9E9, #E9E9E9 50%, #DDDDDD 50%, #DDDDDD);
@@ -170,7 +170,7 @@
   top:0px;
   left:0px;
   right:0px;
-  min-height:20px;
+  min-height:calc(1em + 4px);
   padding:4px;
   background:linear-gradient(0deg, #FFFF66, #FFFFAA);
   box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.1);
@@ -188,7 +188,8 @@
   border-width:0px;
   background-color:transparent;
   box-sizing: border-box;
-  resize: none;
+  resize:none;
+  font-size:1em;
 }
 
 div.hruler {

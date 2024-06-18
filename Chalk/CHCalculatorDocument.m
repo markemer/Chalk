@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 12/02/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHCalculatorDocument.h"
@@ -12,6 +12,7 @@
 #import "CHBoolTransformer.h"
 #import "CHChalkError.h"
 #import "CHChalkErrorContext.h"
+#import "CHChalkIdentifierConstant.h"
 #import "CHChalkIdentifierManager.h"
 #import "CHChalkIdentifierVariable.h"
 #import "CHChalkItemDependencyManager.h"
@@ -22,11 +23,13 @@
 #import "CHChalkValueMatrix.h"
 #import "CHChalkValueNumberGmp.h"
 #import "CHChalkValueNumberRaw.h"
+#import "CHChalkValueParser.h"
 #import "CHChalkValueToStringTransformer.h"
 #import "CHComputationConfiguration.h"
 #import "CHComputationConfigurationEntity.h"
 #import "CHComputationEntryEntity.h"
 #import "CHComputedValueEntity.h"
+#import "CHConstantDescription.h"
 #import "CHDigitsInspectorControl.h"
 #import "CHDocumentDataEntity.h"
 #import "CHGmpPool.h"
@@ -550,7 +553,7 @@
   self->userVariableItemsController.automaticallyPreparesContent = YES;
   self->dependencyManager = [[CHChalkItemDependencyManager alloc] init];
   [self->chalkContext.identifierManager.variablesIdentifiers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-    CHChalkIdentifierVariable* identifier = [obj dynamicCastToClass:[CHChalkIdentifierVariable class]];
+    CHChalkIdentifierConstant* identifier = [obj dynamicCastToClass:[CHChalkIdentifierConstant class]];
     CHUserVariableItem* userVariableItem = !identifier ? nil :
       [[[CHUserVariableItem alloc] initWithIdentifier:identifier isDynamic:NO input:nil evaluatedValue:nil context:self->chalkContext managedObjectContext:self.managedObjectContext] autorelease];
     if (userVariableItem)
@@ -573,10 +576,11 @@
   self->chalkValueToStringTransformer = [[CHChalkValueToStringTransformer alloc] initWithContext:self->chalkContext];
   
   self->availableThemes = [[NSMutableArray alloc] init];
+  [self->availableThemes addObject:@"auto"];
   NSArray* cssFiles = [[NSBundle mainBundle] pathsForResourcesOfType:@"css" inDirectory:@"Web"];
   [cssFiles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
     NSString* cssPath = [obj dynamicCastToClass:[NSString class]];
-    if ([[cssPath lastPathComponent] isMatchedByRegex:@"calculator\\-theme-(.*)\\.css"])
+    if ([[cssPath lastPathComponent] isMatchedByRegex:@"calculator\\-theme-(.*)\\.css$"])
       [self->availableThemes addObject:cssPath];
   }];
   
@@ -589,6 +593,8 @@
   [self->currentTheme release];
   self->currentTheme = nil;
   [self->availableThemes release];
+  [self->defaultLightTheme release];
+  [self->defaultDarkTheme release];
   [self->svgRenderer dealloc];
   [self->defaultComputationConfiguration release];
   [self->defaultPresentationConfiguration release];
@@ -629,6 +635,16 @@
     menuItem.title = NSLocalizedString(@"Print...", @"");
     result = YES;
   }//end if (menuItem.action == @selector(printDocument:))
+  else if (menuItem.action == @selector(fontBigger:))
+  {
+    menuItem.title = NSLocalizedString(@"Bigger", @"");
+    result = YES;
+  }//end if (menuItem.action == @selector(fontBigger:))
+  else if (menuItem.action == @selector(fontSmaller:))
+  {
+    menuItem.title = NSLocalizedString(@"Smaller", @"");
+    result = YES;
+  }//end if (menuItem.action == @selector(fontSmaller:))
   else if (menuItem.action == @selector(calculatorRemoveCurrentItem:))
   {
     result = (self.currentComputationEntry != nil);
@@ -785,31 +801,39 @@
   NSData* settingsData = [CHDocumentDataEntity getDataInManagedObjectContext:self.managedObjectContext];
 
   self->themesToolbarItem.label = NSLocalizedString(@"Theme", @"");
-  __block NSString* defaultTheme = nil;
   [self->availableThemes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
     NSString* cssFilePath = [obj dynamicCastToClass:[NSString class]];
     NSString* cssFileName = cssFilePath.lastPathComponent;
     if ([cssFileName isEqualToString:@"calculator-theme-default.css"])
-      defaultTheme = cssFilePath;
+      self->defaultLightTheme = [cssFilePath copy];
+    if ([cssFileName isEqualToString:@"calculator-theme-default-dark.css"])
+      self->defaultDarkTheme = [cssFilePath copy];
   }];
-  if (!defaultTheme)
-    defaultTheme = self->availableThemes.firstObject;
-  [defaultTheme retain];
-  [self->availableThemes removeObject:defaultTheme];
-  [self->availableThemes insertObject:defaultTheme atIndex:0];
-  [defaultTheme release];
+  NSUInteger indexOfAuto = [self->availableThemes indexOfObject:@"auto"];
+  if (self->defaultLightTheme)
+  {
+    [self->availableThemes removeObject:self->defaultLightTheme];
+    [self->availableThemes insertObject:self->defaultLightTheme atIndex:indexOfAuto+1];
+  }//end if (self->defaultLightTheme)
+  if (self->defaultDarkTheme)
+  {
+    [self->availableThemes removeObject:self->defaultDarkTheme];
+    [self->availableThemes insertObject:self->defaultDarkTheme atIndex:indexOfAuto+2];
+  }//end if (self->defaultDarkTheme)
 
   [self->availableThemes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
     NSString* cssFilePath = [obj dynamicCastToClass:[NSString class]];
-    NSString* name = [[[cssFilePath captureComponentsMatchedByRegex:@"calculator\\-theme-(.*)\\.css"] lastObject] dynamicCastToClass:[NSString class]];
+    NSString* name = ![[NSFileManager defaultManager] isReadableFileAtPath:cssFilePath] ? cssFilePath :
+      [[[cssFilePath captureComponentsMatchedByRegex:@"calculator\\-theme-(.*)\\.css"] lastObject] dynamicCastToClass:[NSString class]];
     if (![NSString isNilOrEmpty:name])
       [self->themesPopUpButton.menu addItemWithTitle:name tag:(NSInteger)idx action:@selector(toolbarAction:) target:self];
   }];
   
   [self->outputWebView setExternalObject:self forJSKey:@"calculatorDocument"];
   self->outputWebView.webDelegate = self;
-  self.currentTheme = defaultTheme;
+  self.currentTheme = [NSApp isDarkMode] ? self->defaultDarkTheme : self->defaultLightTheme;
 
+  self->inputTextField.delegate = self;
   self->inputTextField.enabled = NO;
 
   if (!self->digitsInspectorControl)
@@ -821,6 +845,7 @@
   self->digitsInspectorControl.view.frame = self->inspectorBottomView.frame;
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewFrameDidChange:) name:NSViewFrameDidChangeNotification object:self->inspectorBottomView];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDefaultsDidChange:) name:NSUserDefaultsDidChangeNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appearanceDidChange:) name:NSAppearanceDidChangeNotification object:nil];
   self->digitsInspectorControl.delegate = self;
 
   self->computeOptionSoftFloatDisplayBitsLabel.stringValue = NSLocalizedString(@"Digits displayed", @"");
@@ -862,6 +887,7 @@
   self->userVariableItemsTableView.target = self;
   self->userVariableItemsTableView.doubleAction = @selector(doubleAction:);
   self->userVariableItemsTableView.undoManager = self.undoManager;
+  [self->userVariableItemsTableView registerForDraggedTypes:@[CHPasteboardTypeConstantDescriptions]];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tableViewSelectionDidChange:) name:NSTableViewSelectionDidChangeNotification object:self->userVariableItemsTableView];
 
   self->functionsLabel.stringValue = NSLocalizedString(@"Functions", @"");
@@ -1090,11 +1116,16 @@
 
 -(void) webviewDidLoad:(CHWebView* _Nonnull)webview
 {
+  DebugLog(1, @"webviewDidLoad");
+
   NSError* error = nil;
 
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, webview.useWKView ? 0 : 1000000000Ull/10), dispatch_get_main_queue(), ^() {
-    [webview evaluateJavaScriptFunction:@"configureMathJax" withJSONArguments:@[@"mathjax/current/tex-svg-full.js"] wait:NO];
-  });
+      NSString* path = @"mathjax/current/tex-svg-full.js";
+      DebugLog(1, @"call configureMathJax(%@)", path);
+      [webview evaluateJavaScriptFunction:@"configureMathJax" withJSONArguments:@[path] wait:NO];
+    }
+  );
 
   NSData* settingsData = [CHDocumentDataEntity getDataInManagedObjectContext:self.managedObjectContext];
   NSDictionary* settingsPlist = !settingsData ? nil :[NSPropertyListSerialization propertyListWithData:settingsData options:NSPropertyListImmutable format:0 error:&error];
@@ -1327,7 +1358,10 @@
     NSInteger tag = !self->currentTheme ? 0 : [self->availableThemes indexOfObject:self->currentTheme];
     if (tag != NSNotFound)
       [self->themesPopUpButton selectItemWithTag:tag];
-    [self webViewSetCSS:self->currentTheme];
+    BOOL isAutoTheme = [self->currentTheme isEqualToString:@"auto"];
+    [self webViewSetCSS:!isAutoTheme ? self->currentTheme :
+      [NSApp isDarkMode] ? self->defaultDarkTheme :
+      self->defaultLightTheme];
   }//end if (![value isEqualToString:self->currentTheme])
 }
 //end setCurrentTheme:
@@ -1409,13 +1443,13 @@
   NSArray* dirtyIdentifiers = [self->dependencyManager identifierDependentObjectsToUpdateFrom:items];
   [items enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
     CHUserVariableItem* userVariableItem = [obj dynamicCastToClass:[CHUserVariableItem class]];
-    if (userVariableItem && !userVariableItem.isProtected)
+    if (userVariableItem && !userVariableItem.isDeleteProtected)
     {
       [self->dependencyManager removeItem:userVariableItem];
       [self->userVariableItemsController removeObject:userVariableItem];
       [self->chalkContext.identifierManager removeIdentifier:userVariableItem.identifier];
       [userVariableItem removeFromManagedObjectContext];
-    }//end if (userVariableItem && !userVariableItem.isProtected)
+    }//end if (userVariableItem && !userVariableItem.isDeleteProtected)
   }];//end for each selected object
   [dirtyIdentifiers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
     id<CHChalkIdentifierDependent> identifierDependent = [obj dynamicCastToProtocol:@protocol(CHChalkIdentifierDependent)];
@@ -1475,19 +1509,6 @@
   [self commitChangesIntoManagedObjectContext:nil];
 }
 //end removeUserFunctionItems:
-
--(void) controlTextDidChange:(NSNotification*)notification
-{
-  if (notification.object == self->inputTextField)
-  {
-    if (!self->inhibateInputTextChange)
-    {
-      [self->ans0 release];
-      self->ans0 = [self->inputTextField.stringValue copy];
-    }//end if (!self->inhibateInputTextChange)
-  }//end if (notification.object == self->inputTextField)
-}
-//end controlTextDidChange:
 
 -(CHComputationConfiguration*) currentComputationConfiguration
 {
@@ -1606,6 +1627,7 @@
     self.isComputing = YES;
     //[self.undoManager beginUndoGrouping];
     dispatch_async_gmp(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    //dispatch_with_main_option(DISPATCH_NO, ^{
       DebugLog(1, @"dispatch_async_gmp(compute...)");
       NSString* input = computationEntry.inputRawString;
       CHChalkContext* localContext = [[self->chalkContext copy] autorelease];
@@ -1715,13 +1737,13 @@
             }//end if (rightExpression && identifierFunction)
             [self.undoManager beginUndoGrouping];
             if (userFunctionItem)
-            {
-              userFunctionItem.argumentNames = identifierFunction.argumentNames;
-              userFunctionItem.definition = identifierFunction.definition;
-            }//end if (userFunctionItem)
+              [userFunctionItem update:identifierFunction];
             else//if (!userFunctionItem)
             {
-              userFunctionItem = [[[CHUserFunctionItem alloc] initWithIdentifier:identifierFunction context:localContext managedObjectContext:self.managedObjectContext] autorelease];
+              CHChalkIdentifierManager* identifierManager = localContext.identifierManager;
+              BOOL isReservedIdentifier = [identifierManager isDefaultIdentifier:identifierFunction];
+              if (!isReservedIdentifier)
+                userFunctionItem = [[[CHUserFunctionItem alloc] initWithIdentifier:identifierFunction context:localContext managedObjectContext:self.managedObjectContext] autorelease];
               if (userFunctionItem)
                 [self addUserFunctionItems:@[userFunctionItem]];
             }//end if (!userFunctionItem)
@@ -1921,7 +1943,7 @@
   NSString* string = textEditor.string;
   CHPreferencesController* preferencesController = [CHPreferencesController sharedPreferencesController];
   chalk_nextinput_mode_t nextInputMode = preferencesController.nextInputMode;
-  if (nextInputMode == CHALK_NEXTINPUT_MODE_BLANK)
+  if ((nextInputMode == CHALK_NEXTINPUT_MODE_BLANK) || (nextInputMode == CHALK_NEXTINPUT_MODE_FUNCTION_OUTPUT_SMART))
   {
     string = !string ? nil : @"";
     if (string)
@@ -1929,7 +1951,7 @@
       textEditor.string = string;
       textEditor.selectedRange = NSMakeRange(0, textEditor.string.length);
     }//end if (string)
-  }//end if (nextInputMode == CHALK_NEXTINPUT_MODE_BLANK)
+  }//end if ((nextInputMode == CHALK_NEXTINPUT_MODE_BLANK) || (nextInputMode == CHALK_NEXTINPUT_MODE_FUNCTION_OUTPUT_SMART))
   else if (nextInputMode == CHALK_NEXTINPUT_MODE_PREVIOUS_INPUT)
   {
     string = !string ? nil : computationEntry.inputRawString;
@@ -2265,6 +2287,7 @@
 
 -(IBAction) removeAllEntries:(id _Nullable)sender
 {
+  NSRect oldWindowFrame = [[self windowForSheet] frame];
   NSAlert* alert = [NSAlert alertWithMessageText:NSLocalizedString(@"Do you really want to remove all entries ?", @"")
       defaultButton:NSLocalizedString(@"Remove", @"")
     alternateButton:NSLocalizedString(@"Do not remove", @"")
@@ -2290,6 +2313,7 @@
       [self->outputWebView evaluateJavaScriptFunction:@"removeAllEntries" withJSONArguments:nil wait:YES];
       [self.undoManager removeAllActions];
     }//end if (returnCode == NSModalResponseOK)
+    [[self windowForSheet] setFrame:oldWindowFrame display:YES animate:YES];
   }];//end beginSheetModalForWindow:completionHandler:
 }
 //end removeAllEntries:
@@ -2544,6 +2568,21 @@
 }
 //end logComputationEntries
 
+-(NSUInteger) computationEntriesCount
+{
+  NSUInteger result = 0;
+  NSFetchRequest* fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[CHComputationEntryEntity entityName]];
+  fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"uniqueIdentifier" ascending:NO]];
+  fetchRequest.includesPendingChanges = YES;
+  NSError* error = nil;
+  @synchronized(self.managedObjectContext)
+  {
+    result = [self.managedObjectContext countForFetchRequest:fetchRequest error:&error];
+  }//end @synchronized(self.managedObjectContext)
+  return result;
+}
+//end logComputationEntries
+
 #pragma mark CHChalkContextHistoryDelegate
 
 -(NSUInteger) chalkContext:(CHChalkContext*)chalkContext ageForComputationEntry:(CHComputationEntryEntity*)computationEntry
@@ -2597,6 +2636,7 @@
           DebugLog(1, @"there are %@ results", @(fetchResult.count));
           result = (ageAsOffset >= fetchResult.count) ? fetchResult.lastObject :
             [[fetchResult objectAtIndex:ageAsOffset] dynamicCastToClass:[CHComputationEntryEntity class]];
+          [result retain];
           DebugLog(1, @"result = %p", result);
         }//end if (self.managedObjectContext.hasChanges)
         else//if (!self.managedObjectContext.hasChanges)
@@ -2608,11 +2648,13 @@
           fetchResult = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
           DebugLog(1, @"there are %@ results", @(fetchResult.count));
           result = [fetchResult.lastObject dynamicCastToClass:[CHComputationEntryEntity class]];
+          [result retain];
           DebugLog(1, @"result = %p", result);
         }//end if (!self.managedObjectContext.hasChanges)
       }//end @synchronized(self.managedObjectContext)
     });
   }//end if (age)
+  [result autorelease];
   DebugLog(1, @"<chalkContext:computationEntryForAge:%@", @(age));
   return result;
 }
@@ -2655,27 +2697,108 @@
 }
 //end userDefaultsDidChange:
 
+-(void) appearanceDidChange:(NSNotification*)notification
+{
+  BOOL isAutoTheme = [self->currentTheme isEqualToString:@"auto"];
+  if (isAutoTheme)
+  {
+    NSString* theme = !isAutoTheme ? self->currentTheme :
+      [NSApp isDarkMode] ? self->defaultDarkTheme :
+      self->defaultLightTheme;
+    [self webViewSetCSS:theme];
+  }//end if (isAutoTheme)
+}
+//end appearanceDidChange:
+
 -(void) updateGuiForPreferences
 {
   CHPreferencesController* preferencesController = [CHPreferencesController sharedPreferencesController];
   chalk_parse_mode_t parseMode = preferencesController.parseMode;
+  chalk_nextinput_mode_t nextInputMode = preferencesController.nextInputMode;
   NSString* hint = nil;
   switch(parseMode)
   {
     case CHALK_PARSE_MODE_UNDEFINED:
       break;
     case CHALK_PARSE_MODE_INFIX:
-      hint = NSLocalizedString(@"Expression", @"");
+      if (nextInputMode == CHALK_NEXTINPUT_MODE_FUNCTION_OUTPUT_SMART)
+        hint = @"output(1)";
+      else
+        hint = NSLocalizedString(@"Expression", @"");
       break;
     case CHALK_PARSE_MODE_RPN:
       hint = NSLocalizedString(@"Expression (RPN mode)", @"");
       break;
   }//end switch(parseMode)
+  NSMutableParagraphStyle *paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+  paragraphStyle.alignment = self->inputTextField.alignment;
   NSAttributedString* attributedString = !hint ? nil :
-    [[[NSAttributedString alloc] initWithString:hint attributes:@{NSFontAttributeName:[NSFont controlContentFontOfSize:[NSFont systemFontSize]],NSForegroundColorAttributeName:[NSColor disabledControlTextColor]}] autorelease];
-  [[self->inputTextField cell] setPlaceholderAttributedString:attributedString];
+    [[[NSAttributedString alloc] initWithString:hint attributes:@{NSFontAttributeName:[NSFont controlContentFontOfSize:[NSFont systemFontSize]],NSForegroundColorAttributeName:[NSColor disabledControlTextColor], NSParagraphStyleAttributeName:paragraphStyle}] autorelease];
+  if (isMacOS10_10OrAbove())
+    self->inputTextField.placeholderAttributedString = attributedString;
+  else
+    [[self->inputTextField cell] setPlaceholderAttributedString:attributedString];
 }
 //end updateGuiForPreferences
+
+#pragma mark NSTextFieldDelegate
+-(void) controlTextDidChange:(NSNotification*)notification
+{
+  if (notification.object == self->inputTextField)
+  {
+    if (!self->inhibateInputTextChange)
+    {
+      NSString* newUserInput = self->inputTextField.stringValue;
+      CHPreferencesController* preferencesController = [CHPreferencesController sharedPreferencesController];
+      chalk_nextinput_mode_t nextInputMode = preferencesController.nextInputMode;
+      chalk_parse_mode_t parseMode = preferencesController.parseMode;
+
+      if ((nextInputMode == CHALK_NEXTINPUT_MODE_FUNCTION_OUTPUT_SMART) && (parseMode == CHALK_PARSE_MODE_INFIX))
+      {
+        BOOL isSingleOperator = ([newUserInput isEqualToString:@"+"] || [newUserInput isEqualToString:@"-"] || [newUserInput isEqualToString:@"*"] || [newUserInput isEqualToString:@"/"] || [newUserInput isEqualToString:@"^"] || [newUserInput isEqualToString:@"%"] || [newUserInput isEqualToString:NSSTRING_PLUSMINUS]);
+        if (isSingleOperator)
+        {
+          if ([self computationEntriesCount]>0)
+          {
+            newUserInput = [NSString stringWithFormat:@"output(1)%@", newUserInput];
+            self->inhibateInputTextChange = YES;
+            self->inputTextField.stringValue = newUserInput;
+            self->inputTextField.currentEditor.selectedRange = NSMakeRange(newUserInput.length, 0);
+            self->inhibateInputTextChange = NO;
+          }//end if ([self computationEntriesCount]>0)
+        }//end if (isSingleOperator)
+      }//end if ((nextInputMode == CHALK_NEXTINPUT_MODE_FUNCTION_OUTPUT_SMART) && (parseMode == CHALK_PARSE_MODE_INFIX))
+
+      [self->ans0 release];
+      self->ans0 = [newUserInput copy];
+      NSTextView* textView = [[notification.userInfo objectForKey:@"NSFieldEditor"] dynamicCastToClass:[NSTextView class]];
+      self->inhibateInputTextChange = YES;
+      if (self->inputTextFieldIsDeleting)
+        self->inputTextFieldIsDeleting = NO;
+      else
+        [textView complete:nil];
+      self->inhibateInputTextChange = NO;
+    }//end if (!self->inhibateInputTextChange)
+  }//end if (notification.object == self->inputTextField)
+}
+//end controlTextDidChange:
+
+-(NSArray<NSString*>*) control:(NSControl*)control
+                      textView:(NSTextView*)textView
+                   completions:(NSArray<NSString*>*)words
+              forPartialWordRange:(NSRange)charRange
+              indexOfSelectedItem:(NSInteger *)index
+{
+  NSArray<NSString*>* result = nil;
+  if (charRange.length>=2)
+  {
+    NSString* userText = [textView.string substringWithRange:charRange];
+    result = [self->chalkIdentifierManager constantsIdentifiersNamesMatchingPrefix:userText];
+    *index = -1;
+  }//end if (charRange.length>=2)
+  return result;
+}
+//end textView:completions:forPartialWordRange:indexOfSelectedItem:
 
 #pragma mark NSControlTextEditingDelegate
 -(BOOL) control:(NSControl*)control textView:(NSTextView*)textView doCommandBySelector:(SEL)command
@@ -2740,7 +2863,10 @@
         result = [[ok dynamicCastToClass:[NSNumber class]] boolValue];
       }//end if (ageNumber)
     }//end if (([NSEvent modifierFlags] & NSCommandKeyMask) != 0)
-  }//end if (command == @selector(deleteBackward:))
+  }//end if (command == @selector(deleteToBeginningOfLine:))
+  
+  BOOL isUserDelete = (command == @selector(deleteToBeginningOfLine:)) || (command == @selector(deleteBackward:)) || (command == @selector(deleteForward:)) || (command == @selector(deleteWordBackward:)) || (command == @selector(deleteWordForward:));
+  self->inputTextFieldIsDeleting = isUserDelete;
   return result;
 }
 //end control:textView:doCommandBySelector:
@@ -2756,7 +2882,7 @@
     __block BOOL hasNonProtectedItem = NO;
     [selectedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
       CHUserVariableItem* userVariableItem = [obj dynamicCastToClass:[CHUserVariableItem class]];
-      hasNonProtectedItem |= userVariableItem && !userVariableItem.isProtected;
+      hasNonProtectedItem |= userVariableItem && !userVariableItem.isDeleteProtected;
       *stop |= hasNonProtectedItem;
     }];
     self->userVariableItemsRemoveButton.enabled = hasNonProtectedItem && !self.isComputing;
@@ -2780,10 +2906,10 @@
   if (tableView == self->userVariableItemsTableView)
   {
     CHUserVariableItem* userVariableItem = [[self->userVariableItemsController.arrangedObjects objectAtIndex:row] dynamicCastToClass:[CHUserVariableItem class]];
-    BOOL hasError = !userVariableItem.isProtected && (userVariableItem.parseError != nil);
+    BOOL hasError = !userVariableItem.isWriteProtected && (userVariableItem.parseError != nil);
     BOOL circularDependency = userVariableItem.hasCircularDependency;
     NSTextFieldCell* textFieldCell = [cell dynamicCastToClass:[NSTextFieldCell class]];
-    textFieldCell.textColor = userVariableItem.isProtected ? [NSColor disabledControlTextColor] : [NSColor textColor];
+    textFieldCell.textColor = userVariableItem.isWriteProtected ? [NSColor disabledControlTextColor] : [NSColor textColor];
     textFieldCell.backgroundColor = hasError || circularDependency ? [NSColor colorWithCalibratedRed:253/255. green:177/255. blue:179/255. alpha:1.] : [NSColor clearColor];
     textFieldCell.drawsBackground = hasError || circularDependency;
   }//end if (tableView == self->userVariableItemsTableView)
@@ -2855,6 +2981,113 @@
 }
 //end feedPasteboard:
 
+-(BOOL) addConstantUserVariableItems:(NSArray* _Nullable)items
+{
+  BOOL result = NO;
+  [self.undoManager beginUndoGrouping];
+  CHChalkContext* pasteChalkContext = !items.count ? nil : [[self->chalkContext copy] autorelease];
+  for(id object in items)
+  {
+    NSDictionary* constantDescriptionPlist = [object dynamicCastToClass:[NSDictionary class]];
+    CHConstantDescription* constantDescription = [[[CHConstantDescription alloc] initWithPlistValueDescription:constantDescriptionPlist] autorelease];
+    if (constantDescription)
+    {
+      NSString* identifierName = constantDescription.shortName;
+      NSString* texSymbol = constantDescription.texSymbol;
+      BOOL isValid = ![NSString isNilOrEmpty:identifierName];
+      identifierName = !isValid ? nil : [self->chalkIdentifierManager unusedIdentifierNameWithName:identifierName];
+      isValid &= ![NSString isNilOrEmpty:identifierName];
+      if (isValid)
+      {
+        CHChalkIdentifier* chalkIdentifier = [[[CHChalkIdentifierConstant alloc] initWithName:identifierName caseSensitive:NO tokens:@[identifierName] symbol:identifierName symbolAsText:identifierName symbolAsTeX:texSymbol] autorelease];
+        BOOL added = [self->chalkIdentifierManager addIdentifier:chalkIdentifier replace:NO preventTokenConflict:YES];
+        if (added)
+        {
+          NSString* valueString = constantDescription.value;
+          NSString* uncertaintyString = constantDescription.uncertainty;
+          [pasteChalkContext reset];
+          CHChalkValueParser* chalkValueParser = [[[CHChalkValueParser alloc] initWithToken:[CHChalkToken chalkTokenWithValue:valueString range:valueString.range] context:pasteChalkContext] autorelease];
+          NSUInteger significandDigitsCount = chalkValueParser.significandDigitsCount;
+          mpfr_prec_t significandBitsCount = chalkGmpGetRequiredBitsCountForDigitsCount(significandDigitsCount, chalkValueParser.significandBase);
+          mpfr_t mpfr_value;
+          mpfr_t mpfr_uncertainty;
+          mpfr_init2(mpfr_value, MPFR_PREC_MIN);
+          mpfr_init2(mpfr_uncertainty, MPFR_PREC_MIN);
+          const char* valueUTF8 = [valueString UTF8String];
+          if (!valueUTF8)
+            mpfr_set_nan(mpfr_value);
+          else
+            mpfr_set_str(mpfr_value, valueUTF8, 10, MPFR_RNDN);
+          const char* uncertaintyUTF8 = [uncertaintyString UTF8String];
+          if (!uncertaintyUTF8)
+            mpfr_set_nan(mpfr_uncertainty);
+          else
+            mpfr_set_str(mpfr_uncertainty, uncertaintyUTF8, 10, MPFR_RNDN);
+          
+          if (mpfr_regular_p(mpfr_value))
+          {
+            mpfr_exp_t exp2Value = !mpfr_regular_p(mpfr_value) ? 0 : mpfr_get_exp(mpfr_value);
+            mpfr_exp_t exp2Uncertainty = !mpfr_regular_p(mpfr_uncertainty) ? exp2Value : mpfr_get_exp(mpfr_uncertainty);
+            mpfr_exp_t exp2diff = MAX(exp2Value, exp2Uncertainty)-MIN(exp2Value, exp2Uncertainty);
+            mpfr_prec_t prec = MAX(exp2diff+1, significandBitsCount+1);
+            prec = MAX(prec, pasteChalkContext.computationConfiguration.softFloatSignificandBits);
+            prec = MAX(MPFR_PREC_MIN, MIN(prec, MPFR_PREC_MAX));
+            
+            chalk_gmp_value_t valueReference = {0};
+            chalkGmpValueMakeRealApprox(&valueReference, prec, pasteChalkContext.gmpPool);
+            if (!mpfr_regular_p(mpfr_uncertainty))
+              mpfir_set_str(valueReference.realApprox, valueUTF8, 10);
+            else if (mpfr_regular_p(mpfr_uncertainty))
+            {
+              mpfr_set_prec(mpfr_value, prec);
+              mpfr_set_prec(mpfr_uncertainty, prec);
+              mpfr_set_str(mpfr_value, valueUTF8, 10, MPFR_RNDN);
+              mpfr_set_str(mpfr_uncertainty, uncertaintyUTF8, 10, MPFR_RNDN);
+              mpfr_abs(mpfr_uncertainty, mpfr_uncertainty, MPFR_RNDN);
+              mpfr_sub(&valueReference.realApprox->interval.left, mpfr_value, mpfr_uncertainty, MPFR_RNDD);
+              mpfr_sub(&valueReference.realApprox->interval.right, mpfr_value, mpfr_uncertainty, MPFR_RNDU);
+              mpfir_estimation_update(valueReference.realApprox);
+            }//end if (mpfr_regular_p(mpfr_uncertainty))
+            NSString* input = constantDescription.stringValueDescription;
+            CHChalkToken* token = [CHChalkToken chalkTokenWithValue:input range:input.range];
+            CHChalkValueNumberGmp* chalkValue = [[[CHChalkValueNumberGmp alloc] initWithToken:token value:&valueReference naturalBase:10 context:pasteChalkContext] autorelease];
+            if (chalkValue)
+            {
+              [self->chalkIdentifierManager setValue:chalkValue forIdentifier:chalkIdentifier];
+              CHUserVariableItem* userVariableItem = !chalkIdentifier ? nil :
+                [[[CHUserVariableItem alloc] initWithIdentifier:chalkIdentifier isDynamic:NO input:input evaluatedValue:chalkValue context:pasteChalkContext managedObjectContext:self.managedObjectContext] autorelease];
+              NSArray* newItems = !userVariableItem ? nil : @[userVariableItem];
+              [self addUserVariableItems:newItems];
+            }//end if (chalkValue)
+            chalkGmpValueClear(&valueReference, YES, pasteChalkContext.gmpPool);
+          }//end if (mpfr_value)
+          mpfr_clear(mpfr_value);
+          mpfr_clear(mpfr_uncertainty);
+          result = YES;
+        }//end if (added)
+      }//end if (isValid)
+    }//end if (constantDescription)
+  }//end for each object
+  [self.undoManager endUndoGrouping];
+  return result;
+}
+//end addConstantUserVariableItems;
+
+-(BOOL) tableView:(NSTableView*)tableView performDragOperationFromPboard:(NSPasteboard*)pasteboard
+{
+  BOOL result = NO;
+  NSArray<NSPasteboardItem*>* pasteboardItems = [pasteboard pasteboardItems];
+  NSMutableArray* multipleItems = [NSMutableArray arrayWithCapacity:pasteboardItems.count];
+  for(id pasteboardItem in pasteboardItems)
+  {
+    id plist = [pasteboardItem propertyListForType:CHPasteboardTypeConstantDescriptions];
+    [multipleItems safeAddObject:plist];
+  }//end for each pasteboardItem
+  result = [self addConstantUserVariableItems:multipleItems];
+  return result;
+}
+//end tableView:performDragOperationFromPboard:
+
 -(void) printOperationDidRun:(NSPrintOperation*)printOperation success:(BOOL)success contextInfo:(void*)contextInfo
 {
 }
@@ -2875,5 +3108,17 @@
                                contextInfo:nil];
 }
 //end printDocument:
+
+-(IBAction) fontBigger:(id)sender
+{
+  [self->outputWebView setFontSize:[self->outputWebView fontSize]+1];
+}
+//end fontBigger:
+
+-(IBAction) fontSmaller:(id)sender
+{
+  [self->outputWebView setFontSize:MAX(1, [self->outputWebView fontSize]-1)];
+}
+//end fontSmaller:
 
 @end

@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 13/12/2015.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHWebView.h"
@@ -160,6 +160,25 @@
     self->webView.mainFrameURL = [value path];
 }
 //end setURL:
+
+-(CGFloat) fontSize
+{
+  CGFloat result =
+    (self->wkWebView != nil) ? [[[self evaluateJavaScript:[[[NSString alloc] initWithFormat:@"$('body').style.fontSize"] autorelease]] dynamicCastToClass:[NSNumber class]] doubleValue] :
+    (self->webView != nil) ? self->webView.preferences.defaultFontSize :
+    0;
+  return result;
+}
+//end fontSize
+
+-(void) setFontSize:(CGFloat)value
+{
+  if (self->wkWebView != nil)
+    [self evaluateJavaScript:[[[NSString alloc] initWithFormat:@"$('body').style.fontSize=%@", @(value)] autorelease]];
+  else if (self->webView != nil)
+    self->webView.preferences.defaultFontSize = MAX(value, self->webView.preferences.minimumFontSize);
+}
+//end setFontSize
 
 -(void) setScrollerElasticity:(NSScrollElasticity)scrollElasticity
 {

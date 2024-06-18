@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 23/02/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHChalkValueParser.h"
@@ -19,6 +19,7 @@
 #import "CHPreferencesController.h"
 #import "CHUtils.h"
 #import "NSArrayExtended.h"
+#import "NSIndexSetExtended.h"
 #import "NSObjectExtended.h"
 #import "NSStringExtended.h"
 
@@ -50,6 +51,8 @@ static NSString* adaptString(NSString* string, NSRange range, NSRange* outTrimme
 @implementation CHChalkValueParser
 
 @synthesize token;
+@dynamic significandDigitsCount;
+@synthesize significandBase;
 
 -(id) initWithToken:(CHChalkToken*)aToken context:(CHChalkContext*)context
 {
@@ -75,6 +78,13 @@ static NSString* adaptString(NSString* string, NSRange range, NSRange* outTrimme
   [super dealloc];
 }
 //end dealloc
+
+-(NSUInteger) significandDigitsCount
+{
+  NSUInteger result = self->significandIntegerDigitsRange.length+self->significandFractDigitsRange.length;
+  return result;
+}
+//end significandDigitsCount;
 
 -(void) setToken:(CHChalkToken*)value
 {
@@ -118,6 +128,7 @@ static NSString* adaptString(NSString* string, NSRange range, NSRange* outTrimme
   //the string is supposed to be a VALID parsed integer or float number, so that regex should not result in unexpected results
   CHChalkErrorContext* errorContext = context.errorContext;
   NSString* tokenString = self->token.value;
+  NSRange   tokenRange = self->token.range;
 
   NSString* integerRegexpPattern = nil;
   NSString* decimalRegexpPattern = nil;
@@ -263,13 +274,13 @@ static NSString* adaptString(NSString* string, NSRange range, NSRange* outTrimme
         int baseFromSuffix = !hasBaseSuffix ? 0 : [context baseFromSuffix:baseSuffix];
         if (hasBasePrefix && hasBaseSuffix && (baseFromPrefix != baseFromSuffix))
           [errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDecorationConflict
-                                                              range:self->token.range] replace:NO];
+                                                              range:tokenRange] replace:NO];
         else if (hasBasePrefix && !baseFromPrefix)
           [errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDecorationInvalid
-                           range:self->significandBasePrefixRange] replace:NO];
+                           range:NSRangeShift(self->significandBasePrefixRange, tokenRange.location)] replace:NO];
         else if (hasBaseSuffix && !baseFromSuffix)
           [errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDecorationInvalid
-                           range:self->significandBaseSuffixRange] replace:NO];
+                           range:NSRangeShift(self->significandBaseSuffixRange, tokenRange.location)] replace:NO];
         else//if no conflict for base
         {
           self->significandBase =
@@ -286,8 +297,8 @@ static NSString* adaptString(NSString* string, NSRange range, NSRange* outTrimme
             if (!maybeScientificNotation)
             {
               integerNumberError = (significandIntegerDigitsFailures != nil) ?
-                [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid ranges:significandIntegerDigitsFailures] :
-                [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid range:self->significandIntegerDigitsRange];
+                [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid ranges:[significandIntegerDigitsFailures positiveShift:tokenRange.location]] :
+                [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid range:NSRangeShift(self->significandIntegerDigitsRange, tokenRange.location)];
               integerNumberError.reasonExtraInformation = @(self->significandBase);
             }//end if (!maybeScientificNotation)
           }//end if (!digitsMatchBase)
@@ -370,13 +381,13 @@ static NSString* adaptString(NSString* string, NSRange range, NSRange* outTrimme
         int baseFromSuffix = !hasBaseSuffix ? 0 : [context baseFromSuffix:baseSuffix];
         if (hasBasePrefix && hasBaseSuffix && (baseFromPrefix != baseFromSuffix))
           [errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDecorationConflict
-                                                              range:self->token.range] replace:NO];
+                                                              range:tokenRange] replace:NO];
         else if (hasBasePrefix && !baseFromPrefix)
           [errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDecorationInvalid
-                           range:self->significandBasePrefixRange] replace:NO];
+                           range:NSRangeShift(self->significandBasePrefixRange, tokenRange.location)] replace:NO];
         else if (hasBaseSuffix && !baseFromSuffix)
           [errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDecorationInvalid
-                           range:self->significandBaseSuffixRange] replace:NO];
+                           range:NSRangeShift(self->significandBaseSuffixRange, tokenRange.location)] replace:NO];
         else//if no conflict for base
         {
           self->significandBase =
@@ -396,14 +407,14 @@ static NSString* adaptString(NSString* string, NSRange range, NSRange* outTrimme
             {
               decimalNumberError =
                 !significandIntegerDigitsMatchBase && (significandIntegerDigitsFailures != nil) ?
-                  [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid ranges:significandIntegerDigitsFailures] :
+                  [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid ranges:[significandIntegerDigitsFailures positiveShift:tokenRange.length]] :
                 !significandIntegerDigitsMatchBase ?
-                  [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid range:self->significandIntegerDigitsRange] :
+                  [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid range:NSRangeShift(self->significandIntegerDigitsRange, tokenRange.location)] :
                 !siginificandFractDigitsMatchBase && (significandFractDigitsFailures != nil) ?
-                  [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid ranges:significandFractDigitsFailures] :
+                  [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid ranges:[significandFractDigitsFailures positiveShift:tokenRange.location]] :
                 !siginificandFractDigitsMatchBase ?
-                  [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid range:self->significandFractDigitsRange] :
-                [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid range:tokenString.range];
+                  [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid range:NSRangeShift(self->significandFractDigitsRange, tokenRange.location)] :
+                [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid range:tokenRange];
               decimalNumberError.reasonExtraInformation = @(self->significandBase);
             }//end if (!maybeScientificNotation)
           }//end if (!integerDigitsMatchBase || !siginificandFractDigitsMatchBase)
@@ -414,8 +425,7 @@ static NSString* adaptString(NSString* string, NSRange range, NSRange* outTrimme
     if (!done && !errorContext.hasError)
     {
       [self resetAnalysis];
-      NSArray* matches =
-        [realRegexp matchesInString:tokenString options:0 range:NSMakeRange(0, [tokenString length])];
+      NSArray* matches = [realRegexp matchesInString:tokenString options:0 range:tokenString.range];
       NSTextCheckingResult* lastMatch = [matches lastObject];
       BOOL isMatching = (matches.count == 1) && (lastMatch.numberOfRanges == (1+14));
       if (isMatching)
@@ -558,22 +568,22 @@ static NSString* adaptString(NSString* string, NSRange range, NSRange* outTrimme
         int exponentBaseFromSuffix = !hasExponentBaseSuffix ? 0 : [context baseFromSuffix:exponentBaseSuffix];
         if (hasSignificandBasePrefix && hasSignificandBaseSuffix && (significandBaseFromPrefix != significandBaseFromSuffix))
           [errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDecorationConflict
-                                                              range:self->token.range] replace:NO];
+                                                              range:tokenRange] replace:NO];
         else if (hasSignificandBasePrefix && !significandBasePrefix)
           [errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDecorationInvalid
-                           range:self->significandBasePrefixRange] replace:NO];
+                           range:NSRangeShift(self->significandBasePrefixRange, tokenRange.location)] replace:NO];
         else if (hasSignificandBaseSuffix && !significandBaseFromSuffix)
           [errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDecorationInvalid
-                           range:self->significandBaseSuffixRange] replace:NO];
+                           range:NSRangeShift(self->significandBaseSuffixRange, tokenRange.location)] replace:NO];
         else if (hasExponentBasePrefix && hasExponentBaseSuffix && (exponentBaseFromPrefix != exponentBaseFromSuffix))
           [errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDecorationConflict
-                                                              range:self->token.range] replace:NO];
+                                                              range:tokenRange] replace:NO];
         else if (hasExponentBasePrefix && !exponentBaseFromPrefix)
           [errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDecorationInvalid
-                           range:self->exponentDigitsBasePrefixRange] replace:NO];
+                           range:NSRangeShift(self->exponentDigitsBasePrefixRange, tokenRange.location)] replace:NO];
         else if (hasExponentBaseSuffix && !exponentBaseFromSuffix)
           [errorContext setError:[CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDecorationInvalid
-                           range:self->exponentDigitsBaseSuffixRange] replace:NO];
+                           range:NSRangeShift(self->exponentDigitsBaseSuffixRange, tokenRange.location)] replace:NO];
         else//if no conflict for bases
         {
           self->significandBase =
@@ -595,18 +605,18 @@ static NSString* adaptString(NSString* string, NSRange range, NSRange* outTrimme
           {
             realNumberError =
               !significandIntegerDigitsMatchBase && (significandIntegerDigitsFailures != nil) ?
-                [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid ranges:significandIntegerDigitsFailures] :
+                [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid ranges:[significandIntegerDigitsFailures positiveShift:tokenRange.location]] :
               !significandIntegerDigitsMatchBase ?
-                [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid range:self->significandIntegerDigitsRange] :
+                [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid range:NSRangeShift(self->significandIntegerDigitsRange, tokenRange.location)] :
               !significandFractDigitsMatchBase && (significandFractDigitsFailures != nil) ?
-                [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid ranges:significandFractDigitsFailures] :
+                [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid ranges:[significandFractDigitsFailures positiveShift:tokenRange.location]] :
               !significandFractDigitsMatchBase ?
-                [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid range:self->significandFractDigitsRange] :
+                [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid range:NSRangeShift(self->significandFractDigitsRange, tokenRange.location)] :
               !exponentDigitsMatchBase && (exponentsDigitsFailures != nil) ?
-                [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid ranges:exponentsDigitsFailures] :
+                [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid ranges:[exponentsDigitsFailures positiveShift:tokenRange.location]] :
               !exponentDigitsMatchBase ?
-                [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid range:self->exponentDigitsRange] :
-              [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid range:tokenString.range];
+                [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid range:NSRangeShift(self->exponentDigitsRange, tokenRange.location)] :
+              [CHChalkError chalkErrorWithDomain:CHChalkErrorDomainChalk reason:CHChalkErrorBaseDigitsInvalid range:tokenRange];
             realNumberError.reasonExtraInformation =
               !significandIntegerDigitsMatchBase ? @(self->significandBase) :
               !significandFractDigitsMatchBase ? @(self->significandBase) :

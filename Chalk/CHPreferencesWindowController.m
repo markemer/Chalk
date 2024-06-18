@@ -2,7 +2,7 @@
 // Chalk
 //
 //  Created by Pierre Chatelier on 1/04/05.
-//  Copyright 2005, 2006, 2007, 2008, 2009, 2010, 2011 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 
 //The preferences controller centralizes the management of the preferences pane
 
@@ -19,6 +19,7 @@
 #import "CHPreferencesController.h"
 #import "CHStepperNumber.h"
 #import "CHTableView.h"
+#import "CHUtils.h"
 #import "NSArrayExtended.h"
 #import "NSColorExtended.h"
 #import "NSNumberExtended.h"
@@ -89,6 +90,8 @@ NSString* WebToolbarItemIdentifier     = @"WebToolbarItemIdentifier";
   [window setDelegate:self];
   [window setToolbar:toolbar];
   [window setShowsToolbarButton:NO];
+  if (isMacOS11OrAbove())
+    [window setToolbarStyle:NSWindowToolbarStyleExpanded];
   [toolbar setSelectedItemIdentifier:GeneralToolbarItemIdentifier];
   [self toolbarHit:[self->toolbarItems objectForKey:[toolbar selectedItemIdentifier]]];
   [toolbar release];
@@ -358,6 +361,8 @@ NSString* WebToolbarItemIdentifier     = @"WebToolbarItemIdentifier";
   [[self->nextInputModePopUpButton lastItem] setTag:CHALK_NEXTINPUT_MODE_PREVIOUS_INPUT];
   [self->nextInputModePopUpButton addItemWithTitle:@"output(1)"];
   [[self->nextInputModePopUpButton lastItem] setTag:CHALK_NEXTINPUT_MODE_FUNCTION_OUTPUT];
+  [self->nextInputModePopUpButton addItemWithTitle:NSLocalizedString(@"output(1) on first operator", @"")];
+  [[self->nextInputModePopUpButton lastItem] setTag:CHALK_NEXTINPUT_MODE_FUNCTION_OUTPUT_SMART];
   [self->nextInputModePopUpButton bind:NSSelectedTagBinding toObject:preferencesController withKeyPath:CHNextInputModeKey options:nil];
   [self->nextInputModePopUpButton sizeToFit];
   CGRect nextInputModeLabelFrame = NSRectToCGRect(self->nextInputModeLabel.frame);
@@ -408,11 +413,11 @@ NSString* WebToolbarItemIdentifier     = @"WebToolbarItemIdentifier";
     CHPreferencesController* preferencesController = [CHPreferencesController sharedPreferencesController];
     NSDictionary* defaults = [preferencesController defaults];
     preferencesController.bitInterpretationSignColor =
-     [NSColor colorWithData:[[defaults objectForKey:CHBitInterpretationSignColorKey] dynamicCastToClass:[NSData class]]];
+     [NSColor colorWithData:[[defaults objectForKey:[NSApp isDarkMode] ? CHBitInterpretationSignColorDarkModeKey : CHBitInterpretationSignColorKey] dynamicCastToClass:[NSData class]]];
     preferencesController.bitInterpretationExponentColor =
-     [NSColor colorWithData:[[defaults objectForKey:CHBitInterpretationExponentColorKey] dynamicCastToClass:[NSData class]]];
+     [NSColor colorWithData:[[defaults objectForKey:[NSApp isDarkMode] ? CHBitInterpretationExponentColorDarkModeKey : CHBitInterpretationExponentColorKey] dynamicCastToClass:[NSData class]]];
     preferencesController.bitInterpretationSignificandColor =
-     [NSColor colorWithData:[[defaults objectForKey:CHBitInterpretationSignificandColorKey] dynamicCastToClass:[NSData class]]];
+     [NSColor colorWithData:[[defaults objectForKey:[NSApp isDarkMode] ? CHBitInterpretationSignificandColorDarkModeKey : CHBitInterpretationSignificandColorKey] dynamicCastToClass:[NSData class]]];
   }] retain];
   self->bitInterpretationColorsDefaultsButton.action = @selector(action:);
 
@@ -780,7 +785,11 @@ NSString* WebToolbarItemIdentifier     = @"WebToolbarItemIdentifier";
         nil;
       BOOL conflict = [baseConflictsSet containsIndex:base.unsignedIntegerValue];
       NSTextFieldCell* textFieldCell = [cell dynamicCastToClass:[NSTextFieldCell class]];
-      textFieldCell.backgroundColor = conflict ? [NSColor colorWithCalibratedRed:253/255. green:177/255. blue:179/255. alpha:1.] : [NSColor clearColor];
+      textFieldCell.backgroundColor = conflict ?
+        [NSApp isDarkMode] ?
+          [NSColor colorWithCalibratedRed:.5*253/255. green:.5*177/255. blue:.5*179/255. alpha:1.] :
+          [NSColor colorWithCalibratedRed:253/255. green:177/255. blue:179/255. alpha:1.] :
+        [NSColor clearColor];
       textFieldCell.drawsBackground = conflict;
     }//end if (CHBasePrefixesKey || CHBaseSuffixesKey)
   }//end if (tableView == self->basePrefixesSuffixesTableView)

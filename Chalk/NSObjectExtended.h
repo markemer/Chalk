@@ -3,7 +3,7 @@
 //  Chalk-Remote
 //
 //  Created by Pierre Chatelier on 16/03/07.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 @interface NSObject (Extended)
@@ -16,5 +16,7 @@
 -(void)  propagateValue:(id)value forBinding:(NSString*)binding;
 
 +(id) nullAdapter:(id)object;
+
+-(BOOL) isDarkMode;
 
 @end

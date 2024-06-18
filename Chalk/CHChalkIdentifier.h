@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 14/02/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -32,7 +32,7 @@
 }
 
 @property(nonatomic,readonly) BOOL caseSensitive;
-@property(nonatomic,copy)     NSString* name;
+@property(nonatomic,copy)          NSString* name;
 @property(nonatomic,readonly,copy) NSArray*  tokens;
 @property(nonatomic,readonly,copy) NSString* symbol;
 @property(nonatomic,readonly,copy) NSString* symbolAsText;

@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 15/07/13.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -33,8 +33,11 @@ extern NSString* CHBasePrefixesSuffixesKey;
 extern NSString* CHIntegerGroupSizeKey;
 extern NSString* CHParseModeKey;
 extern NSString* CHBitInterpretationSignColorKey;
+extern NSString* CHBitInterpretationSignColorDarkModeKey;
 extern NSString* CHBitInterpretationExponentColorKey;
+extern NSString* CHBitInterpretationExponentColorDarkModeKey;
 extern NSString* CHBitInterpretationSignificandColorKey;
+extern NSString* CHBitInterpretationSignificandColorDarkModeKey;
 extern NSString* CHExportInputColorKey;
 extern NSString* CHExportOutputColorKey;
 extern NSString* CHNextInputModeKey;

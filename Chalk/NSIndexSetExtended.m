@@ -3,10 +3,12 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 19/10/2016.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "NSIndexSetExtended.h"
+
+#import "CHUtils.h"
 
 typedef struct
 {
@@ -59,5 +61,21 @@ NSRangeExtended NSMakeRangeExtended(NSRange range, BOOL flag) {return (NSRangeEx
   }];
 }
 //end enumerateRangesWithin:
+
++(instancetype) indexSet:(NSIndexSet*)indexSet positiveShift:(NSUInteger)shift
+{
+  NSMutableIndexSet* shiftedIndexSet = [NSMutableIndexSet indexSet];
+  [indexSet enumerateRangesUsingBlock:^(NSRange range, BOOL * _Nonnull stop) {
+    [shiftedIndexSet addIndexesInRange:NSRangeShift(range, shift)];
+  }];
+  return [[shiftedIndexSet copy] autorelease];
+}
+//end indexSetPositiveShifted:shift
+
+-(NSIndexSet*) positiveShift:(NSUInteger)shift
+{
+  return [[self class] indexSet:self positiveShift:shift];
+}
+//end positiveShift:
 
 @end

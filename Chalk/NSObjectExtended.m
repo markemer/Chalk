@@ -3,10 +3,12 @@
 //  Chalk-Remote
 //
 //  Created by Pierre Chatelier on 16/03/07.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "NSObjectExtended.h"
+
+#import "CHUtils.h"
 
 @implementation NSObject (Extended)
 
@@ -125,6 +127,27 @@
   return result;
 }
 //end nullAdapter:
+
+-(BOOL) isDarkMode
+{
+  BOOL result = NO;
+  if (isMacOS10_14OrAbove())
+  {
+    NSString* _NSAppearanceNameAqua = @"NSAppearanceNameAqua";
+    NSString* _NSAppearanceNameDarkAqua = @"NSAppearanceNameDarkAqua";
+    SEL effectiveAppearanceSelector = NSSelectorFromString(@"effectiveAppearance");
+    id effectiveAppearance = ![self respondsToSelector:effectiveAppearanceSelector] ? nil :
+    [self performSelector:effectiveAppearanceSelector];
+    SEL bestMatchFromAppearancesWithNamesSelector = NSSelectorFromString(@"bestMatchFromAppearancesWithNames:");
+    NSArray* modes = [NSArray arrayWithObjects:_NSAppearanceNameAqua, _NSAppearanceNameDarkAqua, nil];
+    id mode = ![effectiveAppearance respondsToSelector:bestMatchFromAppearancesWithNamesSelector] ? nil :
+    [effectiveAppearance performSelector:bestMatchFromAppearancesWithNamesSelector withObject:modes];
+    NSString* modeAsString = [mode dynamicCastToClass:[NSString class]];
+    result = [modeAsString isEqualToString:_NSAppearanceNameDarkAqua];
+  }//end if (isMacOS10_14OrAbove())
+  return result;
+}
+//end isDarkMode()
 
 @end
 

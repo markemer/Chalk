@@ -285,7 +285,7 @@ NSRegularExpressionOptions convertRKLOptions(RKLRegexOptions options)
     NSTextCheckingResult* match = [[matches objectAtIndex:i] dynamicCastToClass:[NSTextCheckingResult class]];
     NSRange matchRange = [match rangeAtIndex:capture];
     NSRange componentRange = (matchRange.location == NSNotFound) ? NSMakeRange(lastEnd, 0) : NSMakeRange(lastEnd, matchRange.location-lastEnd);
-    NSString* component = (componentRange.location != NSNotFound) || !componentRange.length ? nil : [self substringWithRange:componentRange];
+    NSString* component = (componentRange.location == NSNotFound) || !componentRange.length ? nil : [self substringWithRange:componentRange];
     if (![NSString isNilOrEmpty:component])
       [result addObject:component];
     lastEnd = NSMaxRange(matchRange);

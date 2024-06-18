@@ -46,7 +46,11 @@ function configureMathJax(path)
       },
       failed: function (err) {
         debugLog_config('# Loader failed: ' + err.message);
-      }
+      },
+      load: ['[tex]/ams']
+    },
+    tex: {
+      packages: {'[+]': ['ams']}
     },
     options: {
       renderActions: {

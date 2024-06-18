@@ -3,7 +3,7 @@
 //  Chalk
 //
 //  Created by Pierre Chatelier on 06/11/2014.
-//  Copyright (c) 2005-2020 Pierre Chatelier. All rights reserved.
+//  Copyright (c) 2017-2022 Pierre Chatelier. All rights reserved.
 //
 
 #import "CHChalkIdentifierManager.h"
@@ -12,7 +12,9 @@
 #import "CHChalkIdentifierConstant.h"
 #import "CHChalkIdentifierFunction.h"
 #import "CHChalkIdentifierVariable.h"
+#import "NSMutableArrayExtended.h"
 #import "NSObjectExtended.h"
+#import "NSStringExtended.h"
 
 @implementation CHChalkIdentifierManager
 
@@ -92,6 +94,7 @@
         instance = [@[[CHChalkIdentifierFunction intervalIdentifier],
                       [CHChalkIdentifierFunction absIdentifier],
                       [CHChalkIdentifierFunction angleIdentifier], [CHChalkIdentifierFunction anglesIdentifier],
+                      [CHChalkIdentifierFunction floorIdentifier], [CHChalkIdentifierFunction ceilIdentifier],
                       [CHChalkIdentifierFunction invIdentifier],
                       [CHChalkIdentifierFunction powIdentifier], [CHChalkIdentifierFunction rootIdentifier], [CHChalkIdentifierFunction sqrtIdentifier], [CHChalkIdentifierFunction cbrtIdentifier],
                       [CHChalkIdentifierFunction expIdentifier],
@@ -264,7 +267,32 @@
   }//end @synchronized
   return result;
 }
-//end unusedIdentifierName
+//end unusedIdentifierNameWithTokenOption:
+
+-(NSString*) unusedIdentifierNameWithName:(NSString*)name
+{
+  NSString* result = nil;
+  @synchronized(self)
+  {
+    NSString* currentName = [[name copy] autorelease];
+    if (![NSString isNilOrEmpty:currentName])
+    {
+      NSUInteger count = 1;
+      BOOL stop = NO;
+      while(!stop)
+      {
+        BOOL isAlreadyUsed = [self hasIdentifierName:currentName];
+        stop |= !isAlreadyUsed;
+        if (isAlreadyUsed)
+          currentName = [NSString stringWithFormat:@"%@_%@", name, @(++count)];
+        stop |= !currentName;
+      }//end or each index
+      result = [[currentName copy] autorelease];
+    }//end if (![NSString isNilOrEmpty:currentName])
+  }//end @synchronized
+  return result;
+}
+//end unusedIdentifierNameWithName:
 
 -(BOOL) addIdentifier:(CHChalkIdentifier*)identifier replace:(BOOL)replace preventTokenConflict:(BOOL)preventTokenConflict
 {
@@ -344,8 +372,15 @@
 
 -(BOOL) hasIdentifier:(CHChalkIdentifier*)identifier
 {
+  BOOL result = [self hasIdentifierName:identifier.name];
+  return result;
+}
+//end hasIdentifier:
+
+-(BOOL) hasIdentifierName:(NSString*)name
+{
   BOOL result = NO;
-  NSString* key = identifier.name;
+  NSString* key = name;
   if (key)
   {
     @synchronized(self)
@@ -355,7 +390,7 @@
   }//end if (key)
   return result;
 }
-//end hasIdentifier;
+//end hasIdentifierName:
 
 -(CHChalkIdentifier*) identifierForName:(NSString*)name createClass:(Class)createClass
 {
@@ -573,5 +608,34 @@
   return result;
 }
 //end removeValueForIdentifierToken:
+
+-(NSArray<NSString*>*) constantsIdentifiersNamesMatchingPrefix:(NSString*)prefix
+{
+  NSArray<NSString*>* result = nil;
+  if (prefix != nil)
+  {
+    BOOL isPrefixEmpty = [prefix isEqualToString:@""];
+    NSMutableArray<NSString*>* array = [NSMutableArray<NSString*> array];
+    NSEnumerator* enumerator = [self->identifiersByName keyEnumerator];
+    id key = nil;
+    while((key = [enumerator nextObject]))
+    {
+      NSString* name = [key dynamicCastToClass:[NSString class]];
+      BOOL isMatch = isPrefixEmpty || [name startsWith:prefix options:NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch];
+      if (isMatch)
+      {
+        id value = [self->identifiersByName objectForKey:key];
+        CHChalkIdentifierConstant* identifierConstant = [value dynamicCastToClass:[CHChalkIdentifierConstant class]];
+        if (identifierConstant != nil)
+          [array safeAddObject:name];
+      }//end if (isMatch)
+    }//end for each value
+    result = [array sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+      return [(NSString*)obj1 compare:(NSString*)obj2 options:NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch];
+    }];
+  }//end if (prefix != nil)
+  return result;
+}
+//end constantsIdentifiersNamesMatchingPrefix:
 
 @end
